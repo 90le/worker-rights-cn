@@ -12,6 +12,7 @@ import secrets
 import shutil
 import stat
 import threading
+import tempfile
 import time
 import uuid
 from contextlib import contextmanager
@@ -238,13 +239,23 @@ def _is_reparse_point(path: Path) -> bool:
     return stat.S_ISLNK(details.st_mode) or bool(attributes & reparse_flag)
 
 
+def _link_components_to_check(path: Path, temp_root: Path) -> tuple[Path, ...]:
+    lexical = Path(os.path.abspath(path))
+    temp_root = Path(os.path.abspath(temp_root))
+    inside_temp = lexical == temp_root or temp_root in lexical.parents
+    anchor = Path(lexical.anchor)
+    return tuple(
+        candidate
+        for candidate in (lexical, *lexical.parents)
+        if candidate != anchor
+        and not (inside_temp and candidate != temp_root and candidate in temp_root.parents)
+    )
+
+
 def _assert_no_link_components(path: Path) -> None:
-    current = Path(path.anchor)
-    for part in path.parts[1:]:
-        current /= part
-        if current.exists() or current.is_symlink():
-            if _is_reparse_point(current):
-                raise ValueError(f"storage path must not contain symbolic links: {current}")
+    for current in _link_components_to_check(path, Path(tempfile.gettempdir())):
+        if (current.exists() or current.is_symlink()) and _is_reparse_point(current):
+            raise ValueError(f"storage path must not contain symbolic links: {current}")
 
 
 def _assert_tree_has_no_links(root: Path) -> None:

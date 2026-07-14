@@ -24,6 +24,7 @@ sys.path.insert(0, str(PLUGIN_ROOT / "scripts"))
 
 import local_db  # noqa: E402
 import worker_rights_cn.storage.knowledge as knowledge_storage  # noqa: E402
+import worker_rights_cn.storage.cases as case_storage  # noqa: E402
 from worker_rights_cn.case_model import new_case  # noqa: E402
 from worker_rights_cn.storage import CaseStore, KnowledgeStore, SaveConsent  # noqa: E402
 
@@ -35,6 +36,19 @@ class BoundaryCaseError(AssertionError):
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise BoundaryCaseError(message)
+
+
+def validate_platform_temp_ancestry_policy() -> None:
+    temp_root = Path(tempfile.gettempdir()).absolute()
+    storage_path = temp_root / "worker-rights-policy-case" / "cases"
+    checked = case_storage._link_components_to_check(storage_path, temp_root)
+    require(storage_path in checked, "storage leaf was not checked")
+    require(storage_path.parent in checked, "storage child directory was not checked")
+    require(temp_root in checked, "platform temp root itself was not checked")
+    require(
+        not any(parent in checked for parent in temp_root.parents),
+        "platform temp system ancestry was incorrectly checked",
+    )
 
 
 def synthetic_case() -> dict[str, object]:
@@ -1051,6 +1065,8 @@ def main() -> int:
     try:
         with tempfile.TemporaryDirectory(prefix="worker-rights-storage-boundary-") as tmp:
             temporary = Path(tmp)
+            validate_platform_temp_ancestry_policy()
+            checks.append({"id": "platform_temp_ancestry_policy", "status": "pass"})
             validate_save_consent_contract(temporary / "cases")
             checks.append({"id": "explicit_save_consent", "status": "pass"})
             validate_knowledge_boundary(temporary / "knowledge.db")
