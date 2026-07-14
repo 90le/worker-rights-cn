@@ -1,0 +1,827 @@
+{
+  "schema_version": "0.1.0",
+  "retrieved_at": "2026-06-16",
+  "source_note": "Strategy matrix for lawful worker-side recovery optimization in enterprise layoff and dismissal scenarios. Use with layoff-defense legal-map, compensation-calculator, local-rules-adapter, evidence-builder, negotiation-coach, agreement-review, arbitration-drafter, and safety-guardrails.",
+  "global_principles": [
+    "Maximize lawful expected recovery, not unsupported theoretical numbers.",
+    "Preserve the strongest factual characterization before signing resignation, waiver, settlement, or handover documents.",
+    "Separate confirmed claims from upside items that need more evidence.",
+    "Use negotiation while leverage is high, but switch to arbitration when limitation, payment default, evidence loss, or refusal to give written terms becomes material.",
+    "Do not fabricate evidence, threaten exposure, copy company secrets, publish personal information, or guarantee outcomes."
+  ],
+  "strategy_priority": [
+    "safety_screen",
+    "classification_preservation",
+    "evidence_sprint",
+    "lawful_value_stack",
+    "local_rule_check",
+    "negotiation_or_agreement_review",
+    "arbitration_filing"
+  ],
+  "settlement_floor_rules": {
+    "valid_mutual_or_economic_layoff": "N plus all unpaid statutory and contractual items, with local cap and wage base verified.",
+    "valid_non_fault_without_notice": "N + substitute notice wage where LCL art.40 applies and 30-day notice is missing.",
+    "unlawful_termination": "Compare reinstatement and 2N; do not double count N and 2N for the same termination.",
+    "forced_resignation_with_employer_breach": "N triggered by art.38 facts plus unpaid wages/benefits if evidence supports them.",
+    "pre_signing_negotiation": "Ask above the floor when employer wants speed, waiver, non-disparagement, confidentiality, non-compete, reference wording, or broad release."
+  },
+  "scenario_types": {
+    "mutual_low_offer_pre_signing": {
+      "termination_maps": [
+        "mutual_termination"
+      ],
+      "use_when": "Employer proposes mutual termination or a low settlement before the worker signs.",
+      "best_supported_path": [
+        "itemized_N_floor",
+        "unpaid_items",
+        "payment_date_and_certificate_wording",
+        "waiver_narrowing"
+      ],
+      "fallback_path": [
+        "do_not_sign_until_written_terms",
+        "preserve_unilateral_termination_facts_if_pressure_exists"
+      ],
+      "upside_levers": [
+        "employer_proposed_termination_evidence",
+        "deadline_pressure_or_account_lockout",
+        "broad_waiver_or_all_claims_clause",
+        "payment_uncertainty",
+        "non_compete_or_confidentiality_scope"
+      ],
+      "evidence_item_ids": [
+        "separation_agreement_versions",
+        "proposal_origin_evidence",
+        "twelve_month_wage_basis",
+        "hr_chat_email_meeting_records",
+        "service_years_proof"
+      ],
+      "negotiation_scenarios": [
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "unpaid_wages",
+        "unused_annual_leave"
+      ],
+      "local_rule_checks": [
+        "economic_compensation_high_wage_cap"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "unsupported_or_exaggerated_claims"
+      ],
+      "source_anchors": [
+        "LCL-2012#art36",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-REG-2008#art27",
+        "SPC-LDI-1-2020#art35",
+        "LDA-2007#art6"
+      ],
+      "forbidden_moves": [
+        "sign_personal_reason_resignation",
+        "sign_all_claims_waiver_before_payment_terms",
+        "threaten_public_exposure"
+      ]
+    },
+    "economic_layoff_procedure_gap": {
+      "termination_maps": [
+        "economic_layoff"
+      ],
+      "use_when": "Employer claims economic layoff, business difficulty, reorganization, production shift, major technology or AI transformation, business-method adjustment, or headcount reduction.",
+      "best_supported_path": [
+        "N_if_valid_layoff",
+        "contract_change_chain_if_major_technology_or_business_method_adjustment",
+        "priority_retention_for_open_ended_contracts",
+        "guangzhou_written_report_package_gap_if_local_case",
+        "2N_or_reinstatement_if_threshold_reason_or_procedure_fails",
+        "rehire_priority_tracking"
+      ],
+      "fallback_path": [
+        "N_plus_unpaid_items_if_lawful_layoff_is_proven",
+        "local_hrss_report_request"
+      ],
+      "upside_levers": [
+        "layoff_threshold_not_met",
+        "no_30_day_explanation_or_opinion_process",
+        "no_labor_authority_report",
+        "no_guangzhou_written_report_package_or_supporting_materials",
+        "hrss_opinions_or_suggestions_not_addressed_in_writing",
+        "final_plan_not_published_to_all_staff",
+        "ai_transformation_without_contract_change_chain",
+        "priority_retention_ignored",
+        "open_ended_contract_priority_retention_ignored",
+        "protected_status_not_screened",
+        "rehire_within_six_months"
+      ],
+      "evidence_item_ids": [
+        "layoff_threshold_and_plan",
+        "ai_transformation_contract_change_and_internal_alternatives",
+        "thirty_day_explanation_opinion_report",
+        "guangzhou_layoff_report_package",
+        "priority_retention_and_rehire_evidence",
+        "post_layoff_rehire_or_outsourcing_tracking",
+        "termination_notice_exact_reason",
+        "twelve_month_wage_basis",
+        "local_average_wage_source"
+      ],
+      "negotiation_scenarios": [
+        "economic_layoff_report_request",
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "unlawful_termination_compensation",
+        "unpaid_wages"
+      ],
+      "local_rule_checks": [
+        "economic_layoff_local_procedure",
+        "guangzhou_economic_layoff_report_package",
+        "economic_compensation_high_wage_cap"
+      ],
+      "local_source_ids": [
+        "GZ-RSJ-LAYOFF-NORM-2021"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "outcome_guarantee_or_overconfident_legal_advice"
+      ],
+      "source_anchors": [
+        "LCL-2012#art35",
+        "LCL-2012#art41",
+        "LCL-2012#art42",
+        "LCL-2012#art43",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "LCL-REG-2008#art19",
+        "LDA-2007#art6"
+      ],
+      "forbidden_moves": [
+        "copy_unrelated_company_financial_files",
+        "organize_threats_or_harassment",
+        "state_2N_as_guaranteed"
+      ]
+    },
+    "guangzhou_post_layoff_rehire_or_outsourcing": {
+      "termination_maps": [
+        "economic_layoff"
+      ],
+      "use_when": "Guangzhou employer completed or claimed an economic layoff, then posts same or substantially similar roles, hires replacements, uses labor dispatch, or moves the same work to outsourced teams within six months.",
+      "best_supported_path": [
+        "preserve_public_or_lawfully_accessible_rehire_replacement_evidence",
+        "assert_six_month_rehire_notice_and_same_condition_priority_where_applicable",
+        "compare_replaced_role_with_laid_off_role_and_selection_criteria",
+        "use_rehire_or_outsourcing_facts_to_challenge_real_layoff_need_or_priority_retention_review",
+        "2N_or_reinstatement_if_layoff_basis_priority_or_procedure_fails"
+      ],
+      "fallback_path": [
+        "keep_N_and_unpaid_items_as_floor_if_layoff_was_valid",
+        "ask_for_written_rehire_priority_or_role-matching explanation",
+        "do_not_treat_every_business_recovery_or_different_role_as_unlawful_replacement"
+      ],
+      "upside_levers": [
+        "same_role_recruitment_within_six_months",
+        "outsourced_or_dispatched_replacement_of_same_work",
+        "no_rehire_notice_to_laid_off_worker",
+        "priority_retention_ignored_before_recruitment",
+        "layoff_reason_inconsistent_with_immediate_replacement",
+        "guangzhou_final_plan_or_hrss_report_did_not_disclose_replacement_arrangement"
+      ],
+      "evidence_item_ids": [
+        "post_layoff_rehire_or_outsourcing_tracking",
+        "priority_retention_and_rehire_evidence",
+        "layoff_threshold_and_plan",
+        "guangzhou_layoff_report_package",
+        "termination_notice_exact_reason",
+        "labor_contract_and_renewals",
+        "twelve_month_wage_basis",
+        "hr_chat_email_meeting_records"
+      ],
+      "negotiation_scenarios": [
+        "economic_layoff_report_request",
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "unlawful_termination_compensation",
+        "economic_compensation",
+        "unpaid_wages"
+      ],
+      "local_rule_checks": [
+        "economic_layoff_local_procedure",
+        "guangzhou_economic_layoff_report_package",
+        "economic_compensation_high_wage_cap"
+      ],
+      "local_source_ids": [
+        "GZ-RSJ-LAYOFF-NORM-2021"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "illegal_company_data_or_trade_secrets",
+        "outcome_guarantee_or_overconfident_legal_advice"
+      ],
+      "source_anchors": [
+        "LCL-2012#art41",
+        "LCL-2012#art43",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "LDA-2007#art6",
+        "PIPL-2021#art6"
+      ],
+      "forbidden_moves": [
+        "impersonate_applicant_to_collect_recruitment_evidence",
+        "copy_internal_staffing_or_outsourcing_files",
+        "treat_different_role_or_after_six_month_recruitment_as_automatic_unlawful_termination",
+        "state_2N_as_guaranteed"
+      ]
+    },
+    "guangzhou_ai_transformation_open_ended_layoff": {
+      "termination_maps": [
+        "economic_layoff",
+        "non_fault_dismissal"
+      ],
+      "use_when": "Guangzhou employer says legacy business is shifting to AI or automation and selects an open-ended-contract worker for optimization, layoff, or role elimination.",
+      "best_supported_path": [
+        "test_art41_AI_transformation_contract_change_chain",
+        "assert_open_ended_contract_priority_retention",
+        "check_guangzhou_written_report_package_before_implementation",
+        "switch_to_art40_training_or_transfer_check_if_incompetence_or_AI_role_mismatch_is_claimed",
+        "2N_or_reinstatement_if_priority_retention_procedure_or_art40_gate_fails"
+      ],
+      "fallback_path": [
+        "N_plus_unpaid_items_if_layoff_reason_procedure_and_priority_review_are_proven",
+        "local_hrss_report_and_guangzhou_source_check",
+        "do_not_claim_universal_training_duty_for_every_art41_layoff"
+      ],
+      "upside_levers": [
+        "no_real_AI_transformation_or_business_method_adjustment_evidence",
+        "no_contract_change_or_internal_alternative_consultation",
+        "open_ended_contract_priority_retention_ignored",
+        "no_training_or_transfer_after_incompetence_or_AI_adaptation_claim",
+        "no_30_day_explanation_or_opinion_process",
+        "no_guangzhou_hrss_report_materials",
+        "no_guangzhou_written_report_package_or_supporting_materials",
+        "hrss_opinions_or_suggestions_not_addressed_in_writing",
+        "final_plan_not_published_to_all_staff",
+        "protected_status_not_screened"
+      ],
+      "evidence_item_ids": [
+        "layoff_threshold_and_plan",
+        "ai_transformation_contract_change_and_internal_alternatives",
+        "priority_retention_and_rehire_evidence",
+        "training_transfer_or_consultation_records",
+        "thirty_day_explanation_opinion_report",
+        "guangzhou_layoff_report_package",
+        "termination_notice_exact_reason",
+        "labor_contract_and_renewals",
+        "twelve_month_wage_basis",
+        "local_average_wage_source"
+      ],
+      "negotiation_scenarios": [
+        "economic_layoff_report_request",
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "substitute_notice_wage",
+        "unlawful_termination_compensation",
+        "unpaid_wages"
+      ],
+      "local_rule_checks": [
+        "economic_layoff_local_procedure",
+        "guangzhou_economic_layoff_report_package",
+        "economic_compensation_high_wage_cap"
+      ],
+      "local_source_ids": [
+        "GZ-RSJ-LAYOFF-NORM-2021"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "outcome_guarantee_or_overconfident_legal_advice"
+      ],
+      "source_anchors": [
+        "LCL-2012#art35",
+        "LCL-2012#art40",
+        "LCL-2012#art41",
+        "LCL-2012#art42",
+        "LCL-2012#art43",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "LCL-REG-2008#art19",
+        "LCL-REG-2008#art20",
+        "LDA-2007#art6"
+      ],
+      "forbidden_moves": [
+        "state_training_is_always_mandatory_for_every_AI_transformation_layoff",
+        "ignore_open_ended_contract_priority_retention",
+        "state_2N_as_guaranteed",
+        "copy_unrelated_company_AI_strategy_or_customer_data"
+      ]
+    },
+    "non_fault_no_notice_or_weak_ground": {
+      "termination_maps": [
+        "non_fault_dismissal"
+      ],
+      "use_when": "Employer cites illness, incompetence, major objective change, department cancellation, or similar non-fault reasons.",
+      "best_supported_path": [
+        "N_plus_1_if_art40_valid_but_no_30_day_notice",
+        "2N_or_reinstatement_if_reason_training_transfer_consultation_or_protected_gate_fails"
+      ],
+      "fallback_path": [
+        "N_if_art40_ground_and_notice_are_proven",
+        "claim_substitute_notice_only_when_art40_applies"
+      ],
+      "upside_levers": [
+        "no_training_or_transfer_after_incompetence_claim",
+        "objective_change_not_proven",
+        "no_consultation_on_contract_change",
+        "protected_status_bar",
+        "union_notice_gap"
+      ],
+      "evidence_item_ids": [
+        "article40_ground_evidence",
+        "notice_or_substitute_wage_evidence",
+        "training_transfer_or_consultation_records",
+        "written_reason_request",
+        "pregnancy_or_medical_status_proof",
+        "twelve_month_wage_basis"
+      ],
+      "negotiation_scenarios": [
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "substitute_notice_wage",
+        "unlawful_termination_compensation"
+      ],
+      "local_rule_checks": [
+        "economic_compensation_high_wage_cap"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "outcome_guarantee_or_overconfident_legal_advice",
+        "sensitive_health_or_pregnancy_information"
+      ],
+      "source_anchors": [
+        "LCL-2012#art40",
+        "LCL-2012#art42",
+        "LCL-2012#art43",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "LCL-REG-2008#art20",
+        "LCL-REG-2008#art27"
+      ],
+      "forbidden_moves": [
+        "invent_medical_or_performance_facts",
+        "assume_N_plus_1_for_non_art40_termination",
+        "overdisclose_sensitive_health_records"
+      ]
+    },
+    "forced_resignation_or_personal_reason_template": {
+      "termination_maps": [
+        "employee_resignation",
+        "constructive_dismissal"
+      ],
+      "use_when": "Employer asks the worker to submit personal-reason resignation, OA resignation, or a resignation template while breaches exist.",
+      "best_supported_path": [
+        "preserve_non_voluntary_characterization",
+        "art38_economic_compensation_if_breach_proven",
+        "unpaid_wages_and_social_insurance_admin_path"
+      ],
+      "fallback_path": [
+        "unpaid_wages_even_if_resignation_compensation_fails",
+        "avoid_work_abandonment_risk"
+      ],
+      "upside_levers": [
+        "unpaid_wages",
+        "unpaid_social_insurance",
+        "salary_cut_or_forced_transfer",
+        "lockout_or_forced_leave",
+        "HR_pressure_messages"
+      ],
+      "evidence_item_ids": [
+        "resignation_text_and_delivery",
+        "employer_breach_evidence",
+        "unpaid_wage_or_social_insurance_gap",
+        "salary_cut_transfer_objection",
+        "lockout_or_forced_leave_evidence",
+        "written_objection_or_request"
+      ],
+      "negotiation_scenarios": [
+        "forced_resignation_response",
+        "unpaid_wage_demand"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "unpaid_wages"
+      ],
+      "local_rule_checks": [
+        "social_insurance_base",
+        "minimum_wage_or_wage_payment"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "unsupported_or_exaggerated_claims"
+      ],
+      "source_anchors": [
+        "LCL-2012#art30",
+        "LCL-2012#art37",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "LCL-2012#art85",
+        "LDA-2007#art9",
+        "SIL-2018#art60",
+        "SPC-LDI-1-2020#art45",
+        "SPC-LDI-2-2025#art19"
+      ],
+      "forbidden_moves": [
+        "sign_personal_reason_resignation_if_not_true",
+        "retroactively_fabricate_resignation_reason",
+        "stop_attending_without_written_strategy"
+      ]
+    },
+    "salary_cut_transfer_pressure": {
+      "termination_maps": [
+        "constructive_dismissal",
+        "unclear_or_mixed"
+      ],
+      "use_when": "Employer uses unilateral transfer, salary cut, demotion, forced idle time, or impossible relocation to push resignation.",
+      "best_supported_path": [
+        "written_objection_and_work_availability",
+        "wage_difference_or_unpaid_wage_claim",
+        "art38_economic_compensation_if_breach_material"
+      ],
+      "fallback_path": [
+        "preserve_current_contract_terms",
+        "avoid_absenteeism_frame"
+      ],
+      "upside_levers": [
+        "no_written_mutual_contract_change",
+        "pay_reduction_burden_on_employer",
+        "unreasonable_transfer_distance_or_role_change",
+        "retaliatory_timing_after_layoff_pressure"
+      ],
+      "evidence_item_ids": [
+        "salary_cut_transfer_objection",
+        "labor_contract_and_renewals",
+        "payroll_tax_social_insurance_records",
+        "work_access_and_attendance_records",
+        "hr_chat_email_meeting_records",
+        "chronology_memo"
+      ],
+      "negotiation_scenarios": [
+        "forced_resignation_response",
+        "termination_reason_request",
+        "unpaid_wage_demand"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "unpaid_wages"
+      ],
+      "local_rule_checks": [
+        "minimum_wage_or_wage_payment"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "unsupported_or_exaggerated_claims"
+      ],
+      "source_anchors": [
+        "LCL-2012#art30",
+        "LCL-2012#art35",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "LCL-2012#art85",
+        "LDA-2007#art6",
+        "SPC-LDI-1-2020#art44"
+      ],
+      "forbidden_moves": [
+        "refuse_all_work_without_documenting_availability",
+        "invent_discrimination_or_harassment_facts",
+        "delete_unfavorable_context"
+      ]
+    },
+    "protected_status_layoff_or_dismissal": {
+      "termination_maps": [
+        "non_fault_dismissal",
+        "economic_layoff",
+        "contract_expiry"
+      ],
+      "use_when": "Worker is pregnant, on maternity/nursing status, in medical period, work-injury status, occupational disease hazard screening, or other statutory protected status.",
+      "best_supported_path": [
+        "block_or_extend_art40_art41_or_contract_expiry_path",
+        "reinstatement_or_2N_if_unlawful",
+        "wage_difference_if_sensitive_status_triggered_salary_cut"
+      ],
+      "fallback_path": [
+        "minimize_sensitive_records",
+        "request_written_reason_and_protected_status_review"
+      ],
+      "upside_levers": [
+        "protected_status_bar",
+        "contract_extension_until_protected_status_ends",
+        "sensitive_status_salary_cut",
+        "medical_or_pregnancy_data_minimization"
+      ],
+      "evidence_item_ids": [
+        "pregnancy_or_medical_status_proof",
+        "termination_notice_exact_reason",
+        "salary_cut_transfer_objection",
+        "labor_contract_and_renewals",
+        "payroll_tax_social_insurance_records",
+        "written_objection_or_request"
+      ],
+      "negotiation_scenarios": [
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "unlawful_termination_compensation",
+        "pregnancy_wage_difference",
+        "economic_compensation"
+      ],
+      "local_rule_checks": [
+        "economic_compensation_high_wage_cap"
+      ],
+      "safety_categories": [
+        "sensitive_health_or_pregnancy_information",
+        "personal_information_or_doxxing",
+        "lawful_evidence_preservation"
+      ],
+      "source_anchors": [
+        "LCL-2012#art42",
+        "LCL-2012#art45",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "WRPL-2022#art48",
+        "FEP-2012#art5",
+        "FEP-2012#art6",
+        "SPC-LDI-2-2025#art17"
+      ],
+      "forbidden_moves": [
+        "publish_sensitive_medical_or_pregnancy_records",
+        "submit_unredacted_unrelated_family_data",
+        "guarantee_reinstatement"
+      ]
+    },
+    "unsigned_contract_or_open_ended_leverage": {
+      "termination_maps": [
+        "unclear_or_mixed",
+        "contract_expiry"
+      ],
+      "use_when": "Employer failed to sign, renew, or convert written labor contract, or uses expiry despite open-ended contract conditions.",
+      "best_supported_path": [
+        "double_wage_with_limitation_check",
+        "open_ended_contract_or_continued_relationship_argument",
+        "2N_if_termination_unlawful_after_open_ended_trigger"
+      ],
+      "fallback_path": [
+        "economic_compensation_for_nonrenewal_if_double_wage_is_time_barred",
+        "evidence_request_for_employer_delivery_or_renewal_records"
+      ],
+      "upside_levers": [
+        "no_written_contract_after_one_month",
+        "two_consecutive_fixed_terms",
+        "post_expiry_continued_work",
+        "employer_cannot_prove_worker_refused_signing"
+      ],
+      "evidence_item_ids": [
+        "labor_contract_and_renewals",
+        "contract_expiry_and_renewal_history",
+        "post_expiry_work_continuation",
+        "payroll_tax_social_insurance_records",
+        "work_access_and_attendance_records",
+        "limitation_and_filing_timeline"
+      ],
+      "negotiation_scenarios": [
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "unsigned_contract_double_wage",
+        "economic_compensation",
+        "unlawful_termination_compensation"
+      ],
+      "local_rule_checks": [
+        "economic_compensation_high_wage_cap"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "unsupported_or_exaggerated_claims"
+      ],
+      "source_anchors": [
+        "LCL-2012#art14",
+        "LCL-2012#art44",
+        "LCL-2012#art45",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art82",
+        "LCL-REG-2008#art6",
+        "LCL-REG-2008#art7",
+        "LDA-2007#art27",
+        "SPC-LDI-1-2020#art34",
+        "SPC-LDI-2-2025#art10"
+      ],
+      "forbidden_moves": [
+        "hide_employer_signing_request",
+        "ignore_limitation_period",
+        "claim_double_wage_without_contract_gap_dates"
+      ]
+    },
+    "high_wage_cap_and_city_rule": {
+      "termination_maps": [
+        "mutual_termination",
+        "economic_layoff",
+        "non_fault_dismissal"
+      ],
+      "use_when": "Worker's average monthly wage may exceed three times the local average wage, or the city cap source is disputed.",
+      "best_supported_path": [
+        "use_actual_wage_if_below_verified_cap",
+        "use_verified_city_cap_only_when_source_status_allows",
+        "preserve_bonus_allowance_commission_in_wage_base"
+      ],
+      "fallback_path": [
+        "mark_local_verify_until_city_source_is_confirmed",
+        "show_formula_with_candidate_and_uncapped_comparison"
+      ],
+      "upside_levers": [
+        "wage_base_includes_bonus_allowance_commission",
+        "city_source_not_current_or_wrong_city",
+        "uncertain_cap_should_not_reduce_settlement_offer",
+        "tax_or_social_insurance_base_not_same_as_compensation_cap"
+      ],
+      "evidence_item_ids": [
+        "twelve_month_wage_basis",
+        "local_average_wage_source",
+        "payroll_tax_social_insurance_records",
+        "service_years_proof",
+        "separation_agreement_versions"
+      ],
+      "negotiation_scenarios": [
+        "separation_offer_counter",
+        "unpaid_wage_demand"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "unlawful_termination_compensation"
+      ],
+      "local_rule_checks": [
+        "economic_compensation_high_wage_cap",
+        "social_insurance_base",
+        "housing_fund_base"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "outcome_guarantee_or_overconfident_legal_advice"
+      ],
+      "source_anchors": [
+        "LCL-2012#art47",
+        "LCL-REG-2008#art27",
+        "LCL-REG-2008#art25",
+        "LDA-2007#art6"
+      ],
+      "forbidden_moves": [
+        "use_social_insurance_base_as_final_compensation_cap_without_verification",
+        "omit_bonus_or_allowance_without_checking_wage_records",
+        "pretend_local_source_is_final_when_status_is_candidate"
+      ]
+    },
+    "unpaid_wage_social_insurance_stack": {
+      "termination_maps": [
+        "constructive_dismissal",
+        "employee_resignation"
+      ],
+      "use_when": "Employer owes wages, bonus, reimbursement, annual leave, economic compensation, or has social-insurance contribution gaps during layoffs.",
+      "best_supported_path": [
+        "unpaid_wages_as_immediate_claim",
+        "art38_economic_compensation_if_worker_terminates_for_breach",
+        "labor_authority_complaint_for_payment_or_social_insurance_items"
+      ],
+      "fallback_path": [
+        "separate_administrative_social_insurance_path_from_arbitration_money_claim",
+        "use_wage_claim_even_if_termination_characterization_is_unclear"
+      ],
+      "upside_levers": [
+        "wage_arrears_before_resignation",
+        "bonus_or_commission_written_basis",
+        "annual_leave_records",
+        "social_insurance_contribution_gap",
+        "payment_default_after_settlement"
+      ],
+      "evidence_item_ids": [
+        "payroll_tax_social_insurance_records",
+        "unpaid_wage_or_social_insurance_gap",
+        "work_access_and_attendance_records",
+        "twelve_month_wage_basis",
+        "hr_chat_email_meeting_records",
+        "written_objection_or_request"
+      ],
+      "negotiation_scenarios": [
+        "unpaid_wage_demand",
+        "forced_resignation_response",
+        "settlement_payment_default"
+      ],
+      "arbitration_claims": [
+        "unpaid_wages",
+        "unused_annual_leave",
+        "economic_compensation"
+      ],
+      "local_rule_checks": [
+        "minimum_wage_or_wage_payment",
+        "social_insurance_base"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "threats_extortion_or_harassment"
+      ],
+      "source_anchors": [
+        "LCL-2012#art30",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "LCL-2012#art85",
+        "LDA-2007#art9",
+        "PAID-LEAVE-REG-2007#art5",
+        "PAID-LEAVE-MEASURES-2008#art10",
+        "PAID-LEAVE-MEASURES-2008#art11",
+        "SIL-2018#art60"
+      ],
+      "forbidden_moves": [
+        "condition_silence_or_non_exposure_on_payment",
+        "inflate_overtime_or_bonus_without_records",
+        "copy_payroll_data_for_other_workers"
+      ]
+    },
+    "non_compete_or_confidentiality_after_layoff": {
+      "termination_maps": [
+        "mutual_termination",
+        "unclear_or_mixed"
+      ],
+      "use_when": "Layoff documents include non-compete, confidentiality, service-period, liquidated damages, or release clauses.",
+      "best_supported_path": [
+        "review_scope_personnel_term_territory_competing_business",
+        "request_non_compete_compensation_or_release",
+        "narrow_confidentiality_and_non_disparagement_terms_before_signing"
+      ],
+      "fallback_path": [
+        "lawyer_check_before_joining_competitor",
+        "separate_lawful_personal_evidence_from_company_secrets"
+      ],
+      "upside_levers": [
+        "worker_not_in_confidentiality_obligated_scope",
+        "no_trade_secret_or_ip_contact",
+        "scope_or_geography_overbroad",
+        "three_months_non_compete_compensation_unpaid",
+        "employer_release_triggers_extra_compensation"
+      ],
+      "evidence_item_ids": [
+        "separation_agreement_versions",
+        "labor_contract_and_renewals",
+        "labor_contract_and_renewals",
+        "hr_chat_email_meeting_records",
+        "payroll_tax_social_insurance_records"
+      ],
+      "negotiation_scenarios": [
+        "non_compete_payment_or_release",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "non_compete_compensation",
+        "non_compete_scope_invalid_or_limited"
+      ],
+      "local_rule_checks": [
+        "minimum_wage_or_wage_payment"
+      ],
+      "safety_categories": [
+        "confidentiality_noncompete_or_service_period_evasion",
+        "illegal_company_data_or_trade_secrets",
+        "lawful_evidence_preservation"
+      ],
+      "source_anchors": [
+        "LCL-2012#art23",
+        "LCL-2012#art24",
+        "LCL-2012#art25",
+        "LCL-2012#art90",
+        "SPC-LDI-1-2020#art36",
+        "SPC-LDI-1-2020#art38",
+        "SPC-LDI-1-2020#art39",
+        "SPC-LDI-2-2025#art13",
+        "SPC-LDI-2-2025#art15"
+      ],
+      "forbidden_moves": [
+        "conceal_competitor_employment_strategy",
+        "copy_trade_secrets_as_leverage",
+        "destroy_or_hide_signed_clause_versions"
+      ]
+    }
+  }
+}

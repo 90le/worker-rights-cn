@@ -1,0 +1,6 @@
+interface:
+  display_name: "Safety Guardrails"
+  short_description: "Classify risky labor-rights requests"
+  default_prompt: "Use $safety-guardrails to classify labor-rights requests, refuse unlawful help, and rewrite them into lawful evidence-based alternatives."
+policy:
+  allow_implicit_invocation: false

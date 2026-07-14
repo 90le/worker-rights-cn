@@ -1,0 +1,297 @@
+{
+  "schema_version": "0.1.0",
+  "retrieved_at": "2026-06-16",
+  "source_note": "Use with layoff-defense/references/legal-map.md. Safety decisions prevent unsafe assistance and redirect to lawful evidence preservation, negotiation, complaint, arbitration, or lawyer-review paths.",
+  "decision_priority": [
+    "refuse_and_redirect",
+    "lawyer_check",
+    "rewrite_with_limits",
+    "proceed_with_caution"
+  ],
+  "risk_categories": {
+    "fabricated_or_tampered_evidence": {
+      "decision": "refuse_and_redirect",
+      "severity": "critical",
+      "triggers": [
+        "fake, forge, alter, edit, delete, hide, or backdate labor contracts, payslips, attendance, screenshots, recordings, bank records, tax records, resignation letters, settlement agreements, or witness statements",
+        "ask how to make false evidence look authentic",
+        "ask to remove unfavorable context from evidence"
+      ],
+      "blocked_actions": [
+        "draft fabricated evidence narratives",
+        "explain how to alter records or screenshots",
+        "recommend deleting or hiding relevant evidence"
+      ],
+      "required_response_elements": [
+        "brief_refusal",
+        "explain_evidence_integrity",
+        "offer_lawful_evidence_list",
+        "recommend_original_context_preservation",
+        "source_anchors"
+      ],
+      "safe_alternatives": {
+        "preserve_original_records": "Preserve original contracts, bank statements, tax records, payroll records, attendance, notices, chats, emails, and full-context screenshots without alteration.",
+        "request_employer_controlled_documents": "Ask the employer or tribunal for documents controlled by the employer, such as payroll, attendance, rules, notices, and dismissal records.",
+        "write_chronology_memo": "Prepare a chronology memo that clearly separates confirmed facts, uncertain recollection, and documents still missing."
+      },
+      "source_anchors": [
+        "LDA-2007#art6",
+        "LDA-2007#art39",
+        "CPL-2023#art114",
+        "SPC-LDI-1-2020#art44"
+      ]
+    },
+    "threats_extortion_or_harassment": {
+      "decision": "refuse_and_redirect",
+      "severity": "critical",
+      "triggers": [
+        "threaten HR, managers, coworkers, or the company",
+        "pressure payment through public exposure, personal attacks, doxxing, disruption, harassment, or retaliation",
+        "condition silence or non-exposure on payment"
+      ],
+      "blocked_actions": [
+        "draft threats or blackmail wording",
+        "plan public-shaming pressure",
+        "encourage harassment or disruption"
+      ],
+      "required_response_elements": [
+        "brief_refusal",
+        "replace_threat_with_formal_demand",
+        "offer_lawful_escalation_paths",
+        "source_anchors"
+      ],
+      "safe_alternatives": {
+        "formal_payment_demand": "Draft a factual payment demand asking for itemized amounts, payment date, and written basis.",
+        "lawful_complaint_or_arbitration": "Use labor-authority complaint, mediation, arbitration, or court enforcement paths without threats.",
+        "meeting_followup_record": "Send a calm meeting follow-up that records facts and asks for written confirmation."
+      },
+      "source_anchors": [
+        "SPC-EXTORTION-2013#art1",
+        "SPC-EXTORTION-2013#art2",
+        "SPC-EXTORTION-2013#art3",
+        "LDA-2007#art5",
+        "LDA-2007#art9"
+      ]
+    },
+    "illegal_company_data_or_trade_secrets": {
+      "decision": "refuse_and_redirect",
+      "severity": "critical",
+      "triggers": [
+        "copy, export, scrape, download, or take company source code, customer lists, pricing files, unpublished strategy, credentials, logs, or unrelated business data",
+        "use company secrets as leverage",
+        "access systems beyond work authorization"
+      ],
+      "blocked_actions": [
+        "explain how to copy or exfiltrate company data",
+        "recommend keeping trade secrets for leverage",
+        "advise unauthorized system access"
+      ],
+      "required_response_elements": [
+        "brief_refusal",
+        "separate_lawful_personal_evidence_from_company_data",
+        "offer_document_request_path",
+        "source_anchors"
+      ],
+      "safe_alternatives": {
+        "use_personal_work_records": "Use personal employment evidence such as contracts, wage records, tax records, social insurance records, notices, chats, and emails involving the worker.",
+        "request_disclosure_in_arbitration": "Ask the tribunal to require employer-controlled materials instead of taking unrelated company data.",
+        "lawyer_review_before_using_sensitive_material": "Get lawyer review before using any confidential, customer, source-code, or system-log material."
+      },
+      "source_anchors": [
+        "LCL-2012#art23",
+        "PIPL-2021#art10",
+        "PIPL-2021#art13",
+        "SPC-IP-CRIM-2025#art16",
+        "SPC-IP-CRIM-2025#art17"
+      ]
+    },
+    "personal_information_or_doxxing": {
+      "decision": "refuse_and_redirect",
+      "severity": "high",
+      "triggers": [
+        "collect, expose, publish, or use HR, manager, coworker, customer, or family personal information unrelated to the labor dispute",
+        "ask for doxxing, phone bombing, mass messaging, or public pressure using personal data"
+      ],
+      "blocked_actions": [
+        "draft doxxing or public-exposure content",
+        "advise collecting unrelated personal information",
+        "encourage mass harassment"
+      ],
+      "required_response_elements": [
+        "brief_refusal",
+        "limit_to_necessary_case_facts",
+        "offer_formal_notice_or_complaint_path",
+        "source_anchors"
+      ],
+      "safe_alternatives": {
+        "minimize_personal_information": "Use only personal information necessary to identify employment relationship, payment, notices, or the dispute event.",
+        "redact_third_party_data": "Redact unrelated third-party names, phone numbers, addresses, ID numbers, and customer data before sharing materials.",
+        "formal_channel_only": "Communicate through HR, labor authority, arbitration commission, or counsel instead of public exposure."
+      },
+      "source_anchors": [
+        "PIPL-2021#art5",
+        "PIPL-2021#art6",
+        "PIPL-2021#art10",
+        "PIPL-2021#art13"
+      ]
+    },
+    "sensitive_health_or_pregnancy_information": {
+      "decision": "proceed_with_caution",
+      "severity": "medium",
+      "triggers": [
+        "use pregnancy, maternity, nursing, medical treatment period, occupational disease, work injury, diagnosis, sick leave, medical certificate, disability, or family health materials in a labor dispute",
+        "share medical or pregnancy records with HR, labor authority, arbitration commission, court, counsel, or a third party",
+        "prepare evidence involving sensitive personal information that is relevant to protected status or wage claims"
+      ],
+      "blocked_actions": [
+        "publish or expose medical, pregnancy, disability, or family health records",
+        "collect unrelated health records or family personal information",
+        "include detailed diagnosis or medical data beyond what is necessary for the claim"
+      ],
+      "required_response_elements": [
+        "confirm_sensitive_scope",
+        "minimize_sensitive_information",
+        "redact_unrelated_health_or_family_data",
+        "source_anchors"
+      ],
+      "safe_alternatives": {
+        "limited_medical_certificate_use": "Use only necessary proof such as pregnancy status, medical rest period, occupational disease or work injury status, and claim-relevant dates.",
+        "redacted_submission_set": "Redact unrelated diagnosis, family, address, ID, phone, and third-party information before sharing copies beyond the adjudication channel.",
+        "formal_channel_submission": "Submit sensitive materials through HR statutory process, labor authority, arbitration, court, or counsel rather than public channels."
+      },
+      "source_anchors": [
+        "PIPL-2021#art5",
+        "PIPL-2021#art6",
+        "PIPL-2021#art28",
+        "PIPL-2021#art29",
+        "WRPL-2022#art48",
+        "FEP-2012#art5",
+        "FEP-2012#art6"
+      ]
+    },
+    "confidentiality_noncompete_or_service_period_evasion": {
+      "decision": "lawyer_check",
+      "severity": "high",
+      "triggers": [
+        "evade, bypass, conceal, or intentionally violate confidentiality, non-compete, service-period, training-fee, or liquidated damages obligations",
+        "ask whether to secretly join a competitor while bound by a non-compete",
+        "ask how to avoid leaving traces after violating a clause"
+      ],
+      "blocked_actions": [
+        "advise concealed breach",
+        "draft false statements about competitor employment",
+        "plan evidence destruction or trace avoidance"
+      ],
+      "required_response_elements": [
+        "decline_evasion_strategy",
+        "flag_lawyer_check",
+        "ask_for_clause_scope_payment_and_role_facts",
+        "offer_release_or_payment_request",
+        "source_anchors"
+      ],
+      "safe_alternatives": {
+        "scope_payment_review": "Review personnel scope, confidential matter, term, territory, competing business, compensation, and liquidated damages.",
+        "release_or_payment_request": "Ask the employer to confirm release, narrow the scope, or pay agreed/statutory non-compete compensation.",
+        "preserve_employment_offer_without_confidential_disclosure": "Preserve new-offer facts for lawyer review without disclosing trade secrets or breaching confidentiality."
+      },
+      "source_anchors": [
+        "LCL-2012#art22",
+        "LCL-2012#art23",
+        "LCL-2012#art24",
+        "LCL-2012#art25",
+        "SPC-LDI-1-2020#art36",
+        "SPC-LDI-1-2020#art38",
+        "SPC-LDI-2-2025#art13",
+        "SPC-LDI-2-2025#art15"
+      ]
+    },
+    "unsupported_or_exaggerated_claims": {
+      "decision": "rewrite_with_limits",
+      "severity": "medium",
+      "triggers": [
+        "exaggerate overtime, wages, harassment, performance, injury, protected status, or employer admissions without evidence",
+        "state suspicions as confirmed facts",
+        "maximize claims by inventing missing facts"
+      ],
+      "blocked_actions": [
+        "draft false or unsupported assertions as facts",
+        "inflate amounts without inputs",
+        "hide uncertainty"
+      ],
+      "required_response_elements": [
+        "separate_confirmed_possible_lawyer_check",
+        "ask_for_missing_evidence",
+        "draft_fact_limited_version",
+        "source_anchors"
+      ],
+      "safe_alternatives": {
+        "fact_limited_draft": "Draft only facts the worker can support, and phrase unsupported items as requests for clarification or evidence.",
+        "evidence_gap_list": "List missing evidence needed for overtime, wage base, service years, termination reason, protected status, or employer fault.",
+        "amount_range_with_assumptions": "Calculate only ranges based on stated assumptions and flag inputs that need verification."
+      },
+      "source_anchors": [
+        "LDA-2007#art6",
+        "LDA-2007#art39",
+        "SPC-LDI-1-2020#art44"
+      ]
+    },
+    "outcome_guarantee_or_overconfident_legal_advice": {
+      "decision": "rewrite_with_limits",
+      "severity": "medium",
+      "triggers": [
+        "guarantee arbitration, complaint, lawsuit, settlement, reinstatement, or compensation results",
+        "claim a tribunal will certainly support a request",
+        "present AI output as formal lawyer opinion"
+      ],
+      "blocked_actions": [
+        "promise a result",
+        "state uncertain legal outcomes as certain",
+        "present drafts as final lawyer advice"
+      ],
+      "required_response_elements": [
+        "remove_guarantee",
+        "state_assumptions_and_risks",
+        "recommend_lawyer_check_for_high_risk",
+        "source_anchors"
+      ],
+      "safe_alternatives": {
+        "probabilistic_risk_language": "Use conditional wording based on facts, evidence, local practice, and tribunal review.",
+        "claim_basis_summary": "Explain the claim basis, evidence needed, and possible employer defenses without guaranteeing support.",
+        "lawyer_check_for_final_filing": "Recommend lawyer review before final filing or signing."
+      },
+      "source_anchors": [
+        "LDA-2007#art6",
+        "LDA-2007#art39",
+        "LDA-2007#art43",
+        "LDA-2007#art47",
+        "LDA-2007#art50"
+      ]
+    },
+    "lawful_evidence_preservation": {
+      "decision": "proceed_with_caution",
+      "severity": "low",
+      "triggers": [
+        "preserve existing records involving the worker",
+        "request written reasons, itemized payments, contracts, wage records, social insurance records, or tribunal production of employer-controlled documents",
+        "draft calm negotiation or complaint wording based on confirmed facts"
+      ],
+      "blocked_actions": [],
+      "required_response_elements": [
+        "confirm_lawful_scope",
+        "preserve_original_context",
+        "avoid_unrelated_personal_or_company_data",
+        "source_anchors"
+      ],
+      "safe_alternatives": {
+        "evidence_preservation_checklist": "Preserve full-context originals, metadata where available, delivery records, and a chronology memo.",
+        "written_reason_request": "Ask the employer for written termination reason, payment details, and document copies.",
+        "next_skill_route": "Route to evidence-builder, negotiation-coach, agreement-review, arbitration-drafter, or compensation-calculator."
+      },
+      "source_anchors": [
+        "LDA-2007#art6",
+        "SPC-LDI-1-2020#art44",
+        "PIPL-2021#art6"
+      ]
+    }
+  }
+}

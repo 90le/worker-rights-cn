@@ -1,0 +1,271 @@
+{
+  "schema_version": "0.1.0",
+  "retrieved_at": "2026-06-17",
+  "source_note": "Structured case package schema for agent or product export. Use after case-intake, safety-guardrails, layoff-defense, compensation-calculator, local-rules-adapter, evidence-builder, negotiation-coach, agreement-review, and arbitration-drafter have produced their draft outputs.",
+  "package_sections": {
+    "case_snapshot": {
+      "purpose": "Freeze the current known facts and open questions before advice, negotiation, or filing materials are generated.",
+      "required_fields": [
+        "worker_alias",
+        "employer_legal_name",
+        "city",
+        "work_location",
+        "employment_start_date",
+        "expected_or_actual_end_date",
+        "current_status",
+        "worker_goal",
+        "open_questions"
+      ],
+      "source_skills": [
+        "case-intake",
+        "local-rules-adapter"
+      ],
+      "source_anchors": [
+        "LDA-2007#art2",
+        "LDA-2007#art21",
+        "LDA-2007#art28"
+      ]
+    },
+    "fact_timeline": {
+      "purpose": "Turn chats, notices, meetings, payment records, and signing deadlines into a dated chronology that separates facts from assumptions.",
+      "required_fields": [
+        "event_date",
+        "event_type",
+        "description",
+        "source_record",
+        "related_evidence_ids",
+        "fact_status"
+      ],
+      "source_skills": [
+        "case-intake",
+        "evidence-builder",
+        "layoff-defense"
+      ],
+      "source_anchors": [
+        "LDA-2007#art6",
+        "SPC-LDI-1-2020#art44"
+      ]
+    },
+    "termination_assessment": {
+      "purpose": "Record the current legal characterization, competing employer/worker characterizations, and what evidence would change the conclusion.",
+      "required_fields": [
+        "primary_termination_maps",
+        "alternative_termination_maps",
+        "employer_stated_reason",
+        "worker_position",
+        "key_risk_flags",
+        "classification_confidence",
+        "missing_facts"
+      ],
+      "source_skills": [
+        "layoff-defense",
+        "layoff-strategy-optimizer",
+        "safety-guardrails"
+      ],
+      "source_anchors": [
+        "LCL-2012#art36",
+        "LCL-2012#art38",
+        "LCL-2012#art40",
+        "LCL-2012#art41",
+        "LCL-2012#art48",
+        "LCL-2012#art87"
+      ]
+    },
+    "money_summary": {
+      "purpose": "Give a reproducible table of confirmed, possible, and disputed money items with formulas and source anchors.",
+      "required_fields": [
+        "claim_type",
+        "amount",
+        "formula",
+        "calculation_inputs",
+        "status",
+        "source_anchors",
+        "local_rule_status"
+      ],
+      "source_skills": [
+        "compensation-calculator",
+        "local-rules-adapter",
+        "layoff-strategy-optimizer"
+      ],
+      "source_anchors": [
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art82",
+        "LCL-2012#art87",
+        "LCL-REG-2008#art20",
+        "LCL-REG-2008#art27"
+      ]
+    },
+    "evidence_directory": {
+      "purpose": "Export a prioritized evidence table with collection status, lawful source, proof purpose, and claim linkage.",
+      "required_fields": [
+        "evidence_id",
+        "evidence_name",
+        "priority",
+        "status",
+        "lawful_source",
+        "proof_purpose",
+        "related_claims",
+        "collection_note"
+      ],
+      "source_skills": [
+        "evidence-builder",
+        "safety-guardrails",
+        "arbitration-drafter"
+      ],
+      "source_anchors": [
+        "LDA-2007#art6",
+        "LDA-2007#art39",
+        "PIPL-2021#art6"
+      ]
+    },
+    "negotiation_plan": {
+      "purpose": "Package the settlement floor, ask range, message blocks, forbidden wording, and decision point for switching to arbitration.",
+      "required_fields": [
+        "scenario_id",
+        "settlement_floor",
+        "ask_range_or_counteroffer",
+        "message_blocks",
+        "forbidden_phrases",
+        "deadline_or_next_touch",
+        "switch_to_arbitration_triggers"
+      ],
+      "source_skills": [
+        "negotiation-coach",
+        "agreement-review",
+        "layoff-strategy-optimizer"
+      ],
+      "source_anchors": [
+        "LCL-2012#art36",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LDA-2007#art4",
+        "LDA-2007#art5"
+      ]
+    },
+    "agreement_review_summary": {
+      "purpose": "List risky clauses, revisions needed before signing, payment safeguards, and preserved claims.",
+      "required_fields": [
+        "document_type",
+        "critical_clause_types",
+        "revision_requests",
+        "payment_safeguards",
+        "claims_to_reserve",
+        "signing_risk_level"
+      ],
+      "source_skills": [
+        "agreement-review",
+        "negotiation-coach",
+        "safety-guardrails"
+      ],
+      "source_anchors": [
+        "SPC-LDI-1-2020#art35",
+        "SPC-LDI-2-2025#art13",
+        "SPC-LDI-2-2025#art16",
+        "SPC-LDI-2-2025#art19"
+      ]
+    },
+    "arbitration_draft_pack": {
+      "purpose": "Prepare the filing-ready structure without claiming it is a final lawyer-reviewed pleading.",
+      "required_fields": [
+        "draft_status",
+        "filing_gate_status",
+        "not_final_filing_document",
+        "lawyer_review_required",
+        "candidate_commission",
+        "parties",
+        "claim_requests",
+        "facts_and_reasons_blocks",
+        "evidence_directory_refs",
+        "limitation_check",
+        "local_form_check",
+        "pre_filing_checks",
+        "filing_blockers"
+      ],
+      "source_skills": [
+        "arbitration-drafter",
+        "compensation-calculator",
+        "evidence-builder",
+        "local-rules-adapter"
+      ],
+      "source_anchors": [
+        "LDA-2007#art21",
+        "LDA-2007#art27",
+        "LDA-2007#art28",
+        "LDA-2007#art29",
+        "LDA-2007#art30"
+      ]
+    },
+    "safety_and_review_notes": {
+      "purpose": "Keep redline decisions, lawful-evidence limits, unsupported assumptions, and lawyer/local verification items visible in the exported package.",
+      "required_fields": [
+        "safety_decision",
+        "redline_categories",
+        "lawful_collection_limits",
+        "unsupported_assumptions",
+        "local_verify_items",
+        "lawyer_check_items"
+      ],
+      "source_skills": [
+        "safety-guardrails",
+        "local-rules-adapter",
+        "layoff-strategy-optimizer"
+      ],
+      "source_anchors": [
+        "LDA-2007#art6",
+        "PIPL-2021#art6",
+        "CPL-2023#art114",
+        "CPL-2023#art118"
+      ]
+    }
+  },
+  "export_profiles": {
+    "pre_signing_72h": {
+      "use_when": "Worker has not signed resignation, settlement, waiver, handover confirmation, or termination agreement.",
+      "required_sections": [
+        "case_snapshot",
+        "fact_timeline",
+        "termination_assessment",
+        "money_summary",
+        "evidence_directory",
+        "negotiation_plan",
+        "agreement_review_summary",
+        "safety_and_review_notes"
+      ]
+    },
+    "arbitration_ready": {
+      "use_when": "Negotiation failed or limitation/payment/evidence risks require filing preparation.",
+      "required_sections": [
+        "case_snapshot",
+        "fact_timeline",
+        "termination_assessment",
+        "money_summary",
+        "evidence_directory",
+        "arbitration_draft_pack",
+        "safety_and_review_notes"
+      ]
+    },
+    "full_case_package": {
+      "use_when": "Agent or product exports a complete working file for user review, lawyer consultation, negotiation, or arbitration preparation.",
+      "required_sections": [
+        "case_snapshot",
+        "fact_timeline",
+        "termination_assessment",
+        "money_summary",
+        "evidence_directory",
+        "negotiation_plan",
+        "agreement_review_summary",
+        "arbitration_draft_pack",
+        "safety_and_review_notes"
+      ]
+    }
+  },
+  "quality_gates": [
+    "Every exported money item must include formula, inputs, status, and source anchors.",
+    "Every evidence item must state lawful source and collection limit.",
+    "Open questions and local_verify/lawyer_check items must stay visible; do not bury them in notes.",
+    "Negotiation or arbitration text must not guarantee outcome or encourage unlawful evidence collection.",
+    "The package is a working file and draft generator, not a formal lawyer opinion.",
+    "Arbitration application materials must remain blocked from direct filing until local form, jurisdiction, limitation, evidence attachments, respondent identity, and lawyer/local professional review checks are complete."
+  ]
+}

@@ -1,0 +1,34 @@
+name: 功能建议
+description: 提议面向普通劳动者的产品改进
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请勿提交真实个案证据或敏感个人信息，包括真实姓名、身份证号、手机号、合同、聊天记录、录音、病历、银行卡信息或访问凭据。请使用虚构场景描述需求。
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 隐私确认
+      options:
+        - label: 我确认未提交真实个案证据或敏感个人信息。
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: 隐私、安全与普通劳动者影响
+    validations:
+      required: true

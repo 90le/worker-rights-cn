@@ -1,0 +1,850 @@
+{
+  "schema_version": "0.1.0",
+  "retrieved_at": "2026-06-16",
+  "source_note": "City-level routing data for worker-rights-cn. Use it to decide which local checks and official sources are needed. Do not plug a city wage or social-insurance value into an economic-compensation cap unless the source and city rule are marked verified_final for that use.",
+  "status_values": [
+    "verified_final",
+    "verified_candidate",
+    "verified_reference_only",
+    "verified_guardrail",
+    "local_verify"
+  ],
+  "national_source_anchors": [
+    "LCL-2012#art47",
+    "LCL-REG-2008#art20",
+    "LCL-REG-2008#art27"
+  ],
+  "official_host_allowlist": [
+    "rsj.beijing.gov.cn",
+    "tjj.beijing.gov.cn",
+    "rsj.sh.gov.cn",
+    "tjj.sz.gov.cn",
+    "www.sz.gov.cn",
+    "rsj.gz.gov.cn",
+    "www.gz.gov.cn",
+    "gjj.gz.gov.cn",
+    "hrss.gd.gov.cn",
+    "guangdong.chinatax.gov.cn",
+    "zhejiang.chinatax.gov.cn"
+  ],
+  "source_cards": {
+    "BJ-RSJ-SOCIAL-BASE-2025": {
+      "title": "关于2025年度各项社会保险缴费工资基数上下限的通告",
+      "authority": "北京市人力资源和社会保障局;北京市医疗保障局;国家税务总局北京市税务局",
+      "url": "https://rsj.beijing.gov.cn/xxgk/2024zcwj/202509/t20250918_4204880.html",
+      "official_host": "rsj.beijing.gov.cn",
+      "publication_date": "2025-09-18",
+      "effective_from": "2025-07-01",
+      "retrieved_at": "2026-06-16",
+      "source_status": "verified_reference_only",
+      "allowed_uses": [
+        "social_insurance_base"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final"
+      ],
+      "values": {
+        "monthly_social_insurance_base_upper": 35811,
+        "monthly_social_insurance_base_lower": 7162
+      },
+      "notes": "Official Beijing social-insurance base limits. Keep separate from the final LCL art.47 economic-compensation wage cap unless a current local source confirms the exact compensation standard."
+    },
+    "BJ-TJJ-RSJ-PUBLISH-PLAN-2026": {
+      "title": "北京市人力资源和社会保障局2026年统计资料发布计划",
+      "authority": "北京市统计局;国家统计局北京调查总队;北京市人力资源和社会保障局",
+      "url": "https://tjj.beijing.gov.cn/tjsj_31433/qtbmfbjh_31438/202602/t20260228_4545112.html",
+      "official_host": "tjj.beijing.gov.cn",
+      "publication_date": "2026-02-28",
+      "retrieved_at": "2026-06-16",
+      "source_status": "verified_guardrail",
+      "allowed_uses": [
+        "publication_schedule",
+        "local_verify_prompt"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final",
+        "social_insurance_base_amount"
+      ],
+      "values": {
+        "planned_item": "2025 年北京市全口径城镇单位就业人员平均工资"
+      },
+      "notes": "Shows the planned release item for Beijing average-wage data; it is not itself an amount."
+    },
+    "SH-RSJ-ECON-COMP-CAP-QA-2023": {
+      "title": "经济补偿金有上限吗？",
+      "authority": "上海市人力资源和社会保障局",
+      "url": "https://rsj.sh.gov.cn/trdhy_17355/20231108/t0035_1419396.html",
+      "official_host": "rsj.sh.gov.cn",
+      "publication_date": "2023-10-30",
+      "retrieved_at": "2026-06-16",
+      "source_status": "verified_candidate",
+      "allowed_uses": [
+        "economic_compensation_high_wage_cap_rule_explanation"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final_amount"
+      ],
+      "values": {},
+      "notes": "Explains LCL art.47 high-wage cap and 12-year limit in Shanghai HRSS public Q&A, but does not publish the current numerical cap."
+    },
+    "SH-RSJ-SOCIAL-BASE-2025": {
+      "title": "本市调整2025年度社保缴费基数上下限",
+      "authority": "上海市人力资源和社会保障局",
+      "url": "https://rsj.sh.gov.cn/tgsgg_17341/20250918/t0035_1435637.html",
+      "official_host": "rsj.sh.gov.cn",
+      "publication_date": "2025-09-18",
+      "effective_from": "2025-07-01",
+      "retrieved_at": "2026-06-16",
+      "source_status": "verified_reference_only",
+      "allowed_uses": [
+        "social_insurance_base",
+        "full_caliber_average_wage_reference"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final"
+      ],
+      "values": {
+        "monthly_full_caliber_urban_employment_average_wage_2024": 12434,
+        "monthly_social_insurance_base_upper": 37302,
+        "monthly_social_insurance_base_lower": 7460
+      },
+      "notes": "Official social-insurance base and full-caliber wage data; keep as a candidate/reference for compensation cap until local HRSS or filing practice confirms the exact use."
+    },
+    "SZ-TJJ-WAGE-2024": {
+      "title": "2024年深圳市城镇单位就业人员年平均工资情况",
+      "authority": "深圳市统计局",
+      "url": "https://tjj.sz.gov.cn/gkmlpt/content/12/12253/post_12253352.html?jump=true",
+      "official_host": "tjj.sz.gov.cn",
+      "publication_date": "2025-06-30",
+      "retrieved_at": "2026-06-16",
+      "source_status": "verified_reference_only",
+      "allowed_uses": [
+        "statistical_wage_reference",
+        "local_verify_prompt"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final"
+      ],
+      "values": {},
+      "notes": "Official Shenzhen statistical wage page is recorded, but the local toolchain could not reliably fetch the page body because of TLS compatibility. Shenzhen Statistics Bureau later replied that which wage standard to use for economic compensation should be confirmed with HRSS."
+    },
+    "SZ-GOV-ECON-COMP-CAP-QA-2025": {
+      "title": "咨询深圳地区上年度职工月平均工资是多少？",
+      "authority": "深圳市统计局;深圳市人民政府门户网站",
+      "url": "https://www.sz.gov.cn/hdjlpt/detail?pid=3271549&via=pc",
+      "official_host": "www.sz.gov.cn",
+      "publication_date": "2025-10-14",
+      "retrieved_at": "2026-06-16",
+      "source_status": "verified_guardrail",
+      "allowed_uses": [
+        "economic_compensation_high_wage_cap_guardrail",
+        "local_verify_prompt"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final_amount"
+      ],
+      "values": {},
+      "notes": "Official reply says the Statistics Bureau publishes wage data, but the specific economic-compensation standard and which wage口径 to use should be consulted with HRSS."
+    },
+    "GZ-RSJ-LAYOFF-NORM-2021": {
+      "title": "广州市人力资源和社会保障局等4个部门关于规范用人单位裁员有关问题的意见",
+      "authority": "广州市人力资源和社会保障局等4个部门",
+      "url": "https://rsj.gz.gov.cn/ywzt/ldgx/tzgg/content/post_7994943.html",
+      "official_host": "rsj.gz.gov.cn",
+      "publication_date": "2021-12-30",
+      "retrieved_at": "2026-06-17",
+      "source_status": "verified_candidate",
+      "allowed_uses": [
+        "economic_layoff_local_procedure_guidance",
+        "economic_compensation_high_wage_cap_rule_explanation",
+        "local_layoff_report_guidance",
+        "guangzhou_economic_layoff_report_package"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final_amount"
+      ],
+      "values": {
+        "economic_layoff_procedure_steps": [
+          "30_day_explanation_to_union_or_all_staff",
+          "draft_layoff_plan",
+          "solicit_union_or_staff_opinions_and_revise",
+          "report_plan_and_opinions_to_local_hrss",
+          "publish_final_plan_and_complete_payment_clearance"
+        ],
+        "economic_layoff_plan_required_items": [
+          "statutory_layoff_reason",
+          "affected_positions",
+          "layoff_headcount_and_ratio",
+          "selection_criteria",
+          "affected_worker_list",
+          "implementation_time_and_steps",
+          "contract_expiry_handling",
+          "economic_compensation_standard_and_payment_method",
+          "arrears_wage_clearance_plan",
+          "social_insurance_arrears_clearance_plan"
+        ],
+        "written_report_required_items": [
+          "layoff_reason",
+          "affected_workers_basic_information",
+          "union_or_all_staff_explanation_and_opinion_record",
+          "responsible_person_and_contact",
+          "final_layoff_plan",
+          "supporting_materials"
+        ],
+        "post_report_obligations": [
+          "study_hrss_opinions_or_suggestions",
+          "resolve_issues_lawfully_one_by_one",
+          "submit_written_response_when_hrss_comments_exist",
+          "publish_confirmed_plan_to_all_staff"
+        ]
+      },
+      "notes": "Official Guangzhou HRSS layoff guidance explains economic layoff procedure, reporting, economic compensation standard, average-wage base, high-wage cap and legal-liability route, but does not publish the current numerical cap."
+    },
+    "GZ-GOV-WAGE-2024": {
+      "title": "2024年广州市城镇单位就业人员平均工资情况",
+      "authority": "广州市统计局;广州市人民政府门户网站",
+      "url": "https://www.gz.gov.cn/zwgk/sjfb/sjkd/content/post_10339278.html",
+      "official_host": "www.gz.gov.cn",
+      "publication_date": "2025-06-13",
+      "retrieved_at": "2026-06-16",
+      "source_status": "verified_reference_only",
+      "allowed_uses": [
+        "statistical_wage_reference",
+        "economic_compensation_high_wage_cap_candidate_reference"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final"
+      ],
+      "values": {
+        "annual_urban_non_private_employment_average_wage_2024": 159312,
+        "monthly_urban_non_private_employment_average_wage_2024": 13276,
+        "annual_urban_non_private_on_post_employee_average_wage_2024": 164443,
+        "annual_urban_private_employment_average_wage_2024": 82907
+      },
+      "notes": "Official Guangzhou government page publishing Guangzhou Statistics Bureau wage data. Use as a candidate/reference, not as a final LCL art.47 cap without local HRSS/arbitration confirmation."
+    },
+    "GZ-GJJ-HOUSING-FUND-BASE-2025": {
+      "title": "广州住房公积金管理中心关于2025年度住房公积金缴存调整有关问题的通知",
+      "authority": "广州住房公积金管理中心",
+      "url": "https://gjj.gz.gov.cn/gg/tzgg/content/post_10338393.html",
+      "official_host": "gjj.gz.gov.cn",
+      "publication_date": "2025-06-12",
+      "effective_from": "2025-07-01",
+      "retrieved_at": "2026-06-16",
+      "source_status": "verified_reference_only",
+      "allowed_uses": [
+        "housing_fund_base",
+        "wage_cap_candidate_reference"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final"
+      ],
+      "values": {
+        "monthly_employee_average_wage_2024": 13276,
+        "monthly_housing_fund_base_upper": 39828,
+        "monthly_housing_fund_base_lower": 2500
+      },
+      "notes": "Official housing-fund adjustment source states the 2025 upper limit is three times Guangzhou's 2024 monthly employee average wage. It is a reference source, not a final economic-compensation cap source."
+    },
+    "GD-HRSS-PENSION-BASE-2025": {
+      "title": "关于公布2025年职工基本养老保险缴费基数上下限和基本养老金计发基数等有关问题的通知",
+      "authority": "广东省人力资源和社会保障厅;广东省财政厅;国家税务总局广东省税务局",
+      "url": "https://guangdong.chinatax.gov.cn/gdsw/ssfggds/2025-10/27/content_ba2a20bf040648e089f9edf9f557fa2b.shtml",
+      "official_host": "guangdong.chinatax.gov.cn",
+      "publication_date": "2025-10-27",
+      "effective_from": "2025-07-01",
+      "retrieved_at": "2026-06-16",
+      "source_status": "verified_reference_only",
+      "allowed_uses": [
+        "guangdong_pension_insurance_base",
+        "guangzhou_social_insurance_base_reference"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final"
+      ],
+      "values": {
+        "monthly_pension_base_upper": 27549,
+        "monthly_pension_base_lower_guangzhou": 5510
+      },
+      "notes": "Official government service page for Guangdong enterprise pension base limits. Keep separate from economic-compensation cap calculation."
+    },
+    "ZJ-JOINT-SOCIAL-BASE-2025": {
+      "title": "关于公布2025年社会保险有关基数的通知",
+      "authority": "浙江省人力资源和社会保障厅;浙江省财政厅;浙江省统计局;浙江省医疗保障局;国家税务总局浙江省税务局",
+      "url": "https://zhejiang.chinatax.gov.cn/art/2025/9/18/art_25180_84282.html",
+      "official_host": "zhejiang.chinatax.gov.cn",
+      "publication_date": "2025-09-18",
+      "effective_from": "2025-01-01",
+      "retrieved_at": "2026-06-16",
+      "source_status": "verified_reference_only",
+      "allowed_uses": [
+        "zhejiang_social_insurance_base",
+        "provincial_weighted_average_wage_reference"
+      ],
+      "not_allowed_uses": [
+        "hangzhou_city_economic_compensation_high_wage_cap_final"
+      ],
+      "values": {
+        "annual_weighted_average_wage_2024": 101194,
+        "monthly_weighted_average_wage_2024": 8433,
+        "monthly_social_insurance_base_upper": 25299,
+        "monthly_social_insurance_base_lower": 4986
+      },
+      "notes": "Official Zhejiang provincial social-insurance base source. It is a provincial social-insurance reference, not a verified Hangzhou city economic-compensation cap."
+    },
+    "HZ-CITY-CAP-SOURCE-PENDING": {
+      "title": "Hangzhou city economic-compensation wage-cap source pending",
+      "authority": "杭州本地人社/统计/仲裁口径待核验",
+      "url": null,
+      "official_host": null,
+      "publication_date": null,
+      "retrieved_at": "2026-06-16",
+      "source_status": "local_verify",
+      "allowed_uses": [
+        "local_verify_prompt"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final",
+        "social_insurance_base_amount"
+      ],
+      "values": {},
+      "notes": "No current official Hangzhou city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations."
+    },
+    "SZH-CITY-CAP-SOURCE-PENDING": {
+      "title": "苏州市经济补偿高工资封顶口径待核验 / Suzhou city economic-compensation wage-cap source pending",
+      "authority": "苏州本地人社/统计/仲裁口径待核验",
+      "url": null,
+      "official_host": null,
+      "publication_date": null,
+      "retrieved_at": "2026-06-24",
+      "source_status": "local_verify",
+      "allowed_uses": [
+        "local_verify_prompt"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final",
+        "social_insurance_base_amount"
+      ],
+      "values": {},
+      "notes": "No current official Suzhou city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations."
+    },
+    "CD-CITY-CAP-SOURCE-PENDING": {
+      "title": "成都市经济补偿高工资封顶口径待核验 / Chengdu city economic-compensation wage-cap source pending",
+      "authority": "成都本地人社/统计/仲裁口径待核验",
+      "url": null,
+      "official_host": null,
+      "publication_date": null,
+      "retrieved_at": "2026-06-24",
+      "source_status": "local_verify",
+      "allowed_uses": [
+        "local_verify_prompt"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final",
+        "social_insurance_base_amount"
+      ],
+      "values": {},
+      "notes": "No current official Chengdu city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations."
+    }
+  },
+  "cities": {
+    "beijing": {
+      "display_name": "Beijing",
+      "aliases": [
+        "北京",
+        "北京市",
+        "bj",
+        "beijing"
+      ],
+      "jurisdiction_level": "municipality",
+      "province": "Beijing",
+      "rule_checks": {
+        "economic_compensation_high_wage_cap": {
+          "status": "local_verify",
+          "source_ids": [
+            "BJ-RSJ-SOCIAL-BASE-2025",
+            "BJ-TJJ-RSJ-PUBLISH-PLAN-2026"
+          ],
+          "required_facts": [
+            "termination_date",
+            "labor_contract_performance_city",
+            "employer_registered_city",
+            "worker_average_monthly_wage",
+            "current_beijing_lcl_art47_average_wage_source"
+          ],
+          "output_flags": [
+            "local_cap_needed",
+            "official_source_needed",
+            "do_not_auto_cap",
+            "city_rule_verified_false"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "BJ-RSJ-SOCIAL-BASE-2025",
+            "BJ-TJJ-RSJ-PUBLISH-PLAN-2026"
+          ]
+        },
+        "social_insurance_base": {
+          "status": "verified_reference_only",
+          "source_ids": [
+            "BJ-RSJ-SOCIAL-BASE-2025"
+          ],
+          "required_facts": [
+            "insured_city",
+            "insured_months",
+            "declared_wage"
+          ],
+          "output_flags": [
+            "social_base_available",
+            "not_economic_compensation_cap"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "BJ-RSJ-SOCIAL-BASE-2025"
+          ]
+        }
+      }
+    },
+    "shanghai": {
+      "display_name": "Shanghai",
+      "aliases": [
+        "上海",
+        "上海市",
+        "沪",
+        "sh",
+        "shanghai"
+      ],
+      "jurisdiction_level": "municipality",
+      "province": "Shanghai",
+      "rule_checks": {
+        "economic_compensation_high_wage_cap": {
+          "status": "verified_candidate",
+          "source_ids": [
+            "SH-RSJ-ECON-COMP-CAP-QA-2023",
+            "SH-RSJ-SOCIAL-BASE-2025"
+          ],
+          "required_facts": [
+            "termination_date",
+            "labor_contract_performance_city",
+            "employer_registered_city",
+            "worker_average_monthly_wage",
+            "current_shanghai_lcl_art47_average_wage_source"
+          ],
+          "output_flags": [
+            "cap_rule_explained",
+            "cap_amount_candidate_available",
+            "local_hrss_or_arbitration_confirmation_needed",
+            "do_not_auto_cap"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "SH-RSJ-SOCIAL-BASE-2025"
+          ]
+        },
+        "social_insurance_base": {
+          "status": "verified_reference_only",
+          "source_ids": [
+            "SH-RSJ-SOCIAL-BASE-2025"
+          ],
+          "required_facts": [
+            "insured_city",
+            "insured_months",
+            "declared_wage"
+          ],
+          "output_flags": [
+            "social_base_available",
+            "not_economic_compensation_cap"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "SH-RSJ-SOCIAL-BASE-2025"
+          ]
+        }
+      }
+    },
+    "shenzhen": {
+      "display_name": "Shenzhen",
+      "aliases": [
+        "深圳",
+        "深圳市",
+        "深",
+        "sz",
+        "shenzhen"
+      ],
+      "jurisdiction_level": "city",
+      "province": "Guangdong",
+      "rule_checks": {
+        "economic_compensation_high_wage_cap": {
+          "status": "local_verify",
+          "source_ids": [
+            "SZ-TJJ-WAGE-2024",
+            "SZ-GOV-ECON-COMP-CAP-QA-2025"
+          ],
+          "required_facts": [
+            "termination_date",
+            "labor_contract_performance_city",
+            "employer_registered_city",
+            "worker_average_monthly_wage",
+            "hrss_confirmation_of_wage_metric"
+          ],
+          "output_flags": [
+            "statistical_wage_available",
+            "hrss_confirmation_needed",
+            "do_not_auto_cap",
+            "city_rule_verified_false"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "SZ-TJJ-WAGE-2024",
+            "SZ-GOV-ECON-COMP-CAP-QA-2025"
+          ]
+        },
+        "social_insurance_base": {
+          "status": "local_verify",
+          "source_ids": [
+            "SZ-TJJ-WAGE-2024"
+          ],
+          "required_facts": [
+            "insured_city",
+            "insured_months",
+            "declared_wage",
+            "current_shenzhen_social_insurance_base_source"
+          ],
+          "output_flags": [
+            "local_social_base_needed",
+            "do_not_auto_cap"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "SZ-TJJ-WAGE-2024"
+          ]
+        }
+      }
+    },
+    "guangzhou": {
+      "display_name": "Guangzhou",
+      "aliases": [
+        "广州",
+        "广州市",
+        "穗",
+        "gz",
+        "guangzhou"
+      ],
+      "jurisdiction_level": "city",
+      "province": "Guangdong",
+      "rule_checks": {
+        "economic_compensation_high_wage_cap": {
+          "status": "verified_candidate",
+          "source_ids": [
+            "GZ-RSJ-LAYOFF-NORM-2021",
+            "GZ-GOV-WAGE-2024",
+            "GZ-GJJ-HOUSING-FUND-BASE-2025"
+          ],
+          "required_facts": [
+            "termination_date",
+            "labor_contract_performance_city",
+            "employer_registered_city",
+            "worker_average_monthly_wage",
+            "current_guangzhou_lcl_art47_average_wage_source",
+            "local_hrss_or_arbitration_confirmation_of_wage_metric"
+          ],
+          "output_flags": [
+            "cap_rule_explained",
+            "cap_amount_candidate_available",
+            "local_hrss_or_arbitration_confirmation_needed",
+            "do_not_auto_cap"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "GZ-GOV-WAGE-2024",
+            "GZ-GJJ-HOUSING-FUND-BASE-2025"
+          ]
+        },
+        "economic_layoff_local_procedure": {
+          "status": "verified_candidate",
+          "source_ids": [
+            "GZ-RSJ-LAYOFF-NORM-2021"
+          ],
+          "required_facts": [
+            "layoff_headcount",
+            "total_workforce_count",
+            "layoff_reason",
+            "technology_or_business_model_adjustment_basis",
+            "contract_change_or_internal_alternative_records",
+            "thirty_day_explanation_to_union_or_all_staff",
+            "employee_opinion_record",
+            "hrss_report_materials",
+            "written_hrss_report",
+            "report_reason_worker_basic_info_consultation_contact",
+            "report_attachments_and_supporting_materials",
+            "hrss_opinion_or_suggestion_response",
+            "final_plan_publication_to_all_staff",
+            "open_ended_contract_priority_retention_review",
+            "priority_retention_or_protected_status"
+          ],
+          "output_flags": [
+            "local_layoff_report_guidance",
+            "worker_consultation_needed",
+            "ai_transformation_contract_change_chain_check",
+            "open_ended_contract_priority_retention_check",
+            "priority_retention_check",
+            "protected_status_check",
+            "unpaid_wage_social_insurance_clearance_check",
+            "written_hrss_report_package_check",
+            "report_attachments_check",
+            "hrss_feedback_response_check",
+            "final_plan_publication_check"
+          ],
+          "do_not_use_source_ids_as_final_cap": []
+        },
+        "guangzhou_economic_layoff_report_package": {
+          "status": "verified_candidate",
+          "source_ids": [
+            "GZ-RSJ-LAYOFF-NORM-2021"
+          ],
+          "required_facts": [
+            "final_layoff_plan",
+            "statutory_layoff_reason",
+            "affected_workers_basic_information",
+            "union_or_all_staff_explanation_and_opinion_record",
+            "responsible_person_and_contact",
+            "supporting_materials",
+            "hrss_opinion_or_suggestion_response",
+            "confirmed_plan_publication_to_all_staff"
+          ],
+          "output_flags": [
+            "guangzhou_written_report_before_implementation",
+            "report_reason_worker_basic_info_opinion_contact_check",
+            "final_plan_and_supporting_materials_check",
+            "hrss_opinion_response_check",
+            "confirmed_plan_publication_check"
+          ],
+          "do_not_use_source_ids_as_final_cap": []
+        },
+        "social_insurance_base": {
+          "status": "verified_reference_only",
+          "source_ids": [
+            "GD-HRSS-PENSION-BASE-2025"
+          ],
+          "required_facts": [
+            "insured_city",
+            "insured_months",
+            "declared_wage"
+          ],
+          "output_flags": [
+            "guangdong_pension_base_available",
+            "not_economic_compensation_cap"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "GD-HRSS-PENSION-BASE-2025"
+          ]
+        },
+        "housing_fund_base": {
+          "status": "verified_reference_only",
+          "source_ids": [
+            "GZ-GJJ-HOUSING-FUND-BASE-2025"
+          ],
+          "required_facts": [
+            "housing_fund_city",
+            "housing_fund_months",
+            "declared_housing_fund_wage"
+          ],
+          "output_flags": [
+            "guangzhou_housing_fund_base_available",
+            "not_economic_compensation_cap"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "GZ-GJJ-HOUSING-FUND-BASE-2025"
+          ]
+        }
+      }
+    },
+    "hangzhou": {
+      "display_name": "Hangzhou",
+      "aliases": [
+        "杭州",
+        "杭州市",
+        "hz",
+        "hangzhou"
+      ],
+      "jurisdiction_level": "city",
+      "province": "Zhejiang",
+      "rule_checks": {
+        "economic_compensation_high_wage_cap": {
+          "status": "local_verify",
+          "source_ids": [
+            "HZ-CITY-CAP-SOURCE-PENDING",
+            "ZJ-JOINT-SOCIAL-BASE-2025"
+          ],
+          "required_facts": [
+            "termination_date",
+            "labor_contract_performance_city",
+            "employer_registered_city",
+            "worker_average_monthly_wage",
+            "current_hangzhou_lcl_art47_average_wage_source"
+          ],
+          "output_flags": [
+            "city_source_pending",
+            "provincial_reference_only",
+            "do_not_auto_cap",
+            "city_rule_verified_false"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "HZ-CITY-CAP-SOURCE-PENDING",
+            "ZJ-JOINT-SOCIAL-BASE-2025"
+          ]
+        },
+        "social_insurance_base": {
+          "status": "verified_reference_only",
+          "source_ids": [
+            "ZJ-JOINT-SOCIAL-BASE-2025"
+          ],
+          "required_facts": [
+            "insured_city",
+            "insured_months",
+            "declared_wage"
+          ],
+          "output_flags": [
+            "zhejiang_social_base_available",
+            "not_hangzhou_compensation_cap"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "ZJ-JOINT-SOCIAL-BASE-2025"
+          ]
+        }
+      }
+    },
+    "suzhou": {
+      "display_name": "Suzhou",
+      "aliases": [
+        "苏州",
+        "苏州市",
+        "suzhou",
+        "szh"
+      ],
+      "jurisdiction_level": "city",
+      "province": "Jiangsu",
+      "rule_checks": {
+        "economic_compensation_high_wage_cap": {
+          "status": "local_verify",
+          "source_ids": [
+            "SZH-CITY-CAP-SOURCE-PENDING"
+          ],
+          "required_facts": [
+            "termination_date",
+            "labor_contract_performance_city",
+            "employer_registered_city",
+            "worker_average_monthly_wage",
+            "current_suzhou_lcl_art47_average_wage_source"
+          ],
+          "output_flags": [
+            "city_source_pending",
+            "official_source_needed",
+            "do_not_auto_cap",
+            "city_rule_verified_false"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "SZH-CITY-CAP-SOURCE-PENDING"
+          ]
+        },
+        "social_insurance_base": {
+          "status": "local_verify",
+          "source_ids": [
+            "SZH-CITY-CAP-SOURCE-PENDING"
+          ],
+          "required_facts": [
+            "insured_city",
+            "insured_months",
+            "declared_wage",
+            "current_suzhou_social_insurance_base_source"
+          ],
+          "output_flags": [
+            "local_social_base_needed",
+            "not_economic_compensation_cap",
+            "do_not_auto_cap"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "SZH-CITY-CAP-SOURCE-PENDING"
+          ]
+        }
+      }
+    },
+    "chengdu": {
+      "display_name": "Chengdu",
+      "aliases": [
+        "成都",
+        "成都市",
+        "chengdu",
+        "cd"
+      ],
+      "jurisdiction_level": "city",
+      "province": "Sichuan",
+      "rule_checks": {
+        "economic_compensation_high_wage_cap": {
+          "status": "local_verify",
+          "source_ids": [
+            "CD-CITY-CAP-SOURCE-PENDING"
+          ],
+          "required_facts": [
+            "termination_date",
+            "labor_contract_performance_city",
+            "employer_registered_city",
+            "worker_average_monthly_wage",
+            "current_chengdu_lcl_art47_average_wage_source"
+          ],
+          "output_flags": [
+            "city_source_pending",
+            "official_source_needed",
+            "do_not_auto_cap",
+            "city_rule_verified_false"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "CD-CITY-CAP-SOURCE-PENDING"
+          ]
+        },
+        "social_insurance_base": {
+          "status": "local_verify",
+          "source_ids": [
+            "CD-CITY-CAP-SOURCE-PENDING"
+          ],
+          "required_facts": [
+            "insured_city",
+            "insured_months",
+            "declared_wage",
+            "current_chengdu_social_insurance_base_source"
+          ],
+          "output_flags": [
+            "local_social_base_needed",
+            "not_economic_compensation_cap",
+            "do_not_auto_cap"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "CD-CITY-CAP-SOURCE-PENDING"
+          ]
+        }
+      }
+    }
+  },
+  "global_local_checks": {
+    "arbitration_filing": {
+      "status": "local_verify",
+      "required_facts": [
+        "labor_contract_performance_place",
+        "employer_domicile",
+        "worker_residence_if_needed",
+        "local_commission_form"
+      ],
+      "output_flags": [
+        "filing_venue_needed",
+        "local_form_needed",
+        "lawyer_check_if_multiple_entities"
+      ]
+    },
+    "minimum_wage_or_wage_payment": {
+      "status": "local_verify",
+      "required_facts": [
+        "workplace_city",
+        "pay_period",
+        "actual_wage_components",
+        "current_local_minimum_wage_or_wage_payment_source"
+      ],
+      "output_flags": [
+        "local_minimum_wage_needed",
+        "local_wage_payment_rule_needed"
+      ]
+    }
+  }
+}

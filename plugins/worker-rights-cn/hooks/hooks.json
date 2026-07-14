@@ -1,0 +1,56 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_hook_adapter.py\" --event user_prompt_submit --audit --db-path \"${CLAUDE_PLUGIN_DATA}/worker-rights.db\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_hook_adapter.py\" --event pre_tool_use --audit --db-path \"${CLAUDE_PLUGIN_DATA}/worker-rights.db\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_hook_adapter.py\" --event post_tool_use --audit --db-path \"${CLAUDE_PLUGIN_DATA}/worker-rights.db\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_hook_adapter.py\" --event stop --audit --db-path \"${CLAUDE_PLUGIN_DATA}/worker-rights.db\""
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/claude_hook_adapter.py\" --event pre_compact --audit --db-path \"${CLAUDE_PLUGIN_DATA}/worker-rights.db\""
+          }
+        ]
+      }
+    ]
+  }
+}

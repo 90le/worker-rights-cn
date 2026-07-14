@@ -1,0 +1,98 @@
+{
+  "schema_version": "worker-rights-journey/1",
+  "cases": [
+    {
+      "id": "ordinary-worker-layoff-agreement-unpaid-wage",
+      "message": "HR让我今天下班前签离职补偿协议。公司说是组织调整裁员，上个月工资18000元还没发，请帮我先保全证据、估算金额并审查协议。",
+      "domain_case": {
+        "jurisdiction": {
+          "country": "China",
+          "city": "Guangzhou",
+          "main_work_location": "Guangzhou"
+        },
+        "parties": {
+          "employer_legal_name": "广州某科技有限公司"
+        },
+        "employment": {
+          "start_date": "2022-01-01",
+          "end_date_or_expected_end": "2026-07-31",
+          "current_status": "employed"
+        },
+        "wage": {
+          "average_monthly_wage": 18000,
+          "local_average_monthly_wage": 12000,
+          "unpaid_wages_amount": 18000
+        },
+        "dispute": {
+          "trigger": "公司以组织调整为由通知裁员",
+          "deadline_or_meeting_time": "2026-07-14T17:00:00+08:00",
+          "documents_received": [
+            "separation_agreement_draft"
+          ],
+          "worker_goal": "保全证据、估算补偿与欠薪、审查协议"
+        },
+        "evidence": {
+          "termination_or_agreement_docs": [
+            "separation_agreement_draft"
+          ],
+          "wage_records": [
+            "bank_statement_original"
+          ],
+          "communications": [
+            "hr_chat_export_original"
+          ]
+        },
+        "agreement": {
+          "document_type": "separation_agreement",
+          "text": "乙方今日签署并放弃所有请求；甲方支付90000元，但未写付款日期、欠薪处理、税费及逾期责任。"
+        }
+      },
+      "calculation_input": {
+        "start_date": "2022-01-01",
+        "end_date": "2026-07-31",
+        "average_monthly_wage": 18000,
+        "local_average_monthly_wage": 12000,
+        "termination_type": "economic_layoff",
+        "unpaid_wages": 18000,
+        "unused_annual_leave_days": 0
+      },
+      "save_scope": [
+        "facts",
+        "assessments",
+        "source_anchors"
+      ],
+      "expected": {
+        "route_stage": "urgent_intake",
+        "first_response_headings": [
+          "现在先不要做什么",
+          "今天应当保存什么",
+          "当前可能涉及哪些权益",
+          "下一步需要补充什么信息"
+        ],
+        "termination_maps": [
+          "mutual_termination",
+          "economic_layoff",
+          "constructive_dismissal"
+        ],
+        "agreement_risks": [
+          "payment_amount_and_date",
+          "all_claims_waiver"
+        ],
+        "claim_path_values": {
+          "economic_compensation_n": 108000.0,
+          "unlawful_termination_2n": 198000.0
+        },
+        "forbidden_export_keys": [
+          "name",
+          "worker_name",
+          "phone",
+          "mobile",
+          "id_number",
+          "identity_number",
+          "address",
+          "home_address"
+        ]
+      }
+    }
+  ]
+}

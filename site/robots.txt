@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://90le.github.io/worker-rights-cn/sitemap.xml

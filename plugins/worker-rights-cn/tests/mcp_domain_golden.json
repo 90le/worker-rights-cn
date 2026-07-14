@@ -1,0 +1,271 @@
+{
+  "schema_version": "worker-rights-domain-golden/1",
+  "baseline_commit": "0ba2647e202908f08e7d016ab3703c80de78b9a2",
+  "cases": [
+    {
+      "id": "validate-intake-missing-wage",
+      "tool": "worker_rights.validate_intake",
+      "arguments": {
+        "id": "golden-intake",
+        "case": {"$case": "user-intake-missing-average-wage-needs-follow-up"},
+        "export_profile": "full_case_package"
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.validate_intake",
+        "status": "needs_more_input",
+        "missing_inputs": ["case.wage.average_monthly_wage"],
+        "warnings": [
+          "Inferences are routing hints for the package generator, not final legal conclusions.",
+          "Local wage caps, limitation dates, document wording, and employer-controlled procedure records still need verification."
+        ]
+      }
+    },
+    {
+      "id": "calculate-compensation-article40",
+      "tool": "worker_rights.calculate_compensation",
+      "arguments": {
+        "input": {
+          "start_date": "2022-01-01",
+          "end_date": "2026-06-16",
+          "average_monthly_wage": 20000,
+          "local_average_monthly_wage": 12000,
+          "termination_type": "article40_no_notice",
+          "unpaid_wages": 5000,
+          "unused_annual_leave_days": 3
+        }
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.calculate_compensation",
+        "status": "ready",
+        "base_amounts": {
+          "economic_compensation_n": 90000.0,
+          "monthly_wage_for_n": 20000.0,
+          "substitute_notice_wage": 20000.0,
+          "unlawful_termination_2n": 180000.0,
+          "wage_cap_applied": false
+        },
+        "warnings": [
+          "This is a baseline estimator, not a final legal opinion.",
+          "Verify local average wage, arbitration limitation, and evidence before making a demand.",
+          "previous_month_wage missing: substitute notice wage used average_monthly_wage as fallback.",
+          "unused annual leave uses a default extra-pay estimate; verify local practice."
+        ]
+      }
+    },
+    {
+      "id": "assemble-full-case-package",
+      "tool": "worker_rights.assemble_case_package",
+      "arguments": {
+        "case": {"$case": "user-intake-forced-resignation-unpaid-wages-arbitration"},
+        "export_profile": "full_case_package"
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.assemble_case_package",
+        "status": "ready",
+        "summary": {
+          "id": "generated-full_case_package-mcp-user-intake",
+          "export_profile": "full_case_package",
+          "workflow": ["case-intake", "safety-guardrails", "layoff-defense", "compensation-calculator", "local-rules-adapter", "evidence-builder", "negotiation-coach", "agreement-review", "arbitration-drafter"],
+          "section_ids": ["case_snapshot", "fact_timeline", "termination_assessment", "money_summary", "evidence_directory", "negotiation_plan", "agreement_review_summary", "arbitration_draft_pack", "safety_and_review_notes"],
+          "source_anchors": ["LCL-2012#art30", "LCL-2012#art35", "LCL-2012#art37", "LCL-2012#art38", "LCL-2012#art46", "LCL-2012#art47", "LCL-2012#art85", "LCL-REG-2008#art27", "LDA-2007#art2", "LDA-2007#art6", "LDA-2007#art9", "SIL-2018#art60", "SPC-LDI-1-2020#art45", "SPC-LDI-2-2025#art19"]
+        }
+      }
+    },
+    {
+      "id": "render-ready-documents",
+      "tool": "worker_rights.render_documents",
+      "arguments": {
+        "id": "golden-render",
+        "case": {"$case": "user-intake-forced-resignation-unpaid-wages-arbitration"},
+        "export_profile": "full_case_package"
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.render_documents",
+        "status": "ready",
+        "document_ids": ["workbench_preview", "case_package_review", "redacted_share_packet"]
+      }
+    },
+    {
+      "id": "export-blocked-without-confirmations",
+      "tool": "worker_rights.export_bundle",
+      "arguments": {
+        "id": "golden-export",
+        "case": {"$case": "user-intake-forced-resignation-unpaid-wages-arbitration"},
+        "export_profile": "full_case_package",
+        "generated_at": "2026-06-18T14:00:00Z"
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.export_bundle",
+        "status": "blocked_pending_confirmations",
+        "summary": {
+          "session_id": "golden-export",
+          "turn_index": 0,
+          "bundle_id": "golden-export-bundle-v0",
+          "bundle_status": "blocked_pending_confirmations",
+          "share_access_status": "disabled_pending_confirmations",
+          "artifact_count": 8,
+          "output_written": false
+        },
+        "artifact_ids": ["manifest_json", "session_state_json", "workbench_state_json", "case_package_json", "workbench_preview_md", "case_package_review_md", "redacted_share_packet_md", "redacted_share_packet_json"]
+      }
+    },
+    {
+      "id": "audit-valid-session",
+      "tool": "worker_rights.audit_status",
+      "arguments": {
+        "session_id": "golden-audit",
+        "store_dir": {"$audit_store": true}
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.audit_status",
+        "status": "ready",
+        "event_count": 1,
+        "event_types": ["session_created"],
+        "chain_valid": true
+      }
+    },
+    {
+      "id": "search-art47",
+      "tool": "worker_rights.search_sources",
+      "arguments": {
+        "query": "LCL-2012#art47",
+        "db_path": {"$temp_db": "search.db"},
+        "limit": 5
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.search_sources",
+        "status": "ready",
+        "result_count": 2,
+        "result_ids": ["LCL-2012#art47", "guangzhou-hrss-economic-layoff-report-package"],
+        "query_expansion": {
+          "enabled": false,
+          "mode": "domain_alias_recall_only",
+          "terms": [],
+          "policy": "Query expansion only improves recall; legal conclusions, calculations, and local-rule finality still depend on source records and deterministic tools."
+        }
+      }
+    },
+    {
+      "id": "plan-guangzhou-ai-recall",
+      "tool": "worker_rights.plan_ai_recall",
+      "arguments": {
+        "query": "广州 经济性裁员 报告 材料",
+        "db_path": {"$temp_db": "recall.db"},
+        "limit": 8,
+        "max_candidates": 10
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.plan_ai_recall",
+        "status": "planned",
+        "candidate_source_ids": ["LCL-2012#art41", "guangzhou", "guangzhou-hrss-economic-layoff-report-package", "GZ-RSJ-LAYOFF-NORM-2021", "LCL-2012#art46", "LCL-2012#art85", "LCL-2012#art87", "LCL-REG-2008#art19", "LCL-REG-2008#art22", "LCL-2012#art44"],
+        "provider": "host_agent",
+        "plugin_network_calls": "none"
+      }
+    },
+    {
+      "id": "validate-ai-recall-accepted",
+      "tool": "worker_rights.validate_ai_recall_response",
+      "arguments": {
+        "candidate_source_ids": ["LCL-2012#art41", "GZ-RSJ-LAYOFF-NORM-2021"],
+        "model_response": {
+          "reranked_source_ids": ["LCL-2012#art41"],
+          "expanded_queries": ["广州 裁员 人社 报告"],
+          "missing_source_queries": [],
+          "risk_flags": ["local_rule_verify_needed"],
+          "notes": "Rerank only."
+        }
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.validate_ai_recall_response",
+        "status": "accepted",
+        "accepted": null,
+        "issues": []
+      }
+    },
+    {
+      "id": "prepare-legal-anchor-embeddings",
+      "tool": "worker_rights.prepare_embedding_index",
+      "arguments": {
+        "db_path": {"$temp_db": "embedding.db"},
+        "source_tables": ["legal_anchors"],
+        "chunk_size": 220,
+        "chunk_overlap": 40,
+        "collection": "domain-golden"
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.prepare_embedding_index",
+        "status": "prepared",
+        "document_count": 102,
+        "chunk_count": 117,
+        "provider": null,
+        "policy": {
+          "provider_binding": "none",
+          "business_logic_dependency": "none",
+          "source_traceability_required": true
+        }
+      }
+    },
+    {
+      "id": "map-empty-list-falls-back",
+      "tool": "worker_rights.map_termination",
+      "arguments": {
+        "case": {"$case": "user-intake-guangzhou-ai-layoff-full-package"},
+        "termination_maps": [],
+        "termination_map": "economic_layoff"
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.map_termination",
+        "status": "ready",
+        "termination_maps": ["economic_layoff"],
+        "source_anchors": ["LCL-2012#art35", "LCL-2012#art41", "LCL-2012#art42", "LCL-2012#art43", "LCL-2012#art46", "LCL-2012#art47", "LCL-REG-2008#art19"],
+        "warnings": [
+          "This classification is a routing aid. Verify current law, local rules, documents, and evidence before final advice.",
+          "Do not let employer or worker document labels override the factual termination sequence."
+        ]
+      }
+    },
+    {
+      "id": "evidence-empty-list-falls-back",
+      "tool": "worker_rights.build_evidence_plan",
+      "arguments": {
+        "case": {"$case": "user-intake-guangzhou-ai-layoff-full-package"},
+        "termination_maps": [],
+        "termination_map": "economic_layoff"
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.build_evidence_plan",
+        "status": "ready",
+        "termination_maps": ["economic_layoff"],
+        "source_anchors": ["LCL-2012#art35", "LCL-2012#art41", "LCL-2012#art42", "LCL-2012#art43", "LCL-2012#art46", "LCL-2012#art47", "LCL-2012#art48", "LCL-2012#art87", "LCL-REG-2008#art19", "LCL-REG-2008#art20", "LCL-REG-2008#art27", "LDA-2007#art2", "LDA-2007#art6", "SPC-LDI-1-2020#art44"],
+        "immediate_item_ids": ["chronology_memo", "written_objection_or_request"],
+        "employer_controlled_item_ids": ["ai_transformation_contract_change_and_internal_alternatives", "guangzhou_layoff_report_package", "layoff_threshold_and_plan", "thirty_day_explanation_opinion_report"]
+      }
+    },
+    {
+      "id": "review-grounded-consultation",
+      "tool": "worker_rights.review_consultation_output",
+      "arguments": {
+        "output": "以下只是劳动权益信息整理，不替代律师意见。依据 LCL-2012#art41、LCL-2012#art47，应核对裁员程序并做广州本地核验。"
+      },
+      "expected": {
+        "schema_version": "0.1.0",
+        "tool": "worker_rights.review_consultation_output",
+        "status": "needs_revision",
+        "issue_codes": ["MISSING_ASSUMPTIONS_OR_EVIDENCE_GAPS", "MISSING_LAWFUL_EVIDENCE_BOUNDARY"],
+        "source_anchors": ["LCL-2012#art41", "LCL-2012#art47"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+[
+  {
+    "id": "valid-approved-assessment-statuses",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "goals": [
+        {"actor": "worker", "intent": "understand_rights"},
+        {"actor": "worker", "intent": "preserve_evidence"},
+        {"actor": "worker", "intent": "estimate_compensation"},
+        {"actor": "worker", "intent": "negotiate_resolution"},
+        {"actor": "worker", "intent": "review_agreement"},
+        {"actor": "worker", "intent": "prepare_arbitration"},
+        {"actor": "worker", "intent": "seek_local_or_legal_review"}
+      ],
+      "assessments": [
+        {"conclusion": "入职日期由用户明确提供", "status": "confirmed_fact"},
+        {"conclusion": "解除理由可能缺乏依据", "status": "supported_assessment"},
+        {"conclusion": "补偿金额仍是估算", "status": "estimate"},
+        {"conclusion": "当地口径需要核验", "status": "local_verify"},
+        {"conclusion": "复杂竞业事项需律师复核", "status": "lawyer_review"},
+        {"conclusion": "境外雇佣超出范围", "status": "out_of_scope"}
+      ],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_errors": []
+  },
+  {
+    "id": "reject-non-object-top-level",
+    "operation": "validate",
+    "value": [],
+    "expected_error_contains": "object"
+  },
+  {
+    "id": "reject-status-array-without-throwing",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "goals": [],
+      "assessments": [{"conclusion": "结论", "status": []}],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "status"
+  },
+  {
+    "id": "reject-status-object-without-throwing",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "goals": [],
+      "assessments": [{"conclusion": "结论", "status": {}}],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "status"
+  },
+  {
+    "id": "reject-assessment-without-conclusion",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "goals": [],
+      "assessments": [{"status": "supported_assessment"}],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "conclusion"
+  },
+  {
+    "id": "reject-employer-goal-actor",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "goals": [{"actor": "employer", "intent": "negotiate_resolution"}],
+      "assessments": [],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "actor"
+  },
+  {
+    "id": "reject-unapproved-goal-intent",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "goals": [{"actor": "worker", "intent": "reduce_employer_liability"}],
+      "assessments": [],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "intent"
+  },
+  {
+    "id": "reject-goal-on-behalf-of-extension",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "goals": [
+        {
+          "actor": "worker",
+          "intent": "understand_rights",
+          "on_behalf_of": "employer"
+        }
+      ],
+      "assessments": [],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "unsupported field"
+  },
+  {
+    "id": "reject-goal-objective-extension",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "goals": [
+        {
+          "actor": "worker",
+          "intent": "negotiate_resolution",
+          "objective": "reduce employer severance liability"
+        }
+      ],
+      "assessments": [],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "unsupported field"
+  },
+  {
+    "id": "reject-uncanonicalized-top-level-intent",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "goals": [],
+      "intent": {"actor": "employer", "value": "reduce_liability"},
+      "assessments": [],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "unsupported field"
+  },
+  {
+    "id": "reject-unknown-schema",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/999",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "assessments": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "schema"
+  },
+  {
+    "id": "reject-employer-side-scope",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-employer-side",
+      "facts": {},
+      "assessments": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "scope"
+  },
+  {
+    "id": "reject-non-object-facts",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": [],
+      "assessments": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "facts"
+  },
+  {
+    "id": "reject-conclusion-without-status",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "assessments": [{"conclusion": "公司解除违法"}],
+      "artifacts": []
+    },
+    "expected_error_contains": "status"
+  },
+  {
+    "id": "reject-unapproved-assessment-status",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "assessments": [{"conclusion": "保证胜诉", "status": "guaranteed"}],
+      "artifacts": []
+    },
+    "expected_error_contains": "status"
+  },
+  {
+    "id": "reject-non-array-missing-facts",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "assessments": [],
+      "missing_facts": {},
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_error_contains": "missing_facts"
+  },
+  {
+    "id": "reject-non-array-source-anchors",
+    "operation": "validate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "assessments": [],
+      "missing_facts": [],
+      "source_anchors": {},
+      "artifacts": []
+    },
+    "expected_error_contains": "source_anchors"
+  },
+  {
+    "id": "migrate-current-schema-without-changing-meaning",
+    "operation": "migrate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": {"employment_start": "2022-03-01"},
+      "goals": [],
+      "assessments": [],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_schema": "worker-rights-case/1"
+  },
+  {
+    "id": "reject-non-object-migration-input",
+    "operation": "migrate",
+    "value": [],
+    "expected_exception_contains": "object"
+  },
+  {
+    "id": "reject-invalid-current-schema-migration",
+    "operation": "migrate",
+    "value": {
+      "schema": "worker-rights-case/1",
+      "scope": "cn-mainland-worker-side",
+      "facts": [],
+      "goals": [],
+      "assessments": [],
+      "missing_facts": [],
+      "source_anchors": [],
+      "artifacts": []
+    },
+    "expected_exception_contains": "facts"
+  },
+  {
+    "id": "reject-unregistered-migration-source",
+    "operation": "migrate",
+    "value": {
+      "schema": "worker-rights-case/0",
+      "scope": "cn-mainland-worker-side",
+      "facts": {},
+      "assessments": [],
+      "artifacts": []
+    },
+    "expected_exception_contains": "worker-rights-case/0"
+  }
+]

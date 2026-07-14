@@ -1,0 +1,6 @@
+interface:
+  display_name: "Layoff Defense"
+  short_description: "Assess dismissal risks and action paths"
+  default_prompt: "Use $layoff-defense to assess a dismissal or layoff case and propose a lawful action path."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,492 @@
+{
+  "schema_version": "0.1.0",
+  "retrieved_at": "2026-06-16",
+  "priority_levels": {
+    "P0_immediate": "Preserve or create within 24 hours because loss, signing, deletion, or timeline risk is high.",
+    "P1_core": "Core proof for classification, claim basis, or amount.",
+    "P2_supporting": "Supporting proof that improves credibility, continuity, or negotiation leverage.",
+    "P3_local_verify": "Local rule, government record, or professional verification item."
+  },
+  "status_values": [
+    "available",
+    "missing",
+    "employer_controlled",
+    "third_party",
+    "create_now"
+  ],
+  "global_safety_rules": [
+    "Do not fabricate, alter, backdate, or coach false evidence.",
+    "Do not bypass account permissions or copy company secrets, source code, customer lists, or unrelated personal data.",
+    "For employer-controlled materials, request in writing or ask the arbitration tribunal to order production.",
+    "Preserve screenshots, exports, and timelines only from materials the worker can lawfully access.",
+    "Separate facts, assumptions, and legal conclusions."
+  ],
+  "common_bundles": {
+    "identity_and_relationship": {
+      "source_anchors": [
+        "LDA-2007#art2",
+        "LDA-2007#art6"
+      ],
+      "items": [
+        {
+          "id": "labor_contract_and_renewals",
+          "priority": "P1_core",
+          "default_status": "available",
+          "proves": "labor relationship, contract term, position, workplace, wage terms, renewal history",
+          "lawful_source": "worker copy, onboarding files, email, company HR system if lawfully accessible",
+          "collection_note": "Preserve full copies and renewal versions; do not backdate missing contracts."
+        },
+        {
+          "id": "payroll_tax_social_insurance_records",
+          "priority": "P1_core",
+          "default_status": "third_party",
+          "proves": "wage level, payment continuity, employer identity, social insurance payment status",
+          "lawful_source": "bank records, tax app, social insurance system, housing fund system, payslips",
+          "collection_note": "Export or screenshot monthly records with timestamps where possible."
+        },
+        {
+          "id": "work_access_and_attendance_records",
+          "priority": "P2_supporting",
+          "default_status": "available",
+          "proves": "actual work, last working day, access removal, attendance disputes",
+          "lawful_source": "attendance app, badge records, work email, lawful screenshots",
+          "collection_note": "Preserve only records related to the worker and dispute timeline."
+        }
+      ]
+    },
+    "timeline_and_communications": {
+      "source_anchors": [
+        "LDA-2007#art6",
+        "SPC-LDI-1-2020#art44"
+      ],
+      "items": [
+        {
+          "id": "chronology_memo",
+          "priority": "P0_immediate",
+          "default_status": "create_now",
+          "proves": "consistent timeline of proposal, notice, objection, handover, lockout, and payment events",
+          "lawful_source": "worker-created factual memo based on existing records",
+          "collection_note": "Write dates, participants, exact words, documents, and open questions; do not add facts not remembered or recorded."
+        },
+        {
+          "id": "hr_chat_email_meeting_records",
+          "priority": "P1_core",
+          "default_status": "available",
+          "proves": "employer statements, termination reason, resignation pressure, settlement terms, notice timing",
+          "lawful_source": "worker's chats, emails, meeting invitations, lawful notes",
+          "collection_note": "Preserve full conversation context, not isolated fragments."
+        },
+        {
+          "id": "written_objection_or_request",
+          "priority": "P0_immediate",
+          "default_status": "create_now",
+          "proves": "worker's disagreement, request for written reason, request for continued work or documents",
+          "lawful_source": "truthful email, message, or letter sent by the worker",
+          "collection_note": "Keep wording factual and calm; request written basis, payment details, and document copies."
+        }
+      ]
+    },
+    "money_basis": {
+      "source_anchors": [
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-REG-2008#art20",
+        "LCL-REG-2008#art27"
+      ],
+      "items": [
+        {
+          "id": "twelve_month_wage_basis",
+          "priority": "P1_core",
+          "default_status": "third_party",
+          "proves": "average monthly wage, bonus, allowance, subsidy, commission, overtime, deductions",
+          "lawful_source": "bank statements, payslips, tax records, payroll emails, bonus documents",
+          "collection_note": "Preserve the 12 months before termination or the actual shorter employment period."
+        },
+        {
+          "id": "service_years_proof",
+          "priority": "P1_core",
+          "default_status": "available",
+          "proves": "employment start date, continuous service, transfer between entities, renewal history",
+          "lawful_source": "contract, offer, onboarding records, social insurance, tax, emails",
+          "collection_note": "Flag affiliated-company transfers and outsourced/labor-dispatch facts for lawyer_check."
+        },
+        {
+          "id": "local_average_wage_source",
+          "priority": "P3_local_verify",
+          "default_status": "third_party",
+          "proves": "local high-wage cap and calculation baseline",
+          "lawful_source": "official local statistics or human resources/social security bureau data",
+          "collection_note": "Use current city and termination-year data; do not generalize another city's cap."
+        }
+      ]
+    }
+  },
+  "termination_maps": {
+    "mutual_termination": {
+      "source_anchors": [
+        "LCL-2012#art36",
+        "LCL-2012#art46",
+        "SPC-LDI-1-2020#art35"
+      ],
+      "include_common_bundles": [
+        "identity_and_relationship",
+        "timeline_and_communications",
+        "money_basis"
+      ],
+      "items": [
+        {
+          "id": "separation_agreement_versions",
+          "priority": "P0_immediate",
+          "default_status": "available",
+          "proves": "agreement terms, release scope, payment date, waiver language, employer-proposed termination",
+          "lawful_source": "drafts, signed copy, HR email, document system if lawfully accessible",
+          "collection_note": "Preserve every version before signing; check all-disputes-settled language."
+        },
+        {
+          "id": "proposal_origin_evidence",
+          "priority": "P1_core",
+          "default_status": "available",
+          "proves": "whether employer proposed mutual termination, affecting economic compensation path",
+          "lawful_source": "HR chat, email, meeting notes, calendar invite",
+          "collection_note": "Do not infer employer proposal without written or contextual proof."
+        }
+      ]
+    },
+    "employee_resignation": {
+      "source_anchors": [
+        "LCL-2012#art37",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "SPC-LDI-1-2020#art45",
+        "SPC-LDI-2-2025#art19"
+      ],
+      "include_common_bundles": [
+        "identity_and_relationship",
+        "timeline_and_communications",
+        "money_basis"
+      ],
+      "items": [
+        {
+          "id": "resignation_text_and_delivery",
+          "priority": "P0_immediate",
+          "default_status": "available",
+          "proves": "resignation reason, timing, recipient, voluntary or statutory basis",
+          "lawful_source": "resignation letter, email, OA submission, delivery proof",
+          "collection_note": "If not yet sent, wording must truthfully reflect actual statutory employer breaches."
+        },
+        {
+          "id": "employer_breach_evidence",
+          "priority": "P1_core",
+          "default_status": "available",
+          "proves": "unpaid wages, unpaid social insurance, unsafe conditions, coercion, invalid rules, or other statutory breach",
+          "lawful_source": "payroll, bank, tax, social insurance records, messages, notices",
+          "collection_note": "Match the resignation reason to actual evidence; do not rewrite history."
+        }
+      ]
+    },
+    "fault_dismissal": {
+      "source_anchors": [
+        "LCL-2012#art4",
+        "LCL-2012#art21",
+        "LCL-2012#art39",
+        "LCL-2012#art43",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "SPC-LDI-1-2020#art44",
+        "SPC-LDI-1-2020#art50"
+      ],
+      "include_common_bundles": [
+        "identity_and_relationship",
+        "timeline_and_communications",
+        "money_basis"
+      ],
+      "items": [
+        {
+          "id": "termination_notice_exact_reason",
+          "priority": "P0_immediate",
+          "default_status": "available",
+          "proves": "employer's stated fault ground and termination date",
+          "lawful_source": "termination notice, email, HR message, termination certificate",
+          "collection_note": "Ask for written reason if employer only states it orally."
+        },
+        {
+          "id": "rules_democratic_publication_proof",
+          "priority": "P1_core",
+          "default_status": "employer_controlled",
+          "proves": "validity and publication of rules used for serious violation",
+          "lawful_source": "employee handbook, rule acknowledgment, union/employee congress records",
+          "collection_note": "Request lawfully; employer often controls democratic procedure records."
+        },
+        {
+          "id": "misconduct_investigation_and_proportionality",
+          "priority": "P1_core",
+          "default_status": "employer_controlled",
+          "proves": "facts of misconduct, damage, consistency, proportionality, and proof burden",
+          "lawful_source": "investigation records, warning records, performance data, comparable cases",
+          "collection_note": "Do not take unrelated confidential files; request production where needed."
+        }
+      ]
+    },
+    "non_fault_dismissal": {
+      "source_anchors": [
+        "LCL-2012#art40",
+        "LCL-2012#art42",
+        "LCL-2012#art43",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-REG-2008#art20",
+        "LCL-REG-2008#art27",
+        "SPC-LDI-2-2025#art16",
+        "SPC-LDI-2-2025#art17"
+      ],
+      "include_common_bundles": [
+        "identity_and_relationship",
+        "timeline_and_communications",
+        "money_basis"
+      ],
+      "items": [
+        {
+          "id": "termination_notice_exact_reason",
+          "priority": "P0_immediate",
+          "default_status": "available",
+          "proves": "the exact employer-stated non-fault reason and whether the case is framed as art40 instead of economic layoff",
+          "lawful_source": "termination notice, optimization notice, HR email, meeting minutes",
+          "collection_note": "Ask for written reason if employer only states AI transformation, role mismatch, or objective change orally."
+        },
+        {
+          "id": "article40_ground_evidence",
+          "priority": "P1_core",
+          "default_status": "employer_controlled",
+          "proves": "illness, incompetence after training/transfer, or major objective change basis",
+          "lawful_source": "written notice, performance records, medical restrictions, objective-change documents",
+          "collection_note": "Separate the asserted ground from ordinary business preference."
+        },
+        {
+          "id": "training_transfer_or_consultation_records",
+          "priority": "P1_core",
+          "default_status": "employer_controlled",
+          "proves": "training, position adjustment, reassessment, or failed contract-change consultation",
+          "lawful_source": "training records, transfer notice, meeting minutes, emails",
+          "collection_note": "Ask for missing employer-controlled documents in writing."
+        },
+        {
+          "id": "notice_or_substitute_wage_evidence",
+          "priority": "P1_core",
+          "default_status": "available",
+          "proves": "30-day notice or one-month substitute notice wage",
+          "lawful_source": "notice date, payroll, settlement sheet, bank record",
+          "collection_note": "Use previous month's wage for substitute notice wage verification."
+        }
+      ]
+    },
+    "economic_layoff": {
+      "source_anchors": [
+        "LCL-2012#art35",
+        "LCL-2012#art41",
+        "LCL-2012#art42",
+        "LCL-2012#art43",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "LCL-REG-2008#art19"
+      ],
+      "include_common_bundles": [
+        "identity_and_relationship",
+        "timeline_and_communications",
+        "money_basis"
+      ],
+      "items": [
+        {
+          "id": "termination_notice_exact_reason",
+          "priority": "P0_immediate",
+          "default_status": "available",
+          "proves": "the employer-stated economic layoff reason, implementation date, and whether the case is framed as economic layoff rather than art40 non-fault dismissal",
+          "lawful_source": "termination notice, layoff notice, optimization notice, HR email, meeting minutes, termination certificate",
+          "collection_note": "Ask for written reason if employer only states business adjustment, AI transformation, redundancy, or optimization orally."
+        },
+        {
+          "id": "layoff_threshold_and_plan",
+          "priority": "P1_core",
+          "default_status": "employer_controlled",
+          "proves": "number or percentage of workers laid off and statutory layoff reason",
+          "lawful_source": "layoff plan, announcement, workforce count, public filings where available",
+          "collection_note": "Preserve group notices lawfully; do not collect unrelated personnel files."
+        },
+        {
+          "id": "ai_transformation_contract_change_and_internal_alternatives",
+          "priority": "P1_core",
+          "default_status": "employer_controlled",
+          "proves": "AI transformation or major technology/business-method adjustment, proposed contract changes, internal alternatives, and why layoffs remained necessary",
+          "lawful_source": "transformation plan, revised organization chart, new role descriptions, consultation records, internal transfer or upskilling notices",
+          "collection_note": "For art41, test the contract-change and internal-alternative chain; do not treat ordinary onboarding training as universally mandatory unless the employer relies on incompetence under art40."
+        },
+        {
+          "id": "thirty_day_explanation_opinion_report",
+          "priority": "P1_core",
+          "default_status": "employer_controlled",
+          "proves": "30-day explanation to union/all employees, opinion collection, labor authority report",
+          "lawful_source": "union notice, employee meeting notice, opinion records, labor authority filing proof",
+          "collection_note": "If unavailable, list as employer-controlled and request production."
+        },
+        {
+          "id": "guangzhou_layoff_report_package",
+          "priority": "P1_core",
+          "default_status": "employer_controlled",
+          "proves": "Guangzhou written HRSS report package before implementation, including layoff reason, affected worker basic information, union or all-staff explanation and opinion record, responsible person contact, final layoff plan, supporting materials, HRSS feedback response, and final publication to all staff",
+          "lawful_source": "employer written report, layoff plan, opinion records, HRSS submission proof, HRSS opinion or suggestion response, final plan announcement",
+          "collection_note": "Request production in writing or through arbitration; do not copy unrelated personnel, financial, customer, source-code, or strategy files."
+        },
+        {
+          "id": "priority_retention_and_rehire_evidence",
+          "priority": "P2_supporting",
+          "default_status": "available",
+          "proves": "priority retention status and six-month rehire priority",
+          "lawful_source": "contract term, family burden proof, recruitment posts, rehire notices",
+          "collection_note": "Track new recruitment within six months after layoff; preserve public job posts and employer notices with timestamps."
+        },
+        {
+          "id": "post_layoff_rehire_or_outsourcing_tracking",
+          "priority": "P2_supporting",
+          "default_status": "available",
+          "proves": "whether the employer recruits again, uses substantially similar outsourced or dispatched labor, or replaces the laid-off role within six months after an economic layoff",
+          "lawful_source": "official recruitment pages, public job boards, recruiter messages received by the worker, lawful screenshots of same-role openings, rehire notices, outsourcing or dispatch facts known from public or worker-accessible channels",
+          "collection_note": "Collect only public or lawfully accessible materials; do not scrape private accounts, impersonate candidates, copy internal staffing lists, or take unrelated commercial secrets."
+        }
+      ]
+    },
+    "contract_expiry": {
+      "source_anchors": [
+        "LCL-2012#art14",
+        "LCL-2012#art44",
+        "LCL-2012#art45",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-REG-2008#art13",
+        "SPC-LDI-1-2020#art34",
+        "SPC-LDI-2-2025#art8",
+        "SPC-LDI-2-2025#art10"
+      ],
+      "include_common_bundles": [
+        "identity_and_relationship",
+        "timeline_and_communications",
+        "money_basis"
+      ],
+      "items": [
+        {
+          "id": "contract_expiry_and_renewal_history",
+          "priority": "P1_core",
+          "default_status": "available",
+          "proves": "expiry date, renewal offers, refusal reason, two fixed-term renewals, open-ended contract trigger",
+          "lawful_source": "contracts, renewal emails, OA workflow, HR notices",
+          "collection_note": "Preserve all contract versions and renewal communications."
+        },
+        {
+          "id": "post_expiry_work_continuation",
+          "priority": "P1_core",
+          "default_status": "available",
+          "proves": "continued employment after expiry and employer acquiescence",
+          "lawful_source": "attendance, payroll, task assignment, work email, access logs",
+          "collection_note": "Track work after expiry by date and task."
+        }
+      ]
+    },
+    "constructive_dismissal": {
+      "source_anchors": [
+        "LCL-2012#art30",
+        "LCL-2012#art35",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "LCL-2012#art85",
+        "LDA-2007#art9",
+        "SIL-2018#art60",
+        "WRPL-2022#art48",
+        "FEP-2012#art5",
+        "FEP-2012#art6",
+        "SPC-LDI-1-2020#art45",
+        "SPC-LDI-2-2025#art19"
+      ],
+      "include_common_bundles": [
+        "identity_and_relationship",
+        "timeline_and_communications",
+        "money_basis"
+      ],
+      "items": [
+        {
+          "id": "salary_cut_transfer_objection",
+          "priority": "P0_immediate",
+          "default_status": "create_now",
+          "proves": "unilateral salary reduction, job transfer, changed duties/workplace, worker objection",
+          "lawful_source": "transfer notice, salary notice, contract terms, written objection",
+          "collection_note": "Object truthfully and promptly; keep attendance strategy lawful."
+        },
+        {
+          "id": "unpaid_wage_or_social_insurance_gap",
+          "priority": "P1_core",
+          "default_status": "third_party",
+          "proves": "unpaid wages, late payment, social insurance non-payment or gap months",
+          "lawful_source": "bank, tax, payroll, social insurance records, housing fund records",
+          "collection_note": "Verify local treatment of social insurance underpayment, late payment, and non-payment."
+        },
+        {
+          "id": "lockout_or_forced_leave_evidence",
+          "priority": "P1_core",
+          "default_status": "available",
+          "proves": "employer-side exclusion from work disguised as resignation or pressure",
+          "lawful_source": "account lockout screenshots, access denial, forced leave notice, HR chats",
+          "collection_note": "Preserve timestamps and full context; do not bypass access controls."
+        },
+        {
+          "id": "pregnancy_or_medical_status_proof",
+          "priority": "P1_core",
+          "default_status": "third_party",
+          "proves": "pregnancy, maternity, nursing, medical-period, work-injury, or occupational-disease status relevant to protected-status or wage-difference claims",
+          "lawful_source": "medical certificate, maternity record, statutory notice, work injury or occupational disease documents held by the worker",
+          "collection_note": "Use the minimum necessary proof and redact unrelated diagnosis, family, address, ID, phone, and third-party information before sharing outside formal channels."
+        }
+      ]
+    },
+    "unclear_or_mixed": {
+      "source_anchors": [
+        "LCL-2012#art43",
+        "LCL-2012#art48",
+        "LCL-2012#art50",
+        "LCL-2012#art87",
+        "LDA-2007#art6",
+        "LDA-2007#art27",
+        "SPC-LDI-1-2020#art44"
+      ],
+      "include_common_bundles": [
+        "identity_and_relationship",
+        "timeline_and_communications",
+        "money_basis"
+      ],
+      "items": [
+        {
+          "id": "document_conflict_set",
+          "priority": "P0_immediate",
+          "default_status": "available",
+          "proves": "conflict among resignation, termination notice, agreement, certificate, and HR statements",
+          "lawful_source": "all notices, agreements, resignation forms, certificates, HR chats",
+          "collection_note": "Keep conflicting documents together; do not let one label control classification."
+        },
+        {
+          "id": "written_reason_request",
+          "priority": "P0_immediate",
+          "default_status": "create_now",
+          "proves": "worker requested employer's basis, date, and settlement calculation",
+          "lawful_source": "worker email, letter, message to HR or manager",
+          "collection_note": "Ask for written reason before signing new characterization."
+        },
+        {
+          "id": "limitation_and_filing_timeline",
+          "priority": "P1_core",
+          "default_status": "create_now",
+          "proves": "arbitration limitation, wage-related special timing, urgency",
+          "lawful_source": "worker-created timeline plus termination and wage dates",
+          "collection_note": "Escalate to lawyer_check if limitation may be close."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Layoff Strategy Optimizer"
+  short_description: "Optimize lawful layoff recovery strategy"
+  default_prompt: "Use $layoff-strategy-optimizer to build a lawful worker-side strategy for enterprise layoffs and dismissal negotiations."
+policy:
+  allow_implicit_invocation: false

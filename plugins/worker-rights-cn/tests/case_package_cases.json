@@ -1,0 +1,689 @@
+[
+  {
+    "id": "full-package-mutual-termination-before-signing",
+    "export_profile": "full_case_package",
+    "workflow": [
+      "case-intake",
+      "safety-guardrails",
+      "layoff-defense",
+      "compensation-calculator",
+      "local-rules-adapter",
+      "evidence-builder",
+      "negotiation-coach",
+      "agreement-review",
+      "arbitration-drafter"
+    ],
+    "package": {
+      "case_snapshot": {
+        "worker_alias": "worker-a",
+        "employer_legal_name": "Example Technology Shanghai Co., Ltd.",
+        "city": "Shanghai",
+        "work_location": "Shanghai",
+        "employment_start_date": "2020-04-01",
+        "expected_or_actual_end_date": "2026-06-16",
+        "current_status": "notice_given",
+        "worker_goal": "counteroffer before signing",
+        "open_questions": [
+          "Whether the employer will state the termination reason in writing.",
+          "Whether the draft agreement contains a broad waiver of all claims."
+        ]
+      },
+      "fact_timeline": [
+        {
+          "event_date": "2026-06-15",
+          "event_type": "meeting",
+          "description": "HR proposed mutual termination and a one-time payment before any document was signed.",
+          "source_record": "hr_wechat_and_meeting_invite",
+          "related_evidence_ids": [
+            "hr_chat_email_meeting_records",
+            "proposal_origin_evidence"
+          ],
+          "fact_status": "confirmed_by_worker_record"
+        }
+      ],
+      "termination_assessment": {
+        "primary_termination_maps": [
+          "mutual_termination"
+        ],
+        "alternative_termination_maps": [
+          "non_fault_dismissal"
+        ],
+        "employer_stated_reason": "team adjustment",
+        "worker_position": "No resignation or waiver has been signed; request written terms and reserve rights.",
+        "key_risk_flags": [
+          "pre_signing_pressure",
+          "broad_waiver_clause"
+        ],
+        "classification_confidence": "medium",
+        "missing_facts": [
+          "final written reason",
+          "payment date"
+        ]
+      },
+      "money_summary": [
+        {
+          "claim_type": "economic_compensation_n",
+          "amount": 97500,
+          "formula": "6.5 months x 15000 average monthly wage",
+          "calculation_inputs": {
+            "start_date": "2020-04-01",
+            "end_date": "2026-06-16",
+            "average_monthly_wage": 15000,
+            "service_months": 6.5
+          },
+          "status": "confirmed_formula_pending_final_wage_records",
+          "source_anchors": [
+            "LCL-2012#art46",
+            "LCL-2012#art47"
+          ],
+          "local_rule_status": "local_verify"
+        }
+      ],
+      "evidence_directory": [
+        {
+          "evidence_id": "separation_agreement_versions",
+          "evidence_name": "Separation agreement draft and version history",
+          "priority": "P0_immediate",
+          "status": "available",
+          "lawful_source": "worker copy, HR email, or document system lawfully accessible to the worker",
+          "proof_purpose": "agreement terms, payment date, waiver language, and employer-proposed termination",
+          "related_claims": [
+            "economic_compensation_n",
+            "agreement_revision"
+          ],
+          "collection_note": "Preserve full versions before signing and do not alter metadata."
+        },
+        {
+          "evidence_id": "twelve_month_wage_basis",
+          "evidence_name": "Bank, tax, and payslip records for wage basis",
+          "priority": "P1_core",
+          "status": "third_party",
+          "lawful_source": "bank records, tax app, payslips, and payroll emails",
+          "proof_purpose": "average monthly wage and economic compensation basis",
+          "related_claims": [
+            "economic_compensation_n"
+          ],
+          "collection_note": "Preserve the 12 months before termination or actual shorter service period."
+        }
+      ],
+      "negotiation_plan": {
+        "scenario_id": "separation_offer_counter",
+        "settlement_floor": 97500,
+        "ask_range_or_counteroffer": "Start from itemized N plus unpaid/unclear items; avoid voluntary resignation wording.",
+        "message_blocks": [
+          "request_written_terms",
+          "counteroffer_amount_basis",
+          "rights_reservation",
+          "evidence_preservation"
+        ],
+        "forbidden_phrases": [
+          "我自愿主动离职",
+          "双方再无任何争议",
+          "不支付我就曝光"
+        ],
+        "deadline_or_next_touch": "2026-06-18",
+        "switch_to_arbitration_triggers": [
+          "Employer refuses written terms.",
+          "Payment amount or payment date remains unclear.",
+          "Draft requires broad waiver before payment."
+        ]
+      },
+      "agreement_review_summary": {
+        "document_type": "separation_agreement",
+        "critical_clause_types": [
+          "all_claims_waiver",
+          "payment_amount_and_date",
+          "termination_certificate"
+        ],
+        "revision_requests": [
+          "State amount, payment date, and tax/payment responsibility clearly.",
+          "Remove or narrow all-claims waiver before payment is completed."
+        ],
+        "payment_safeguards": [
+          "Payment before broad release.",
+          "Default clause for late payment."
+        ],
+        "claims_to_reserve": [
+          "unpaid wages",
+          "social insurance or housing fund disputes if any"
+        ],
+        "signing_risk_level": "high"
+      },
+      "arbitration_draft_pack": {
+        "candidate_commission": "Labor dispute arbitration commission at the place of contract performance or employer location, subject to local form check.",
+        "parties": {
+          "applicant_alias": "worker-a",
+          "respondent_legal_name": "Example Technology Shanghai Co., Ltd."
+        },
+        "claim_requests": [
+          {
+            "claim_type": "economic_compensation",
+            "amount": 97500,
+            "formula": "6.5 months x 15000 average monthly wage",
+            "source_anchors": [
+              "LCL-2012#art46",
+              "LCL-2012#art47"
+            ]
+          }
+        ],
+        "facts_and_reasons_blocks": [
+          "employment_relationship",
+          "work_and_wage_history",
+          "dispute_trigger",
+          "termination_or_resignation_characterization",
+          "claim_basis",
+          "evidence_summary"
+        ],
+        "evidence_directory_refs": [
+          "separation_agreement_versions",
+          "twelve_month_wage_basis"
+        ],
+        "limitation_check": "within_one_year_pending_exact_trigger_date",
+        "local_form_check": "required_before_filing",
+        "draft_status": "review_draft_not_final",
+        "filing_gate_status": "blocked_until_pre_filing_checks_complete",
+        "not_final_filing_document": true,
+        "lawyer_review_required": true,
+        "pre_filing_checks": [
+          "Verify the current Shanghai local arbitration commission form and accepted filing channel.",
+          "Confirm jurisdiction by contract performance place or employer registered/location evidence.",
+          "Confirm respondent legal name, unified social credit code, and service address.",
+          "Attach numbered evidence copies matching evidence_directory_refs and redact unnecessary sensitive data.",
+          "Recheck limitation trigger date, claim amounts, and local filing copy requirements.",
+          "Have a lawyer or local professional review the draft before signing or filing."
+        ],
+        "filing_blockers": [
+          "local_arbitration_form_not_verified",
+          "commission_jurisdiction_not_confirmed",
+          "respondent_identity_or_service_address_not_confirmed",
+          "evidence_directory_not_matched_to_attachments",
+          "lawyer_or_local_professional_review_not_completed"
+        ]
+      },
+      "safety_and_review_notes": {
+        "safety_decision": "proceed_with_caution",
+        "redline_categories": [
+          "lawful_evidence_preservation"
+        ],
+        "lawful_collection_limits": [
+          "Use only worker-accessible chats, emails, records, and third-party official records.",
+          "Do not copy company secrets, unrelated personal data, source code, or customer lists."
+        ],
+        "unsupported_assumptions": [
+          "Employer's final legal reason is not confirmed until written notice or agreement terms are available."
+        ],
+        "local_verify_items": [
+          "Shanghai local wage cap and arbitration filing form."
+        ],
+        "lawyer_check_items": [
+          "Broad waiver clause before signing.",
+          "Any non-compete or confidentiality clause tied to payment."
+        ]
+      }
+    },
+    "expected": {
+      "required_sections": [
+        "case_snapshot",
+        "fact_timeline",
+        "termination_assessment",
+        "money_summary",
+        "evidence_directory",
+        "negotiation_plan",
+        "agreement_review_summary",
+        "arbitration_draft_pack",
+        "safety_and_review_notes"
+      ],
+      "source_anchors": [
+        "LCL-2012#art36",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LDA-2007#art6",
+        "LDA-2007#art21",
+        "LDA-2007#art28",
+        "PIPL-2021#art6",
+        "SPC-LDI-1-2020#art35"
+      ]
+    }
+  },
+  {
+    "id": "pre-signing-72h-guangzhou-economic-layoff",
+    "export_profile": "pre_signing_72h",
+    "workflow": [
+      "case-intake",
+      "safety-guardrails",
+      "layoff-defense",
+      "compensation-calculator",
+      "local-rules-adapter",
+      "evidence-builder",
+      "layoff-strategy-optimizer",
+      "negotiation-coach",
+      "agreement-review"
+    ],
+    "package": {
+      "case_snapshot": {
+        "worker_alias": "worker-gz",
+        "employer_legal_name": "Example AI Services Guangzhou Co., Ltd.",
+        "city": "Guangzhou",
+        "work_location": "Guangzhou",
+        "employment_start_date": "2020-07-01",
+        "expected_or_actual_end_date": "2026-06-30",
+        "current_status": "layoff_plan_announced",
+        "worker_goal": "verify economic layoff legality before signing settlement or resignation documents",
+        "open_questions": [
+          "Whether the employer explained the layoff to employees or union 30 days in advance.",
+          "Whether the Guangzhou written report package and final layoff plan exist."
+        ]
+      },
+      "fact_timeline": [
+        {
+          "event_date": "2026-06-17",
+          "event_type": "layoff_meeting",
+          "description": "Employer announced AI-driven restructuring and asked affected employees to sign settlement terms within 48 hours.",
+          "source_record": "meeting_invite_hr_chat_and_worker_notes",
+          "related_evidence_ids": [
+            "guangzhou_layoff_report_package",
+            "priority_retention_and_rehire_evidence",
+            "hr_chat_email_meeting_records"
+          ],
+          "fact_status": "confirmed_by_worker_record"
+        }
+      ],
+      "termination_assessment": {
+        "primary_termination_maps": [
+          "economic_layoff"
+        ],
+        "alternative_termination_maps": [
+          "non_fault_dismissal",
+          "mutual_termination"
+        ],
+        "employer_stated_reason": "AI transformation and department restructuring",
+        "worker_position": "Do not sign broad waiver or personal-reason resignation before the report package, final plan, payment basis, and priority retention review are clarified.",
+        "key_risk_flags": [
+          "guangzhou_report_package_missing",
+          "same_day_signing_pressure",
+          "priority_retention_not_checked"
+        ],
+        "classification_confidence": "medium",
+        "missing_facts": [
+          "employee count and layoff threshold",
+          "30-day explanation and opinion records",
+          "labor authority report proof"
+        ]
+      },
+      "money_summary": [
+        {
+          "claim_type": "economic_compensation_n",
+          "amount": 132000,
+          "formula": "6 months x 22000 average monthly wage",
+          "calculation_inputs": {
+            "start_date": "2020-07-01",
+            "end_date": "2026-06-30",
+            "average_monthly_wage": 22000,
+            "service_months": 6
+          },
+          "status": "confirmed_formula_pending_local_cap_and_final_wage_records",
+          "source_anchors": [
+            "LCL-2012#art46",
+            "LCL-2012#art47"
+          ],
+          "local_rule_status": "verified_candidate"
+        }
+      ],
+      "evidence_directory": [
+        {
+          "evidence_id": "guangzhou_layoff_report_package",
+          "evidence_name": "Guangzhou economic layoff report package and final plan",
+          "priority": "P0_immediate",
+          "status": "employer_controlled",
+          "lawful_source": "written request to employer, HRSS report receipt if provided, final plan published to affected employees",
+          "proof_purpose": "economic layoff threshold, statutory reason, 30-day explanation, opinion handling, report content, and final plan consistency",
+          "related_claims": [
+            "economic_layoff_procedure_review",
+            "economic_compensation_n"
+          ],
+          "collection_note": "Request copies or written confirmation; do not access employer systems beyond the worker's lawful permission."
+        },
+        {
+          "evidence_id": "priority_retention_and_rehire_evidence",
+          "evidence_name": "Priority retention and six-month rehire evidence",
+          "priority": "P1_core",
+          "status": "available",
+          "lawful_source": "worker contract term, family burden proof, public recruitment posts, and rehire notices received by the worker",
+          "proof_purpose": "priority retention status and later same-condition rehire priority",
+          "related_claims": [
+            "economic_layoff_procedure_review"
+          ],
+          "collection_note": "Use public or worker-accessible records only; separate same-role facts from assumptions."
+        }
+      ],
+      "negotiation_plan": {
+        "scenario_id": "economic_layoff_report_request",
+        "settlement_floor": 132000,
+        "ask_range_or_counteroffer": "Ask for the statutory layoff report materials, final plan, and itemized N basis before discussing any waiver or settlement signature.",
+        "message_blocks": [
+          "request_economic_layoff_report_package",
+          "counteroffer_amount_basis",
+          "rights_reservation",
+          "evidence_preservation"
+        ],
+        "forbidden_phrases": [
+          "我自愿主动离职",
+          "我放弃经济性裁员程序异议",
+          "不提供材料就曝光"
+        ],
+        "deadline_or_next_touch": "2026-06-19",
+        "switch_to_arbitration_triggers": [
+          "Employer implements termination without report materials or final plan.",
+          "Agreement requires broad waiver before itemized payment is confirmed.",
+          "Replacement hiring suggests the layoff reason or priority review is disputed."
+        ]
+      },
+      "agreement_review_summary": {
+        "document_type": "separation_agreement",
+        "critical_clause_types": [
+          "all_claims_waiver",
+          "payment_amount_and_date",
+          "termination_certificate"
+        ],
+        "revision_requests": [
+          "Remove personal-reason resignation wording if the employer is implementing an economic layoff.",
+          "Preserve claims tied to unpaid wages, local procedure, and later rehire priority until payment and documents are confirmed."
+        ],
+        "payment_safeguards": [
+          "Clear payment amount and date.",
+          "Late-payment consequence before any broad release."
+        ],
+        "claims_to_reserve": [
+          "economic layoff procedure dispute",
+          "six-month rehire priority",
+          "unpaid wage or social insurance items if any"
+        ],
+        "signing_risk_level": "high"
+      },
+      "safety_and_review_notes": {
+        "safety_decision": "proceed_with_caution",
+        "redline_categories": [
+          "lawful_evidence_preservation"
+        ],
+        "lawful_collection_limits": [
+          "Preserve worker-accessible notices, chats, public postings, and official records.",
+          "Do not copy source code, customer lists, internal confidential strategy files, or unrelated employee personal data."
+        ],
+        "unsupported_assumptions": [
+          "AI transformation alone does not prove the statutory economic layoff path is valid or invalid without threshold, explanation, opinion, report, and final plan facts."
+        ],
+        "local_verify_items": [
+          "Guangzhou district HRSS report form, receipt practice, and current local wage-cap source."
+        ],
+        "lawyer_check_items": [
+          "Whether the layoff reaches statutory threshold.",
+          "Whether priority retention applies to this worker."
+        ]
+      }
+    },
+    "expected": {
+      "required_sections": [
+        "case_snapshot",
+        "fact_timeline",
+        "termination_assessment",
+        "money_summary",
+        "evidence_directory",
+        "negotiation_plan",
+        "agreement_review_summary",
+        "safety_and_review_notes"
+      ],
+      "source_anchors": [
+        "LCL-2012#art41",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LDA-2007#art6",
+        "PIPL-2021#art6"
+      ]
+    }
+  },
+  {
+    "id": "arbitration-ready-forced-resignation-unpaid-wages",
+    "export_profile": "arbitration_ready",
+    "workflow": [
+      "case-intake",
+      "safety-guardrails",
+      "layoff-defense",
+      "compensation-calculator",
+      "local-rules-adapter",
+      "evidence-builder",
+      "arbitration-drafter"
+    ],
+    "package": {
+      "case_snapshot": {
+        "worker_alias": "worker-hz",
+        "employer_legal_name": "Example Network Hangzhou Co., Ltd.",
+        "city": "Hangzhou",
+        "work_location": "Hangzhou",
+        "employment_start_date": "2023-01-10",
+        "expected_or_actual_end_date": "2026-06-16",
+        "current_status": "employed_access_blocked",
+        "worker_goal": "prepare arbitration after wage arrears and coerced resignation pressure",
+        "open_questions": [
+          "Whether the worker has sent a statutory resignation or written objection.",
+          "Whether social insurance arrears can be confirmed by official records."
+        ]
+      },
+      "fact_timeline": [
+        {
+          "event_date": "2026-06-16",
+          "event_type": "resignation_pressure",
+          "description": "HR asked the worker to submit a personal-reason resignation while three months of wages remained unpaid.",
+          "source_record": "hr_wechat_bank_records_and_payslips",
+          "related_evidence_ids": [
+            "resignation_text_and_delivery",
+            "employer_breach_evidence",
+            "twelve_month_wage_basis"
+          ],
+          "fact_status": "confirmed_by_worker_record"
+        }
+      ],
+      "termination_assessment": {
+        "primary_termination_maps": [
+          "employee_resignation"
+        ],
+        "alternative_termination_maps": [
+          "unclear_or_mixed"
+        ],
+        "employer_stated_reason": "cost control and voluntary resignation request",
+        "worker_position": "Refuse false personal-reason resignation; preserve wage arrears evidence and use only truthful statutory-breach wording if resigning.",
+        "key_risk_flags": [
+          "forced_personal_reason_resignation",
+          "unpaid_wages",
+          "possible_social_insurance_arrears"
+        ],
+        "classification_confidence": "medium",
+        "missing_facts": [
+          "final resignation wording",
+          "exact unpaid wage months",
+          "social insurance official record"
+        ]
+      },
+      "money_summary": [
+        {
+          "claim_type": "unpaid_wages",
+          "amount": 30000,
+          "formula": "3 unpaid months x 10000 monthly wage",
+          "calculation_inputs": {
+            "unpaid_months": 3,
+            "monthly_wage": 10000,
+            "bank_records": "available"
+          },
+          "status": "confirmed_by_bank_and_payslip_pending_employer_reconciliation",
+          "source_anchors": [
+            "LCL-2012#art30",
+            "LDA-2007#art6"
+          ],
+          "local_rule_status": "not_local_amount_rule"
+        },
+        {
+          "claim_type": "economic_compensation_for_statutory_resignation",
+          "amount": 35000,
+          "formula": "3.5 months x 10000 average monthly wage",
+          "calculation_inputs": {
+            "start_date": "2023-01-10",
+            "end_date": "2026-06-16",
+            "average_monthly_wage": 10000,
+            "service_months": 3.5
+          },
+          "status": "possible_if_statutory_resignation_reason_and_breach_evidence_are_preserved",
+          "source_anchors": [
+            "LCL-2012#art38",
+            "LCL-2012#art46",
+            "LCL-2012#art47"
+          ],
+          "local_rule_status": "local_verify"
+        }
+      ],
+      "evidence_directory": [
+        {
+          "evidence_id": "employer_breach_evidence",
+          "evidence_name": "Wage arrears and employer breach evidence",
+          "priority": "P0_immediate",
+          "status": "available",
+          "lawful_source": "bank records, payslips, payroll emails, tax app, social insurance app, and worker-accessible HR messages",
+          "proof_purpose": "unpaid wage amount, statutory resignation basis, and employer breach timing",
+          "related_claims": [
+            "unpaid_wages",
+            "economic_compensation_for_statutory_resignation"
+          ],
+          "collection_note": "Match any resignation or objection wording to actual unpaid wage and social insurance records; do not rewrite history."
+        },
+        {
+          "evidence_id": "resignation_text_and_delivery",
+          "evidence_name": "Resignation or objection text and delivery proof",
+          "priority": "P0_immediate",
+          "status": "create_now",
+          "lawful_source": "truthful email, message, or letter sent by the worker",
+          "proof_purpose": "whether the worker resigned voluntarily, objected to pressure, or resigned based on statutory employer breaches",
+          "related_claims": [
+            "economic_compensation_for_statutory_resignation"
+          ],
+          "collection_note": "Use factual wording; keep delivery timestamp and recipient."
+        }
+      ],
+      "arbitration_draft_pack": {
+        "candidate_commission": "Labor dispute arbitration commission at the place of contract performance or employer location, subject to Hangzhou local form check.",
+        "parties": {
+          "applicant_alias": "worker-hz",
+          "respondent_legal_name": "Example Network Hangzhou Co., Ltd."
+        },
+        "claim_requests": [
+          {
+            "claim_type": "unpaid_wages",
+            "amount": 30000,
+            "formula": "3 unpaid months x 10000 monthly wage",
+            "source_anchors": [
+              "LCL-2012#art30",
+              "LDA-2007#art6"
+            ]
+          },
+          {
+            "claim_type": "economic_compensation",
+            "amount": 35000,
+            "formula": "3.5 months x 10000 average monthly wage",
+            "source_anchors": [
+              "LCL-2012#art38",
+              "LCL-2012#art46",
+              "LCL-2012#art47"
+            ]
+          }
+        ],
+        "facts_and_reasons_blocks": [
+          "employment_relationship",
+          "work_and_wage_history",
+          "dispute_trigger",
+          "termination_or_resignation_characterization",
+          "claim_basis",
+          "evidence_summary"
+        ],
+        "evidence_directory_refs": [
+          "employer_breach_evidence",
+          "resignation_text_and_delivery"
+        ],
+        "limitation_check": "within_one_year_pending_exact_trigger_date",
+        "local_form_check": "required_before_filing",
+        "draft_status": "review_draft_not_final",
+        "filing_gate_status": "blocked_until_pre_filing_checks_complete",
+        "not_final_filing_document": true,
+        "lawyer_review_required": true,
+        "pre_filing_checks": [
+          "Verify the current Hangzhou local arbitration commission form and accepted filing channel.",
+          "Confirm jurisdiction by contract performance place or employer registered/location evidence.",
+          "Confirm respondent legal name, unified social credit code, and service address.",
+          "Attach numbered evidence copies matching evidence_directory_refs and redact unnecessary sensitive data.",
+          "Recheck limitation trigger date, claim amounts, and local filing copy requirements.",
+          "Have a lawyer or local professional review the draft before signing or filing."
+        ],
+        "filing_blockers": [
+          "local_arbitration_form_not_verified",
+          "commission_jurisdiction_not_confirmed",
+          "respondent_identity_or_service_address_not_confirmed",
+          "evidence_directory_not_matched_to_attachments",
+          "lawyer_or_local_professional_review_not_completed"
+        ]
+      },
+      "safety_and_review_notes": {
+        "safety_decision": "proceed_with_caution",
+        "redline_categories": [
+          "lawful_evidence_preservation",
+          "unsupported_or_exaggerated_claims"
+        ],
+        "lawful_collection_limits": [
+          "Use worker-owned records, official third-party records, and worker-accessible communications.",
+          "Do not fabricate wage arrears, backdate resignation, or copy unrelated company files."
+        ],
+        "unsupported_assumptions": [
+          "Economic compensation depends on truthful statutory-breach wording and evidence; a pure personal-reason resignation can weaken this claim."
+        ],
+        "local_verify_items": [
+          "Hangzhou arbitration filing form and local commission jurisdiction requirements."
+        ],
+        "lawyer_check_items": [
+          "Final resignation wording before filing.",
+          "Social insurance arrears claim path and administrative complaint route."
+        ]
+      }
+    },
+    "expected": {
+      "required_sections": [
+        "case_snapshot",
+        "fact_timeline",
+        "termination_assessment",
+        "money_summary",
+        "evidence_directory",
+        "arbitration_draft_pack",
+        "safety_and_review_notes"
+      ],
+      "source_anchors": [
+        "LCL-2012#art30",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LDA-2007#art6",
+        "LDA-2007#art21",
+        "LDA-2007#art27",
+        "LDA-2007#art28"
+      ]
+    }
+  },
+  {
+    "id": "generated-pre-signing-from-e2e-mutual-low-offer",
+    "export_profile": "pre_signing_72h",
+    "generated_from_e2e_case_id": "mutual-low-offer-to-counter"
+  },
+  {
+    "id": "generated-arbitration-ready-from-e2e-forced-resignation",
+    "export_profile": "arbitration_ready",
+    "generated_from_e2e_case_id": "forced-resignation-unpaid-wages-to-arbitration"
+  },
+  {
+    "id": "generated-full-package-from-e2e-guangzhou-ai-transformation",
+    "export_profile": "full_case_package",
+    "generated_from_e2e_case_id": "guangzhou-ai-transformation-open-ended-layoff"
+  }
+]

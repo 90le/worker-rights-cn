@@ -1,0 +1,141 @@
+[
+  {
+    "id": "sanitized-pregnancy-transfer-wage-cut-guangzhou",
+    "export_profile": "full_case_package",
+    "sanitization": {
+      "declaration": "near-real synthetic fixture; no raw personal identifiers, no medical record text, and no company secrets",
+      "removed_sensitive_values": [
+        "id_number",
+        "phone",
+        "home_address",
+        "bank_card_number",
+        "medical_record_text",
+        "hospital_record_number",
+        "outpatient_record_number"
+      ],
+      "evidence_redaction": "medical and pregnancy-related documents are referenced only by redacted evidence ids; originals are not stored in this repository"
+    },
+    "case": {
+      "jurisdiction": {
+        "country": "China",
+        "city": "Guangzhou",
+        "main_work_location": "Guangzhou"
+      },
+      "parties": {
+        "worker_name_or_alias": "worker-gz-sensitive-01",
+        "employer_legal_name": "Example Retail Guangzhou Co., Ltd.",
+        "actual_managing_entity": "Example Retail Guangzhou Co., Ltd.",
+        "dispatch_or_outsourcing": false
+      },
+      "employment": {
+        "job_title": "store operations supervisor",
+        "start_date": "2021-04-01",
+        "end_date_or_expected_end": "2026-06-15",
+        "current_status": "employed",
+        "written_contract_signed": true,
+        "contract_sign_date": "2021-04-01",
+        "contract_end_date": "2027-03-31",
+        "probation": false
+      },
+      "wage": {
+        "average_monthly_wage": 12000,
+        "local_average_monthly_wage": 13276,
+        "previous_month_wage": 12000,
+        "last_12_months_wage_records": [
+          "bank_records_redacted",
+          "payslips_redacted"
+        ],
+        "unpaid_wages_amount": 16000,
+        "overtime_or_bonus_dispute": false
+      },
+      "social_security": {
+        "social_insurance_paid": true,
+        "housing_fund_paid": true,
+        "payment_location": "Guangzhou"
+      },
+      "dispute": {
+        "trigger": "After worker disclosed pregnancy status, employer issued a transfer notice to a distant store and reduced the monthly wage base.",
+        "employer_stated_reason": "store staffing optimization and attendance stability",
+        "worker_goal": "preserve job and wage records, object to unilateral transfer and wage cut, and prepare a cautious arbitration package if wages remain reduced",
+        "documents_received": [
+          "transfer_notice_redacted",
+          "wage_cut_notice_redacted"
+        ],
+        "documents_signed": [],
+        "deadline_or_meeting_time": "2026-06-18"
+      },
+      "evidence": {
+        "contract_or_offer": [
+          "labor_contract_redacted"
+        ],
+        "wage_records": [
+          "bank_records_redacted",
+          "payslips_redacted"
+        ],
+        "attendance_records": [
+          "attendance_app_export_redacted"
+        ],
+        "chat_or_email_records": [
+          "hr_transfer_chat_redacted",
+          "salary_adjustment_email_redacted"
+        ],
+        "termination_or_agreement_docs": [
+          "transfer_notice_redacted",
+          "wage_cut_notice_redacted"
+        ],
+        "social_insurance_records": [
+          "social_insurance_app_redacted"
+        ],
+        "other": [
+          "pregnancy_status_certificate_redacted",
+          "medical_advice_summary_redacted",
+          "worker_objection_letter_redacted"
+        ]
+      },
+      "risk_flags": {
+        "pregnancy_or_maternity": true,
+        "medical_period": false,
+        "occupational_disease_or_work_injury": false,
+        "non_compete": false,
+        "executive_or_confidential_role": false,
+        "foreign_worker": false,
+        "group_layoff": false
+      }
+    },
+    "adapter_hints": {
+      "termination_maps": [
+        "constructive_dismissal"
+      ],
+      "termination_type": "constructive_dismissal",
+      "negotiation_scenario": "forced_resignation_response",
+      "document_type": "termination_notice_or_certificate",
+      "arbitration_claim_types": [
+        "pregnancy_wage_difference",
+        "unpaid_wages",
+        "economic_compensation"
+      ],
+      "safety_categories": [
+        "sensitive_health_or_pregnancy_information",
+        "personal_information_or_doxxing",
+        "lawful_evidence_preservation"
+      ]
+    },
+    "expected": {
+      "status": "ready",
+      "termination_maps_contain": [
+        "constructive_dismissal"
+      ],
+      "negotiation_scenario": "forced_resignation_response",
+      "document_type": "termination_notice_or_certificate",
+      "arbitration_claim_types_contain": [
+        "pregnancy_wage_difference",
+        "unpaid_wages"
+      ],
+      "redline_categories_contain": [
+        "sensitive_health_or_pregnancy_information",
+        "personal_information_or_doxxing",
+        "lawful_evidence_preservation"
+      ]
+    }
+  }
+]

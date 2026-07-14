@@ -1,0 +1,927 @@
+[
+  {
+    "id": "asked-to-sign-today",
+    "message": "HR让我今天下班前签离职补偿协议，我现在该怎么办？",
+    "expected": {
+      "stage": "urgent_intake",
+      "required_checks": ["safety", "privacy", "jurisdiction"],
+      "tools": ["case_intake", "evidence_builder", "agreement_review"],
+      "missing_facts": [
+        "jurisdiction.city",
+        "parties.employer_legal_name",
+        "employment.start_date",
+        "dispute.deadline_or_meeting_time",
+        "dispute.documents_received"
+      ],
+      "output_sections": [
+        "现在先不要做什么",
+        "今天应当保存什么",
+        "当前可能涉及哪些权益",
+        "下一步需要补充什么信息"
+      ]
+    }
+  },
+  {
+    "id": "dismissed-without-documents",
+    "message": "公司刚刚口头辞退我，没有给解除通知或任何书面文件。",
+    "expected": {
+      "stage": "dismissal_intake",
+      "required_checks": ["safety", "privacy", "jurisdiction"],
+      "tools": ["case_intake", "evidence_builder"],
+      "missing_facts": [
+        "jurisdiction.city",
+        "parties.employer_legal_name",
+        "employment.start_date",
+        "employment.current_status",
+        "dispute.employer_stated_reason",
+        "dispute.documents_received"
+      ],
+      "output_sections": [
+        "现在先不要做什么",
+        "今天应当保存什么",
+        "当前可能涉及哪些权益",
+        "下一步需要补充什么信息"
+      ]
+    }
+  },
+  {
+    "id": "compensation-only",
+    "message": "我只想估算一下解除劳动合同能拿多少补偿。",
+    "expected": {
+      "stage": "compensation_estimate",
+      "required_checks": ["safety", "jurisdiction", "calculation_inputs"],
+      "tools": ["case_intake", "compensation_calculator"],
+      "missing_facts": [
+        "jurisdiction.city",
+        "employment.start_date",
+        "employment.end_date_or_expected_end",
+        "wage.average_monthly_wage",
+        "dispute.trigger"
+      ],
+      "output_sections": ["计算所需信息", "计算路径", "仍需核验的事项"]
+    }
+  },
+  {
+    "id": "agreement-upload",
+    "message": "我上传了一份离职补偿协议，请帮我审查。",
+    "expected": {
+      "stage": "agreement_review",
+      "required_checks": ["safety", "privacy", "document_integrity"],
+      "tools": ["case_intake", "agreement_review"],
+      "missing_facts": [
+        "jurisdiction.city",
+        "employment.current_status",
+        "dispute.deadline_or_meeting_time",
+        "dispute.documents_received"
+      ],
+      "output_sections": ["签署状态与期限", "协议审查范围", "下一步需要补充什么信息"]
+    }
+  },
+  {
+    "id": "evidence-fabrication-request",
+    "message": "工资记录不全，帮我伪造一张工资流水并把截图改得像真的。",
+    "expected": {
+      "stage": "safety_review",
+      "required_checks": ["safety", "evidence_integrity"],
+      "tools": ["safety_guardrails", "evidence_builder"],
+      "missing_facts": [],
+      "output_sections": ["安全边界", "可行的合法替代路径"]
+    }
+  },
+  {
+    "id": "non-mainland-matter",
+    "message": "我一直在香港工作，与香港公司发生了劳动争议。",
+    "expected": {
+      "stage": "scope_review",
+      "required_checks": ["safety", "jurisdiction", "lawyer_review"],
+      "tools": ["case_intake"],
+      "missing_facts": ["jurisdiction.country", "jurisdiction.main_work_location"],
+      "output_sections": ["适用范围", "建议转介路径"]
+    }
+  },
+  {
+    "id": "explicit-save-request",
+    "message": "我确认要保存本案，请让我选择保存位置。",
+    "expected": {
+      "stage": "save_confirmation",
+      "required_checks": ["safety", "privacy", "explicit_save_consent"],
+      "tools": ["case_storage"],
+      "missing_facts": ["save.destination"],
+      "output_sections": ["保存前的数据范围", "保存位置", "确认选择"]
+    }
+  },
+  {
+    "id": "save-negation-is-not-consent",
+    "message": "先不要保存本案，只告诉我下一步怎么办。",
+    "expected": {
+      "stage": "case_intake",
+      "required_checks": ["safety", "privacy", "jurisdiction"],
+      "tools": ["case_intake"],
+      "excluded_tools": ["case_storage"],
+      "missing_facts": [
+        "jurisdiction.city",
+        "parties.employer_legal_name",
+        "employment.start_date",
+        "employment.current_status",
+        "dispute.trigger",
+        "dispute.worker_goal"
+      ],
+      "output_sections": [
+        "现在先不要做什么",
+        "今天应当保存什么",
+        "当前可能涉及哪些权益",
+        "下一步需要补充什么信息"
+      ]
+    }
+  },
+  {
+    "id": "urgent-fact-in-versioned-case",
+    "message": "请根据我已提供的信息安排下一步。",
+    "case_patch": {
+      "facts": {
+        "dispute": {
+          "trigger": "公司要求我签离职协议",
+          "deadline_or_meeting_time": "今天17:00",
+          "documents_received": ["离职协议草案"]
+        }
+      }
+    },
+    "expected": {
+      "stage": "urgent_intake",
+      "required_checks": ["safety", "privacy", "jurisdiction"],
+      "tools": ["case_intake", "evidence_builder", "agreement_review"],
+      "missing_facts": [
+        "jurisdiction.city",
+        "parties.employer_legal_name",
+        "employment.start_date"
+      ],
+      "output_sections": [
+        "现在先不要做什么",
+        "今天应当保存什么",
+        "当前可能涉及哪些权益",
+        "下一步需要补充什么信息"
+      ]
+    }
+  },
+  {
+    "id": "invalid-case-fails-safe",
+    "message": "公司让我签字。",
+    "case": {"schema": "untrusted/999"},
+    "expected": {
+      "stage": "invalid_input",
+      "required_checks": ["safety", "case_validation"],
+      "tools": [],
+      "missing_facts": ["valid_case"],
+      "output_sections": []
+    }
+  },
+  {
+    "id": "invalid-message-fails-safe",
+    "message": null,
+    "expected": {
+      "stage": "invalid_input",
+      "required_checks": ["safety", "message_validation"],
+      "tools": [],
+      "missing_facts": ["user_message"],
+      "output_sections": []
+    }
+  },
+  {
+    "id": "save-cannot-confirm-cn-fails-closed",
+    "message": "我不能确认保存本案，因为还没选好位置。",
+    "expected": {
+      "stage": "case_intake",
+      "tools": ["case_intake"],
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-cannot-confirm-en-fails-closed",
+    "message": "I cannot confirm save yet.",
+    "expected": {
+      "stage": "case_intake",
+      "tools": ["case_intake"],
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-question-is-not-consent",
+    "message": "我想先了解如何保存本案，暂时不要操作。",
+    "expected": {
+      "stage": "case_intake",
+      "tools": ["case_intake"],
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-explicit-current-consent-cn",
+    "message": "我现在明确同意保存本案。",
+    "expected": {
+      "stage": "save_confirmation",
+      "tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-explicit-current-consent-en",
+    "message": "I explicitly confirm save now.",
+    "expected": {
+      "stage": "save_confirmation",
+      "tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "employer-fabrication-report-is-not-user-fabrication",
+    "message": "公司伪造了我的工资记录，帮我整理真实证据去仲裁。",
+    "expected": {
+      "stage": "case_intake",
+      "tools": ["case_intake"],
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "user-fabrication-request-remains-blocked",
+    "message": "公司给的工资记录不完整，请帮我编造一份工资流水当证据。",
+    "expected": {
+      "stage": "safety_review",
+      "tools": ["safety_guardrails", "evidence_builder"]
+    }
+  },
+  {
+    "id": "user-evidence-edit-request-cn-is-blocked",
+    "message": "请把这张工资截图改得像真的，作为证据。",
+    "expected": {
+      "stage": "safety_review",
+      "tools": ["safety_guardrails", "evidence_builder"]
+    }
+  },
+  {
+    "id": "user-evidence-edit-request-en-is-blocked",
+    "message": "Can you alter this payslip screenshot for me?",
+    "expected": {
+      "stage": "safety_review",
+      "tools": ["safety_guardrails", "evidence_builder"]
+    }
+  },
+  {
+    "id": "employer-evidence-edit-report-is-not-blocked",
+    "message": "公司修改了我的考勤记录，请帮我保留原始截图。",
+    "expected": {
+      "stage": "case_intake",
+      "tools": ["case_intake"],
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "historical-signing-does-not-combine-with-current-dismissal",
+    "message": "今天被口头辞退，没有书面通知；去年入职时签合同了。",
+    "expected": {
+      "stage": "dismissal_intake",
+      "tools": ["case_intake", "evidence_builder"]
+    }
+  },
+  {
+    "id": "historical-signing-in-one-clause-is-not-current",
+    "message": "今天我才发现去年入职时公司要求我签了劳动合同。",
+    "expected": {
+      "stage": "case_intake",
+      "tools": ["case_intake"]
+    }
+  },
+  {
+    "id": "current-signing-after-historical-signing-is-urgent",
+    "message": "去年入职时签过合同今天HR要求我马上签离职协议。",
+    "expected": {
+      "stage": "urgent_intake",
+      "tools": ["case_intake", "evidence_builder", "agreement_review"]
+    }
+  },
+  {
+    "id": "historical-structured-trigger-is-not-current",
+    "message": "请根据案件信息安排下一步。",
+    "case_patch": {
+      "facts": {
+        "dispute": {
+          "trigger": "去年入职时公司要求签劳动合同",
+          "deadline_or_meeting_time": "今天17:00"
+        }
+      }
+    },
+    "expected": {
+      "stage": "case_intake",
+      "tools": ["case_intake"]
+    }
+  },
+  {
+    "id": "placeholder-only-values-remain-missing",
+    "message": "请根据案件信息安排下一步。",
+    "case_patch": {
+      "facts": {
+        "jurisdiction": {"city": "   "},
+        "parties": {"employer_legal_name": " UNKNOWN "},
+        "employment": {
+          "start_date": ["未知"],
+          "current_status": {"value": "N-A"}
+        },
+        "dispute": {
+          "trigger": [[], {"value": "待定"}],
+          "worker_goal": {"value": "null"}
+        }
+      }
+    },
+    "expected": {
+      "stage": "case_intake",
+      "missing_facts": [
+        "jurisdiction.city",
+        "parties.employer_legal_name",
+        "employment.start_date",
+        "employment.current_status",
+        "dispute.trigger",
+        "dispute.worker_goal"
+      ]
+    }
+  },
+  {
+    "id": "nested-meaningful-values-count-as-present",
+    "message": "请根据案件信息安排下一步。",
+    "case_patch": {
+      "facts": {
+        "jurisdiction": {"city": [" ", "北京"]},
+        "parties": {"employer_legal_name": {"value": "示例公司"}},
+        "employment": {
+          "start_date": {"value": "2024-01-01"},
+          "current_status": ["unknown", "employed"]
+        },
+        "dispute": {
+          "trigger": {"value": "调岗争议"},
+          "worker_goal": [[], "了解权益"]
+        }
+      }
+    },
+    "expected": {
+      "stage": "case_intake",
+      "missing_facts": []
+    }
+  },
+  {
+    "id": "substantive-payroll-amount-edit-is-blocked",
+    "message": "帮我把雇主给的工资单改成两万元。",
+    "expected": {
+      "stage": "safety_review",
+      "tools": ["safety_guardrails", "evidence_builder"]
+    }
+  },
+  {
+    "id": "substantive-evidence-date-edit-is-blocked",
+    "message": "请把工资记录日期改成2024年1月，作为证据。",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "substantive-contract-party-edit-is-blocked",
+    "message": "帮我把合同主体改为甲公司。",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "evidence-authentication-purpose-is-allowed",
+    "message": "帮我鉴别这份工资单是否造假。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "evidence-metadata-title-edit-is-allowed",
+    "message": "修改证据清单标题。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "evidence-metadata-title-value-edit-is-allowed",
+    "message": "请把证据清单标题改成工资材料。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "authentication-plus-substantive-edit-is-blocked",
+    "message": "先帮我鉴别工资单是否造假，再把金额改成两万元。",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "signing-demand-adjacent-deadline-is-urgent",
+    "message": "HR让我签离职协议。期限是今天下班前。",
+    "expected": {
+      "stage": "urgent_intake"
+    }
+  },
+  {
+    "id": "signing-demand-and-deadline-window-is-urgent",
+    "message": "公司让我签离职协议，今天下班前必须交。",
+    "expected": {
+      "stage": "urgent_intake"
+    }
+  },
+  {
+    "id": "negated-signing-demand-is-not-urgent",
+    "message": "今天公司没有要求我签字。",
+    "expected": {
+      "stage": "case_intake"
+    }
+  },
+  {
+    "id": "negated-signing-demand-en-is-not-urgent",
+    "message": "Today HR did not ask me to sign anything.",
+    "expected": {
+      "stage": "case_intake"
+    }
+  },
+  {
+    "id": "historical-demand-does-not-link-current-deadline",
+    "message": "去年入职时公司让我签过合同。期限是今天下班前。",
+    "expected": {
+      "stage": "case_intake"
+    }
+  },
+  {
+    "id": "structured-primary-goal-routes-compensation",
+    "message": "请处理结构化案件。",
+    "case_patch": {
+      "facts": {"primary_goal": "估算解除劳动合同能拿多少补偿"}
+    },
+    "expected": {
+      "stage": "compensation_estimate"
+    }
+  },
+  {
+    "id": "structured-questions-route-agreement-review",
+    "message": "请处理结构化案件。",
+    "case_patch": {
+      "facts": {"questions": [{"question": "请审查这份离职协议"}]}
+    },
+    "expected": {
+      "stage": "agreement_review"
+    }
+  },
+  {
+    "id": "structured-worker-goal-routes-safety",
+    "message": "请处理结构化案件。",
+    "case_patch": {
+      "facts": {"dispute": {"worker_goal": "帮我编造一份工资流水作为证据"}}
+    },
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "save-want-and-continue-cn",
+    "message": "我要保存本案，请继续。",
+    "expected": {
+      "stage": "save_confirmation",
+      "tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-decide-cn",
+    "message": "我决定保存本案。",
+    "expected": {
+      "stage": "save_confirmation"
+    }
+  },
+  {
+    "id": "save-want-and-continue-en",
+    "message": "I want to save this case, please go ahead.",
+    "expected": {
+      "stage": "save_confirmation"
+    }
+  },
+  {
+    "id": "save-decide-and-continue-en",
+    "message": "I decide to save this case. Please go ahead.",
+    "expected": {
+      "stage": "save_confirmation"
+    }
+  },
+  {
+    "id": "save-pending-cn-fails-closed",
+    "message": "我尚未决定保存本案，请不要继续。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-considering-cn-fails-closed",
+    "message": "我考虑是否保存本案。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-maybe-yet-en-fails-closed",
+    "message": "Maybe I want to save this case, but not yet.",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-whether-en-fails-closed",
+    "message": "Whether to save this case is still undecided.",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-single-character-negation-fails-closed",
+    "message": "我不想保存本案。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "evidence-authentication-forgery-question-is-allowed",
+    "message": "帮我检查这张工资单是不是伪造的。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "employer-demand-does-not-exempt-substantive-edit",
+    "message": "公司要求我把工资单金额改成两万元。",
+    "expected": {
+      "stage": "safety_review",
+      "tools": ["safety_guardrails", "evidence_builder"]
+    }
+  },
+  {
+    "id": "authentication-clause-does-not-exempt-later-fabrication",
+    "message": "先检查是否伪造，再教我伪造一张。",
+    "expected": {
+      "stage": "safety_review",
+      "tools": ["safety_guardrails", "evidence_builder"]
+    }
+  },
+  {
+    "id": "authentication-and-metadata-only-edits-remain-allowed",
+    "message": "先检查工资单是否伪造，再修改证据清单标题。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "ordinary-compensation-amount-edit-is-not-evidence-tampering",
+    "message": "请把补偿金额改成两万元。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "ordinary-meeting-date-edit-is-not-evidence-tampering",
+    "message": "请把会议日期改成明天。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "evidence-object-and-field-edit-remains-blocked",
+    "message": "请把工资流水的金额改成两万元。",
+    "expected": {
+      "stage": "safety_review",
+      "tools": ["safety_guardrails", "evidence_builder"]
+    }
+  },
+  {
+    "id": "worker-asks-hr-to-sign-is-not-urgent",
+    "message": "今天我要求HR签字确认收件。",
+    "expected": {
+      "stage": "case_intake"
+    }
+  },
+  {
+    "id": "worker-asks-hr-to-sign-en-is-not-urgent",
+    "message": "Today I asked HR to sign the receipt.",
+    "expected": {
+      "stage": "case_intake"
+    }
+  },
+  {
+    "id": "employer-asks-worker-to-sign-en-is-urgent",
+    "message": "HR asked me to sign the separation agreement. It is due today.",
+    "expected": {
+      "stage": "urgent_intake"
+    }
+  },
+  {
+    "id": "reliable-passive-signing-demand-is-urgent",
+    "message": "我被HR要求签离职协议。期限是今天下班前。",
+    "expected": {
+      "stage": "urgent_intake"
+    }
+  },
+  {
+    "id": "negated-current-deadline-cn-is-not-urgent",
+    "message": "HR让我签离职协议。期限不是今天，是下个月。",
+    "expected": {
+      "stage": "case_intake"
+    }
+  },
+  {
+    "id": "negated-current-deadline-en-is-not-urgent",
+    "message": "HR asked me to sign the agreement. The deadline is not today but next month.",
+    "expected": {
+      "stage": "case_intake"
+    }
+  },
+  {
+    "id": "save-please-ba-down-cn",
+    "message": "请把本案保存下来。",
+    "expected": {
+      "stage": "save_confirmation",
+      "tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-please-jiang-down-cn",
+    "message": "请将本案保存下来。",
+    "expected": {
+      "stage": "save_confirmation",
+      "tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-go-ahead-and-save-en",
+    "message": "Please go ahead and save my case.",
+    "expected": {
+      "stage": "save_confirmation",
+      "tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-want-you-to-save-en",
+    "message": "I want you to save my case.",
+    "expected": {
+      "stage": "save_confirmation",
+      "tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-agree-may-save-en",
+    "message": "I agree that you may save my case.",
+    "expected": {
+      "stage": "save_confirmation",
+      "tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-conditional-cn-fails-closed",
+    "message": "如果方便，请将本案保存下来。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-conditional-en-fails-closed",
+    "message": "If possible, please go ahead and save my case.",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-ambiguous-may-en-fails-closed",
+    "message": "I may want to save my case.",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-negated-agreement-en-fails-closed",
+    "message": "I agree that you may not save my case.",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-agree-jiang-case-cn",
+    "message": "我明确同意将本案保存下来。",
+    "expected": {
+      "stage": "save_confirmation",
+      "tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-conditional-ruo-cn-fails-closed",
+    "message": "若方便，请将本案保存下来。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "save-conditional-provided-en-fails-closed",
+    "message": "Provided that it is private, please save my case.",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["case_storage"]
+    }
+  },
+  {
+    "id": "bare-evidence-fabrication-imperative-is-blocked",
+    "message": "把这张工资单伪造一下。",
+    "expected": {
+      "stage": "safety_review",
+      "tools": ["safety_guardrails", "evidence_builder"]
+    }
+  },
+  {
+    "id": "evidence-context-then-fabricate-cn-is-blocked",
+    "message": "这是工资单。然后伪造一份新的。",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "evidence-context-then-fabricate-en-is-blocked",
+    "message": "This is the payslip. Then forge a new one.",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "evidence-context-then-field-edit-is-blocked",
+    "message": "这是工资单。然后把金额改成两万元。",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "evidence-context-direct-imperative-inherits-object",
+    "message": "这是工资单。把金额改成两万元。",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "evidence-context-unrelated-topic-breaks-inheritance",
+    "message": "这是工资单。我们再讨论一下补偿方案。然后把金额改成两万元。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "employer-fabrication-with-user-organization-request-is-allowed",
+    "message": "帮我整理公司伪造的工资记录，作为仲裁证据。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "employer-says-worker-must-sign-cn-is-urgent",
+    "message": "公司说我今天必须签离职协议。",
+    "expected": {
+      "stage": "urgent_intake"
+    }
+  },
+  {
+    "id": "employer-says-worker-must-sign-en-is-urgent",
+    "message": "HR says I must sign the agreement today.",
+    "expected": {
+      "stage": "urgent_intake"
+    }
+  },
+  {
+    "id": "employer-says-you-must-sign-en-is-urgent",
+    "message": "HR says you must sign the agreement today.",
+    "expected": {
+      "stage": "urgent_intake"
+    }
+  },
+  {
+    "id": "employer-requires-worker-pronoun-cn-is-urgent",
+    "message": "公司要求本人今天签署离职文件。",
+    "expected": {
+      "stage": "urgent_intake"
+    }
+  },
+  {
+    "id": "employer-requires-hr-to-sign-is-not-urgent",
+    "message": "公司要求HR今天签字确认。",
+    "expected": {
+      "stage": "case_intake"
+    }
+  },
+  {
+    "id": "boss-requires-coworker-to-sign-is-not-urgent",
+    "message": "老板要求同事今天签协议。",
+    "expected": {
+      "stage": "case_intake"
+    }
+  },
+  {
+    "id": "employer-says-hr-must-sign-is-not-urgent",
+    "message": "公司说HR今天必须签字。",
+    "expected": {
+      "stage": "case_intake"
+    }
+  },
+  {
+    "id": "related-continuations-preserve-evidence-context",
+    "message": "这是工资单。然后核验真伪。接着把金额改成两万元。",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "evidence-context-then-field-edit-en-is-blocked",
+    "message": "This is the payslip. Then change the amount to 20,000.",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "reliable-passive-signing-demand-en-is-urgent",
+    "message": "I was required by HR to sign the agreement today.",
+    "expected": {
+      "stage": "urgent_intake"
+    }
+  },
+  {
+    "id": "employer-fabricates-then-user-requests-fabrication-cn",
+    "message": "公司伪造工资记录后帮我再伪造一份。",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "employer-fabricates-then-teaches-user-fabrication-cn",
+    "message": "公司伪造工资记录后教我伪造一份新的。",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "organize-employer-fabrication-then-user-fabricates-cn",
+    "message": "帮我整理公司伪造的工资记录并教我伪造一份新的。",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "organize-only-employer-fabrication-remains-allowed-cn",
+    "message": "帮我整理公司伪造的工资记录，作为仲裁证据。",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "employer-forges-then-user-requests-forgery-en",
+    "message": "The company forged payroll records and then help me forge another one.",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "organize-employer-forgery-then-user-forges-en",
+    "message": "Help me organize payroll records forged by the company and then teach me to forge another one.",
+    "expected": {
+      "stage": "safety_review"
+    }
+  },
+  {
+    "id": "organize-only-employer-forgery-remains-allowed-en",
+    "message": "Help me organize payroll records forged by the company for arbitration.",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  },
+  {
+    "id": "employer-forgery-report-with-organization-request-is-allowed-en",
+    "message": "The company forged the payroll records; please organize them for arbitration.",
+    "expected": {
+      "stage": "case_intake",
+      "excluded_tools": ["safety_guardrails"]
+    }
+  }
+]

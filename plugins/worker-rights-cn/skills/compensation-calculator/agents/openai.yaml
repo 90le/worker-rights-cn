@@ -1,0 +1,6 @@
+interface:
+  display_name: "Compensation Calculator"
+  short_description: "Calculate China labor compensation ranges"
+  default_prompt: "Use $compensation-calculator to calculate compensation ranges for a China labor dispute."
+policy:
+  allow_implicit_invocation: false

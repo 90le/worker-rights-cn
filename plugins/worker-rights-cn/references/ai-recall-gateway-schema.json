@@ -1,0 +1,104 @@
+{
+  "schema_version": "0.1.0",
+  "purpose": "User or host configuration contract for optional AI-assisted source recall. The plugin builds model requests but does not call external gateways by default.",
+  "default_behavior": {
+    "plugin_network_calls": "none",
+    "execution_owner": "host_agent_or_user_gateway",
+    "secret_policy": "Use api_key_env. Do not store raw API keys in plugin files, SQLite, git, or MCP arguments.",
+    "business_logic_dependency": "none"
+  },
+  "supported_provider_labels": [
+    "host_agent",
+    "codex",
+    "claude",
+    "openclaw",
+    "opencode",
+    "custom"
+  ],
+  "configuration_schema": {
+    "type": "object",
+    "properties": {
+      "provider": {
+        "type": "string",
+        "enum": [
+          "host_agent",
+          "codex",
+          "claude",
+          "openclaw",
+          "opencode",
+          "custom"
+        ]
+      },
+      "model": {
+        "type": "string",
+        "description": "Host or gateway model name. This is user controlled and not interpreted by the plugin."
+      },
+      "base_url": {
+        "type": "string",
+        "description": "Optional gateway base URL for a user-managed adapter. The plugin does not call it by default."
+      },
+      "api_key_env": {
+        "type": "string",
+        "description": "Environment variable name that the host adapter may read. Raw key values must not be stored here."
+      },
+      "timeout_seconds": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 120,
+        "default": 30
+      }
+    },
+    "additionalProperties": false
+  },
+  "ai_recall_policy": {
+    "allowed_tasks": [
+      "rerank supplied source ids",
+      "suggest extra search queries",
+      "flag source-status or jurisdiction uncertainty"
+    ],
+    "forbidden_tasks": [
+      "make legal conclusions",
+      "calculate compensation",
+      "treat local_verify or candidate sources as final",
+      "invent source ids",
+      "send private evidence without explicit user approval"
+    ],
+    "required_follow_up": [
+      "validate model output against output_schema",
+      "run expanded queries back through worker_rights.search_sources",
+      "use deterministic tools for legal mapping and compensation"
+    ]
+  },
+  "response_validation": {
+    "tool": "worker_rights.validate_ai_recall_response",
+    "status_values": [
+      "accepted",
+      "needs_revision",
+      "rejected"
+    ],
+    "candidate_id_policy": "reranked_source_ids must be a subset of candidate_source_ids from worker_rights.plan_ai_recall",
+    "unknown_source_id_policy": "reject_or_drop_before_any_legal_use",
+    "secret_policy": "raw api keys, bearer tokens, authorization headers, passwords, and secrets must be rejected and not echoed",
+    "output_sanitization": "secret-like text in rejected or needs_revision outputs is replaced with [redacted_sensitive_model_text] or suppressed from notes",
+    "issue_codes": [
+      "UNKNOWN_SOURCE_ID",
+      "UNEXPECTED_RESPONSE_FIELDS",
+      "FORBIDDEN_LEGAL_CONCLUSION",
+      "SECRET_OR_TOKEN_IN_RESPONSE",
+      "SOURCE_FINALITY_OVERREACH"
+    ],
+    "forbidden_content": [
+      "final legal conclusions",
+      "guaranteed outcomes",
+      "final compensation amounts",
+      "local-rule finality claims"
+    ],
+    "allowed_content": [
+      "reranked_source_ids",
+      "expanded_queries",
+      "missing_source_queries",
+      "risk_flags",
+      "notes"
+    ]
+  }
+}

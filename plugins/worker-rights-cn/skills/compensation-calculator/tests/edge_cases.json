@@ -1,0 +1,222 @@
+{
+  "valid_cases": [
+    {
+      "id": "one-day-service-minimum-half-month",
+      "scenario": "One service day still maps to the minimum 0.5 N month baseline.",
+      "input": {
+        "start_date": "2026-06-16",
+        "end_date": "2026-06-16",
+        "average_monthly_wage": 12000,
+        "local_average_monthly_wage": 10000,
+        "termination_type": "unknown"
+      },
+      "expected": {
+        "service_period.service_days": 1,
+        "service_period.completed_months": 0,
+        "service_period.n_months": 0.5,
+        "base_amounts.economic_compensation_n": 6000,
+        "claim_paths.unlawful_termination_2n": 12000
+      }
+    },
+    {
+      "id": "six-month-anniversary-counts-one-month",
+      "scenario": "Six completed months by anniversary maps to 1 N month.",
+      "input": {
+        "start_date": "2026-01-01",
+        "end_date": "2026-07-01",
+        "average_monthly_wage": 10000,
+        "local_average_monthly_wage": 10000,
+        "termination_type": "unknown"
+      },
+      "expected": {
+        "service_period.completed_months": 6,
+        "service_period.n_months": 1,
+        "base_amounts.economic_compensation_n": 10000
+      }
+    },
+    {
+      "id": "just-before-six-month-anniversary-stays-half",
+      "scenario": "Less than six completed months by anniversary stays at 0.5 N month.",
+      "input": {
+        "start_date": "2026-01-02",
+        "end_date": "2026-07-01",
+        "average_monthly_wage": 10000,
+        "local_average_monthly_wage": 10000,
+        "termination_type": "unknown"
+      },
+      "expected": {
+        "service_period.completed_months": 5,
+        "service_period.n_months": 0.5,
+        "base_amounts.economic_compensation_n": 5000
+      }
+    },
+    {
+      "id": "cap-threshold-equal-not-applied",
+      "scenario": "Wage equal to three times local average wage does not trigger the high-wage cap.",
+      "input": {
+        "start_date": "2024-01-01",
+        "end_date": "2026-01-01",
+        "average_monthly_wage": 30000,
+        "local_average_monthly_wage": 10000,
+        "termination_type": "unknown"
+      },
+      "expected": {
+        "service_period.completed_months": 24,
+        "service_period.n_months": 2,
+        "base_amounts.monthly_wage_for_n": 30000,
+        "base_amounts.wage_cap_applied": false,
+        "base_amounts.economic_compensation_n": 60000
+      }
+    },
+    {
+      "id": "missing-local-average-keeps-uncapped-warning",
+      "scenario": "Missing local average wage keeps uncapped calculation and emits a cap warning.",
+      "input": {
+        "start_date": "2008-01-01",
+        "end_date": "2026-06-16",
+        "average_monthly_wage": 60000,
+        "termination_type": "unlawful"
+      },
+      "expected": {
+        "service_period.n_months": 18.5,
+        "base_amounts.monthly_wage_for_n": 60000,
+        "base_amounts.wage_cap_applied": false,
+        "base_amounts.economic_compensation_n": 1110000,
+        "claim_paths.unlawful_termination_2n": 2220000
+      },
+      "expected_warning_substrings": [
+        "local_average_monthly_wage missing"
+      ]
+    },
+    {
+      "id": "unsigned-contract-months-capped-at-eleven",
+      "scenario": "Unsigned-contract double-wage months are capped at 11 by default.",
+      "input": {
+        "start_date": "2025-01-01",
+        "end_date": "2026-06-16",
+        "average_monthly_wage": 8000,
+        "local_average_monthly_wage": 10000,
+        "termination_type": "unknown",
+        "unsigned_contract_months_owed": 13
+      },
+      "expected": {
+        "additional_claims.unsigned_contract_double_wage": 88000,
+        "claim_paths.economic_compensation_n": 100000
+      },
+      "expected_contains": {
+        "source_anchors.unsigned_contract_double_wage": [
+          "LCL-2012#art82",
+          "LCL-REG-2008#art6",
+          "LCL-REG-2008#art7"
+        ]
+      },
+      "expected_warning_substrings": [
+        "unsigned_contract_months_owed capped"
+      ]
+    },
+    {
+      "id": "article40-substitute-uses-previous-month-wage",
+      "scenario": "Article 40 substitute notice wage uses previous_month_wage when provided.",
+      "input": {
+        "start_date": "2025-01-01",
+        "end_date": "2026-01-01",
+        "average_monthly_wage": 10000,
+        "local_average_monthly_wage": 9000,
+        "previous_month_wage": 8500,
+        "termination_type": "article40_no_notice"
+      },
+      "expected": {
+        "inputs.previous_month_wage": 8500,
+        "base_amounts.economic_compensation_n": 10000,
+        "base_amounts.substitute_notice_wage": 8500,
+        "claim_paths.n_plus_one": 18500
+      },
+      "expected_contains": {
+        "source_anchors.n_plus_one": [
+          "LCL-2012#art40",
+          "LCL-REG-2008#art20"
+        ]
+      }
+    },
+    {
+      "id": "annual-leave-source-anchors-and-daily-base",
+      "scenario": "Unused annual leave estimate keeps the 21.75 daily wage base and source anchors.",
+      "input": {
+        "start_date": "2022-01-01",
+        "end_date": "2023-01-01",
+        "average_monthly_wage": 21750,
+        "local_average_monthly_wage": 10000,
+        "termination_type": "unknown",
+        "unused_annual_leave_days": 2
+      },
+      "expected": {
+        "additional_claims.unused_annual_leave_extra": 4000
+      },
+      "expected_contains": {
+        "source_anchors.unused_annual_leave_extra": [
+          "PAID-LEAVE-REG-2007#art5",
+          "PAID-LEAVE-MEASURES-2008#art10",
+          "PAID-LEAVE-MEASURES-2008#art11"
+        ]
+      },
+      "expected_warning_substrings": [
+        "unused annual leave uses a default extra-pay estimate"
+      ]
+    }
+  ],
+  "invalid_cases": [
+    {
+      "id": "missing-start-date",
+      "input": {
+        "end_date": "2026-06-16",
+        "average_monthly_wage": 10000
+      },
+      "expected_error_contains": "start_date is required"
+    },
+    {
+      "id": "end-before-start",
+      "input": {
+        "start_date": "2026-06-16",
+        "end_date": "2026-06-15",
+        "average_monthly_wage": 10000
+      },
+      "expected_error_contains": "end_date cannot be before start_date"
+    },
+    {
+      "id": "negative-average-wage",
+      "input": {
+        "start_date": "2026-01-01",
+        "end_date": "2026-06-16",
+        "average_monthly_wage": -1
+      },
+      "expected_error_contains": "average_monthly_wage cannot be negative"
+    },
+    {
+      "id": "non-finite-average-wage",
+      "input": {
+        "start_date": "2026-01-01",
+        "end_date": "2026-06-16",
+        "average_monthly_wage": "NaN"
+      },
+      "expected_error_contains": "average_monthly_wage must be a finite number"
+    },
+    {
+      "id": "boolean-average-wage",
+      "input": {
+        "start_date": "2026-01-01",
+        "end_date": "2026-06-16",
+        "average_monthly_wage": true
+      },
+      "expected_error_contains": "average_monthly_wage must be a number"
+    },
+    {
+      "id": "invalid-end-date-format",
+      "input": {
+        "start_date": "2026-01-01",
+        "end_date": "2026/06/16",
+        "average_monthly_wage": 10000
+      },
+      "expected_error_contains": "end_date must be YYYY-MM-DD"
+    }
+  ]
+}

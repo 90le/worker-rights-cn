@@ -1,0 +1,6 @@
+interface:
+  display_name: "Worker Rights Guide"
+  short_description: "Plain-Chinese entrypoint for worker-side labor rights help"
+  default_prompt: "Use $worker-rights-guide to help me understand what to do next about my employment problem."
+policy:
+  allow_implicit_invocation: true

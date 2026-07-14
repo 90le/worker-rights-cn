@@ -1,0 +1,342 @@
+[
+  {
+    "id": "beijing-economic-compensation-cap-needs-local-source",
+    "city_input": "北京",
+    "check": "economic_compensation_high_wage_cap",
+    "expected_city": "beijing",
+    "expected_status": "local_verify",
+    "expected_flags": [
+      "local_cap_needed",
+      "official_source_needed",
+      "do_not_auto_cap"
+    ],
+    "expected_source_ids": [
+      "BJ-RSJ-SOCIAL-BASE-2025",
+      "BJ-TJJ-RSJ-PUBLISH-PLAN-2026"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "BJ-RSJ-SOCIAL-BASE-2025",
+      "BJ-TJJ-RSJ-PUBLISH-PLAN-2026"
+    ]
+  },
+  {
+    "id": "shanghai-economic-compensation-cap-is-candidate-not-final",
+    "city_input": "上海市",
+    "check": "economic_compensation_high_wage_cap",
+    "expected_city": "shanghai",
+    "expected_status": "verified_candidate",
+    "expected_flags": [
+      "cap_rule_explained",
+      "cap_amount_candidate_available",
+      "local_hrss_or_arbitration_confirmation_needed",
+      "do_not_auto_cap"
+    ],
+    "expected_source_ids": [
+      "SH-RSJ-ECON-COMP-CAP-QA-2023",
+      "SH-RSJ-SOCIAL-BASE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "SH-RSJ-SOCIAL-BASE-2025"
+    ]
+  },
+  {
+    "id": "shenzhen-statistical-wage-requires-hrss-confirmation",
+    "city_input": "深圳",
+    "check": "economic_compensation_high_wage_cap",
+    "expected_city": "shenzhen",
+    "expected_status": "local_verify",
+    "expected_flags": [
+      "statistical_wage_available",
+      "hrss_confirmation_needed",
+      "do_not_auto_cap"
+    ],
+    "expected_source_ids": [
+      "SZ-TJJ-WAGE-2024",
+      "SZ-GOV-ECON-COMP-CAP-QA-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "SZ-TJJ-WAGE-2024",
+      "SZ-GOV-ECON-COMP-CAP-QA-2025"
+    ]
+  },
+  {
+    "id": "hangzhou-city-cap-source-pending",
+    "city_input": "杭州",
+    "check": "economic_compensation_high_wage_cap",
+    "expected_city": "hangzhou",
+    "expected_status": "local_verify",
+    "expected_flags": [
+      "city_source_pending",
+      "provincial_reference_only",
+      "do_not_auto_cap"
+    ],
+    "expected_source_ids": [
+      "HZ-CITY-CAP-SOURCE-PENDING",
+      "ZJ-JOINT-SOCIAL-BASE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "HZ-CITY-CAP-SOURCE-PENDING",
+      "ZJ-JOINT-SOCIAL-BASE-2025"
+    ]
+  },
+  {
+    "id": "shanghai-social-insurance-alias-route",
+    "city_input": "沪",
+    "check": "social_insurance_base",
+    "expected_city": "shanghai",
+    "expected_status": "verified_reference_only",
+    "expected_flags": [
+      "social_base_available",
+      "not_economic_compensation_cap"
+    ],
+    "expected_source_ids": [
+      "SH-RSJ-SOCIAL-BASE-2025"
+    ],
+    "expected_values": {
+      "monthly_full_caliber_urban_employment_average_wage_2024": 12434
+    }
+  },
+  {
+    "id": "hangzhou-social-insurance-uses-zhejiang-reference-only",
+    "city_input": "hangzhou",
+    "check": "social_insurance_base",
+    "expected_city": "hangzhou",
+    "expected_status": "verified_reference_only",
+    "expected_flags": [
+      "zhejiang_social_base_available",
+      "not_hangzhou_compensation_cap"
+    ],
+    "expected_source_ids": [
+      "ZJ-JOINT-SOCIAL-BASE-2025"
+    ],
+    "expected_values": {
+      "monthly_weighted_average_wage_2024": 8433
+    }
+  },
+  {
+    "id": "guangzhou-economic-compensation-cap-is-candidate-not-final",
+    "city_input": "广州",
+    "check": "economic_compensation_high_wage_cap",
+    "expected_city": "guangzhou",
+    "expected_status": "verified_candidate",
+    "expected_flags": [
+      "cap_rule_explained",
+      "cap_amount_candidate_available",
+      "local_hrss_or_arbitration_confirmation_needed",
+      "do_not_auto_cap"
+    ],
+    "expected_source_ids": [
+      "GZ-RSJ-LAYOFF-NORM-2021",
+      "GZ-GOV-WAGE-2024",
+      "GZ-GJJ-HOUSING-FUND-BASE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "GZ-GOV-WAGE-2024",
+      "GZ-GJJ-HOUSING-FUND-BASE-2025"
+    ],
+    "expected_values": {
+      "monthly_urban_non_private_employment_average_wage_2024": 13276,
+      "monthly_housing_fund_base_upper": 39828
+    }
+  },
+  {
+    "id": "guangzhou-economic-layoff-local-procedure",
+    "city_input": "穗",
+    "check": "economic_layoff_local_procedure",
+    "expected_city": "guangzhou",
+    "expected_status": "verified_candidate",
+    "expected_flags": [
+      "local_layoff_report_guidance",
+      "worker_consultation_needed",
+      "ai_transformation_contract_change_chain_check",
+      "open_ended_contract_priority_retention_check",
+      "priority_retention_check",
+      "protected_status_check",
+      "unpaid_wage_social_insurance_clearance_check",
+      "written_hrss_report_package_check",
+      "report_attachments_check",
+      "hrss_feedback_response_check",
+      "final_plan_publication_check"
+    ],
+    "expected_source_ids": [
+      "GZ-RSJ-LAYOFF-NORM-2021"
+    ],
+    "expected_values": {
+      "economic_layoff_plan_required_items": [
+        "statutory_layoff_reason",
+        "affected_positions",
+        "layoff_headcount_and_ratio",
+        "selection_criteria",
+        "affected_worker_list",
+        "implementation_time_and_steps",
+        "contract_expiry_handling",
+        "economic_compensation_standard_and_payment_method",
+        "arrears_wage_clearance_plan",
+        "social_insurance_arrears_clearance_plan"
+      ]
+    }
+  },
+  {
+    "id": "guangzhou-economic-layoff-report-package",
+    "city_input": "广州",
+    "check": "guangzhou_economic_layoff_report_package",
+    "expected_city": "guangzhou",
+    "expected_status": "verified_candidate",
+    "expected_flags": [
+      "guangzhou_written_report_before_implementation",
+      "report_reason_worker_basic_info_opinion_contact_check",
+      "final_plan_and_supporting_materials_check",
+      "hrss_opinion_response_check",
+      "confirmed_plan_publication_check"
+    ],
+    "expected_source_ids": [
+      "GZ-RSJ-LAYOFF-NORM-2021"
+    ],
+    "expected_values": {
+      "written_report_required_items": [
+        "layoff_reason",
+        "affected_workers_basic_information",
+        "union_or_all_staff_explanation_and_opinion_record",
+        "responsible_person_and_contact",
+        "final_layoff_plan",
+        "supporting_materials"
+      ],
+      "post_report_obligations": [
+        "study_hrss_opinions_or_suggestions",
+        "resolve_issues_lawfully_one_by_one",
+        "submit_written_response_when_hrss_comments_exist",
+        "publish_confirmed_plan_to_all_staff"
+      ]
+    }
+  },
+  {
+    "id": "guangzhou-social-insurance-reference-not-cap",
+    "city_input": "gz",
+    "check": "social_insurance_base",
+    "expected_city": "guangzhou",
+    "expected_status": "verified_reference_only",
+    "expected_flags": [
+      "guangdong_pension_base_available",
+      "not_economic_compensation_cap"
+    ],
+    "expected_source_ids": [
+      "GD-HRSS-PENSION-BASE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "GD-HRSS-PENSION-BASE-2025"
+    ],
+    "expected_values": {
+      "monthly_pension_base_upper": 27549,
+      "monthly_pension_base_lower_guangzhou": 5510
+    }
+  },
+  {
+    "id": "guangzhou-housing-fund-reference-not-cap",
+    "city_input": "广州市",
+    "check": "housing_fund_base",
+    "expected_city": "guangzhou",
+    "expected_status": "verified_reference_only",
+    "expected_flags": [
+      "guangzhou_housing_fund_base_available",
+      "not_economic_compensation_cap"
+    ],
+    "expected_source_ids": [
+      "GZ-GJJ-HOUSING-FUND-BASE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "GZ-GJJ-HOUSING-FUND-BASE-2025"
+    ],
+    "expected_values": {
+      "monthly_employee_average_wage_2024": 13276,
+      "monthly_housing_fund_base_upper": 39828
+    }
+  },
+  {
+    "id": "suzhou-economic-compensation-cap-needs-local-source",
+    "city_input": "苏州",
+    "check": "economic_compensation_high_wage_cap",
+    "expected_city": "suzhou",
+    "expected_status": "local_verify",
+    "expected_flags": [
+      "city_source_pending",
+      "official_source_needed",
+      "do_not_auto_cap",
+      "city_rule_verified_false"
+    ],
+    "expected_source_ids": [
+      "SZH-CITY-CAP-SOURCE-PENDING"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "SZH-CITY-CAP-SOURCE-PENDING"
+    ]
+  },
+  {
+    "id": "beijing-social-insurance-is-not-compensation-cap",
+    "city_input": "bj",
+    "check": "social_insurance_base",
+    "expected_city": "beijing",
+    "expected_status": "verified_reference_only",
+    "expected_flags": [
+      "social_base_available",
+      "not_economic_compensation_cap"
+    ],
+    "expected_source_ids": [
+      "BJ-RSJ-SOCIAL-BASE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "BJ-RSJ-SOCIAL-BASE-2025"
+    ],
+    "expected_values": {
+      "monthly_social_insurance_base_upper": 35811
+    }
+  },
+  {
+    "id": "chengdu-economic-compensation-cap-needs-local-source",
+    "city_input": "成都",
+    "check": "economic_compensation_high_wage_cap",
+    "expected_city": "chengdu",
+    "expected_status": "local_verify",
+    "expected_flags": [
+      "city_source_pending",
+      "official_source_needed",
+      "do_not_auto_cap",
+      "city_rule_verified_false"
+    ],
+    "expected_source_ids": [
+      "CD-CITY-CAP-SOURCE-PENDING"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "CD-CITY-CAP-SOURCE-PENDING"
+    ]
+  },
+  {
+    "id": "suzhou-social-insurance-needs-local-source",
+    "city_input": "szh",
+    "check": "social_insurance_base",
+    "expected_city": "suzhou",
+    "expected_status": "local_verify",
+    "expected_flags": [
+      "local_social_base_needed",
+      "not_economic_compensation_cap",
+      "do_not_auto_cap"
+    ],
+    "expected_source_ids": [
+      "SZH-CITY-CAP-SOURCE-PENDING"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "SZH-CITY-CAP-SOURCE-PENDING"
+    ]
+  },
+  {
+    "id": "unsupported-city-needs-city-routing",
+    "city_input": "南昌",
+    "check": "economic_compensation_high_wage_cap",
+    "expected_city": "unsupported",
+    "expected_status": "needs_city",
+    "expected_flags": [
+      "unsupported_city",
+      "ask_for_supported_city_or_local_source"
+    ],
+    "expected_source_ids": []
+  }
+]

@@ -1,0 +1,160 @@
+[
+  {
+    "id": "cn-unlawful-termination-art87",
+    "query": "违法解除 二倍赔偿",
+    "limit": 8,
+    "expected_ids": [
+      "LCL-2012#art87"
+    ],
+    "expected_query_expansion_enabled": true,
+    "expected_expansion_terms": [
+      "unlawful termination",
+      "LCL-2012#art87"
+    ]
+  },
+  {
+    "id": "cn-guangzhou-economic-layoff-report-package",
+    "query": "广州 经济性裁员 报告 材料",
+    "limit": 8,
+    "expected_ids": [
+      "LCL-2012#art41",
+      "GZ-RSJ-LAYOFF-NORM-2021",
+      "guangzhou",
+      "guangzhou-hrss-economic-layoff-report-package"
+    ],
+    "expected_query_expansion_enabled": true,
+    "expected_expansion_terms": [
+      "economic layoff",
+      "LCL-2012#art41",
+      "GZ-RSJ-LAYOFF-NORM-2021"
+    ]
+  },
+  {
+    "id": "cn-noncompete-case-prototype",
+    "query": "竞业限制 补偿 范围",
+    "include": [
+      "case_prototypes"
+    ],
+    "limit": 5,
+    "allowed_result_types": [
+      "case_prototype"
+    ],
+    "expected_ids": [
+      "spc-noncompete-scope-limited-pharma"
+    ],
+    "expected_query_expansion_enabled": true,
+    "expected_expansion_terms": [
+      "non-compete",
+      "SPC-LDI-2-2025#art13"
+    ]
+  },
+  {
+    "id": "cn-social-insurance-constructive-resignation",
+    "query": "未缴社保 被迫离职",
+    "include": [
+      "legal_anchors",
+      "case_prototypes"
+    ],
+    "limit": 8,
+    "allowed_result_types": [
+      "legal_anchor",
+      "case_prototype"
+    ],
+    "expected_ids": [
+      "LCL-2012#art38",
+      "spc-social-insurance-waiver-constructive-resignation"
+    ],
+    "expected_query_expansion_enabled": true,
+    "expected_expansion_terms": [
+      "social insurance",
+      "constructive resignation",
+      "LCL-2012#art38"
+    ]
+  },
+  {
+    "id": "cn-pregnancy-transfer-wage-cut",
+    "query": "孕期 调岗降薪",
+    "limit": 8,
+    "expected_ids": [
+      "LCL-2012#art42",
+      "mohrss-spc-pregnancy-project-removal-wage-cut"
+    ],
+    "expected_query_expansion_enabled": true,
+    "expected_expansion_terms": [
+      "pregnancy",
+      "LCL-2012#art42",
+      "wage cut"
+    ]
+  },
+  {
+    "id": "cn-local-verify-high-wage-cap-gating",
+    "query": "广州 经济补偿 高工资封顶",
+    "include": [
+      "source_cards",
+      "city_rules"
+    ],
+    "status": "local_verify",
+    "limit": 10,
+    "expected_ids": [
+      "HZ-CITY-CAP-SOURCE-PENDING",
+      "beijing",
+      "hangzhou",
+      "shenzhen"
+    ],
+    "expected_result_status": "local_verify",
+    "expected_query_expansion_enabled": true,
+    "expected_expansion_terms": [
+      "economic compensation",
+      "LCL-2012#art47"
+    ]
+  },
+  {
+    "id": "cn-suzhou-local-verify-cap-pending",
+    "query": "苏州 经济补偿 高工资封顶",
+    "include": [
+      "source_cards",
+      "city_rules"
+    ],
+    "status": "local_verify",
+    "limit": 10,
+    "expected_ids": [
+      "SZH-CITY-CAP-SOURCE-PENDING",
+      "suzhou"
+    ],
+    "expected_result_status": "local_verify",
+    "expected_query_expansion_enabled": true,
+    "expected_expansion_terms": [
+      "economic compensation",
+      "LCL-2012#art47"
+    ]
+  },
+  {
+    "id": "cn-chengdu-local-verify-cap-pending",
+    "query": "成都 经济补偿 高工资封顶",
+    "include": [
+      "source_cards",
+      "city_rules"
+    ],
+    "status": "local_verify",
+    "limit": 10,
+    "expected_ids": [
+      "CD-CITY-CAP-SOURCE-PENDING",
+      "chengdu"
+    ],
+    "expected_result_status": "local_verify",
+    "expected_query_expansion_enabled": true,
+    "expected_expansion_terms": [
+      "economic compensation",
+      "LCL-2012#art47"
+    ]
+  },
+  {
+    "id": "exact-anchor-no-expansion",
+    "query": "LCL-2012#art47",
+    "limit": 5,
+    "expected_ids": [
+      "LCL-2012#art47"
+    ],
+    "expected_query_expansion_enabled": false
+  }
+]

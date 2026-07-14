@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agreement Review"
+  short_description: "Review labor documents and risky clauses"
+  default_prompt: "Use $agreement-review to review a labor agreement or resignation document for worker-side risks."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,476 @@
+[
+  {
+    "id": "user-intake-guangzhou-ai-layoff-full-package",
+    "export_profile": "full_case_package",
+    "case": {
+      "jurisdiction": {
+        "country": "China",
+        "city": "Guangzhou",
+        "main_work_location": "Guangzhou"
+      },
+      "parties": {
+        "worker_name_or_alias": "worker-gz",
+        "employer_legal_name": "Example AI Guangzhou Co., Ltd.",
+        "actual_managing_entity": "Example AI Guangzhou Co., Ltd.",
+        "dispatch_or_outsourcing": false
+      },
+      "employment": {
+        "job_title": "senior engineer",
+        "start_date": "2018-03-01",
+        "end_date_or_expected_end": "2026-06-16",
+        "current_status": "notice_given",
+        "written_contract_signed": true,
+        "contract_sign_date": "2018-03-01",
+        "contract_end_date": "open_ended",
+        "probation": false
+      },
+      "wage": {
+        "average_monthly_wage": 45000,
+        "local_average_monthly_wage": 13276,
+        "previous_month_wage": 45000,
+        "last_12_months_wage_records": [
+          "bank_records",
+          "tax_app"
+        ],
+        "unpaid_wages_amount": 0,
+        "overtime_or_bonus_dispute": false
+      },
+      "social_security": {
+        "social_insurance_paid": true,
+        "housing_fund_paid": true,
+        "payment_location": "Guangzhou"
+      },
+      "dispute": {
+        "trigger": "Employer says the business is shifting to AI and legacy roles will be optimized.",
+        "employer_stated_reason": "AI transformation, business-method adjustment, and role mismatch",
+        "worker_goal": "test priority retention, internal alternative, training/transfer, and compensation paths before signing",
+        "documents_received": [
+          "optimization_notice",
+          "separation_agreement_draft"
+        ],
+        "documents_signed": [],
+        "deadline_or_meeting_time": "2026-06-20"
+      },
+      "evidence": {
+        "contract_or_offer": [
+          "labor_contract",
+          "open_ended_contract_confirmation"
+        ],
+        "wage_records": [
+          "bank_records",
+          "tax_app"
+        ],
+        "attendance_records": [
+          "attendance_app"
+        ],
+        "chat_or_email_records": [
+          "hr_email",
+          "department_meeting_notice"
+        ],
+        "termination_or_agreement_docs": [
+          "optimization_notice",
+          "separation_agreement_draft"
+        ],
+        "social_insurance_records": [
+          "social_insurance_app"
+        ],
+        "other": []
+      },
+      "risk_flags": {
+        "pregnancy_or_maternity": false,
+        "medical_period": false,
+        "occupational_disease_or_work_injury": false,
+        "non_compete": false,
+        "executive_or_confidential_role": false,
+        "foreign_worker": false,
+        "group_layoff": true
+      }
+    },
+    "adapter_hints": {
+      "termination_type": "article40_no_notice"
+    },
+    "expected": {
+      "status": "ready",
+      "termination_maps_contain": [
+        "economic_layoff",
+        "non_fault_dismissal"
+      ],
+      "negotiation_scenario": "economic_layoff_report_request",
+      "document_type": "separation_agreement",
+      "arbitration_claim_types_contain": [
+        "economic_compensation",
+        "substitute_notice_wage",
+        "unlawful_termination_compensation"
+      ]
+    }
+  },
+  {
+    "id": "user-intake-forced-resignation-unpaid-wages-arbitration",
+    "export_profile": "arbitration_ready",
+    "case": {
+      "jurisdiction": {
+        "country": "China",
+        "city": "Hangzhou",
+        "main_work_location": "Hangzhou"
+      },
+      "parties": {
+        "worker_name_or_alias": "worker-hz",
+        "employer_legal_name": "Example Network Hangzhou Co., Ltd.",
+        "actual_managing_entity": "Example Network Hangzhou Co., Ltd.",
+        "dispatch_or_outsourcing": false
+      },
+      "employment": {
+        "job_title": "operations specialist",
+        "start_date": "2023-01-10",
+        "end_date_or_expected_end": "2026-06-16",
+        "current_status": "employed",
+        "written_contract_signed": true,
+        "contract_sign_date": "2023-01-10",
+        "contract_end_date": "2027-01-09",
+        "probation": false
+      },
+      "wage": {
+        "average_monthly_wage": 10000,
+        "local_average_monthly_wage": 11000,
+        "last_12_months_wage_records": [
+          "bank_records",
+          "payslips"
+        ],
+        "unpaid_wages_amount": 30000,
+        "overtime_or_bonus_dispute": false
+      },
+      "social_security": {
+        "social_insurance_paid": false,
+        "housing_fund_paid": "unknown",
+        "payment_location": "Hangzhou"
+      },
+      "dispute": {
+        "trigger": "HR asked worker to submit personal-reason resignation while three months of wages remain unpaid.",
+        "employer_stated_reason": "cost control",
+        "worker_goal": "refuse false resignation and prepare arbitration if unpaid",
+        "documents_received": [
+          "resignation_template"
+        ],
+        "documents_signed": [],
+        "deadline_or_meeting_time": "2026-06-17"
+      },
+      "evidence": {
+        "contract_or_offer": [
+          "labor_contract"
+        ],
+        "wage_records": [
+          "bank_records",
+          "payslips"
+        ],
+        "attendance_records": [
+          "attendance_app"
+        ],
+        "chat_or_email_records": [
+          "hr_wechat"
+        ],
+        "termination_or_agreement_docs": [
+          "resignation_template"
+        ],
+        "social_insurance_records": [
+          "social_insurance_app"
+        ],
+        "other": [
+          "worker_timeline"
+        ]
+      },
+      "risk_flags": {
+        "pregnancy_or_maternity": false,
+        "medical_period": false,
+        "occupational_disease_or_work_injury": false,
+        "non_compete": false,
+        "executive_or_confidential_role": false,
+        "foreign_worker": false,
+        "group_layoff": false
+      }
+    },
+    "expected": {
+      "status": "ready",
+      "termination_maps_contain": [
+        "employee_resignation",
+        "constructive_dismissal"
+      ],
+      "negotiation_scenario": "forced_resignation_response",
+      "document_type": "resignation_form",
+      "arbitration_claim_types_contain": [
+        "economic_compensation",
+        "unpaid_wages"
+      ]
+    }
+  },
+  {
+    "id": "user-intake-wrapped-non-fault-no-notice-pre-signing",
+    "export_profile": "pre_signing_72h",
+    "intake": {
+      "case": {
+        "jurisdiction": {
+          "country": "China",
+          "city": "Beijing",
+          "main_work_location": "Beijing"
+        },
+        "parties": {
+          "worker_name_or_alias": "worker-bj",
+          "employer_legal_name": "Example Services Beijing Co., Ltd.",
+          "actual_managing_entity": "Example Services Beijing Co., Ltd.",
+          "dispatch_or_outsourcing": false
+        },
+        "employment": {
+          "job_title": "account manager",
+          "start_date": "2021-02-01",
+          "end_date_or_expected_end": "2026-06-19",
+          "current_status": "notice_given",
+          "written_contract_signed": true,
+          "contract_sign_date": "2021-02-01",
+          "contract_end_date": "2027-01-31",
+          "probation": false
+        },
+        "wage": {
+          "average_monthly_wage": 18000,
+          "local_average_monthly_wage": 12000,
+          "previous_month_wage": 19000,
+          "last_12_months_wage_records": [
+            "bank_records",
+            "tax_app"
+          ],
+          "unpaid_wages_amount": 0,
+          "overtime_or_bonus_dispute": false
+        },
+        "social_security": {
+          "social_insurance_paid": true,
+          "housing_fund_paid": true,
+          "payment_location": "Beijing"
+        },
+        "dispute": {
+          "trigger": "HR issued a same-day non-fault termination notice without 30 days advance notice.",
+          "employer_stated_reason": "objective circumstances changed and the role is no longer available",
+          "worker_goal": "request written basis, N+1 calculation, and evidence list before signing",
+          "documents_received": [
+            "termination_notice"
+          ],
+          "documents_signed": [],
+          "deadline_or_meeting_time": "2026-06-19"
+        },
+        "evidence": {
+          "contract_or_offer": [
+            "labor_contract"
+          ],
+          "wage_records": [
+            "bank_records",
+            "tax_app"
+          ],
+          "attendance_records": [
+            "attendance_app"
+          ],
+          "chat_or_email_records": [
+            "hr_email"
+          ],
+          "termination_or_agreement_docs": [
+            "termination_notice"
+          ],
+          "social_insurance_records": [
+            "social_insurance_app"
+          ],
+          "other": []
+        },
+        "risk_flags": {
+          "pregnancy_or_maternity": false,
+          "medical_period": false,
+          "occupational_disease_or_work_injury": false,
+          "non_compete": false,
+          "executive_or_confidential_role": false,
+          "foreign_worker": false,
+          "group_layoff": false
+        }
+      }
+    },
+    "expected": {
+      "status": "ready",
+      "termination_maps_contain": [
+        "non_fault_dismissal"
+      ],
+      "negotiation_scenario": "termination_reason_request",
+      "document_type": "termination_notice_or_certificate",
+      "arbitration_claim_types_contain": [
+        "economic_compensation",
+        "substitute_notice_wage",
+        "unlawful_termination_compensation"
+      ]
+    }
+  },
+  {
+    "id": "user-intake-missing-average-wage-needs-follow-up",
+    "export_profile": "pre_signing_72h",
+    "case": {
+      "jurisdiction": {
+        "country": "China",
+        "city": "Shanghai",
+        "main_work_location": "Shanghai"
+      },
+      "parties": {
+        "worker_name_or_alias": "worker-sh",
+        "employer_legal_name": "Example Technology Shanghai Co., Ltd.",
+        "actual_managing_entity": "Example Technology Shanghai Co., Ltd.",
+        "dispatch_or_outsourcing": false
+      },
+      "employment": {
+        "job_title": "product manager",
+        "start_date": "2020-04-01",
+        "end_date_or_expected_end": "2026-06-16",
+        "current_status": "notice_given",
+        "written_contract_signed": true,
+        "contract_sign_date": "2020-04-01",
+        "contract_end_date": "2027-03-31",
+        "probation": false
+      },
+      "wage": {
+        "average_monthly_wage": "unknown",
+        "last_12_months_wage_records": [],
+        "unpaid_wages_amount": 0,
+        "overtime_or_bonus_dispute": false
+      },
+      "social_security": {
+        "social_insurance_paid": true,
+        "housing_fund_paid": true,
+        "payment_location": "Shanghai"
+      },
+      "dispute": {
+        "trigger": "HR proposed mutual termination with a low one-time payment.",
+        "employer_stated_reason": "team adjustment",
+        "worker_goal": "counteroffer before signing",
+        "documents_received": [
+          "separation_agreement_draft"
+        ],
+        "documents_signed": [],
+        "deadline_or_meeting_time": "2026-06-18"
+      },
+      "evidence": {
+        "contract_or_offer": [
+          "labor_contract"
+        ],
+        "wage_records": [],
+        "attendance_records": [
+          "attendance_app"
+        ],
+        "chat_or_email_records": [
+          "hr_wechat",
+          "meeting_invite"
+        ],
+        "termination_or_agreement_docs": [
+          "separation_agreement_draft"
+        ],
+        "social_insurance_records": [
+          "social_insurance_app"
+        ],
+        "other": []
+      },
+      "risk_flags": {
+        "pregnancy_or_maternity": false,
+        "medical_period": false,
+        "occupational_disease_or_work_injury": false,
+        "non_compete": false,
+        "executive_or_confidential_role": false,
+        "foreign_worker": false,
+        "group_layoff": false
+      }
+    },
+    "expected": {
+      "status": "needs_more_input",
+      "missing_inputs": [
+        "case.wage.average_monthly_wage"
+      ],
+      "termination_maps_contain": [
+        "mutual_termination"
+      ],
+      "negotiation_scenario": "separation_offer_counter",
+      "document_type": "separation_agreement"
+    }
+  },
+  {
+    "id": "user-intake-hong-kong-unsupported-jurisdiction",
+    "export_profile": "pre_signing_72h",
+    "case": {
+      "jurisdiction": {
+        "country": "Hong Kong",
+        "region": "Hong Kong",
+        "city": "Hong Kong",
+        "main_work_location": "Hong Kong"
+      },
+      "parties": {
+        "worker_name_or_alias": "worker-hk",
+        "employer_legal_name": "Example Hong Kong Limited",
+        "actual_managing_entity": "Example Hong Kong Limited",
+        "dispatch_or_outsourcing": false
+      },
+      "employment": {
+        "job_title": "analyst",
+        "start_date": "2024-01-01",
+        "end_date_or_expected_end": "2026-06-30",
+        "current_status": "notice_given",
+        "written_contract_signed": true,
+        "probation": false
+      },
+      "wage": {
+        "average_monthly_wage": 30000,
+        "local_average_monthly_wage": "unknown",
+        "previous_month_wage": 30000,
+        "last_12_months_wage_records": [
+          "bank_records"
+        ],
+        "unpaid_wages_amount": 0
+      },
+      "social_security": {
+        "social_insurance_paid": "unknown",
+        "housing_fund_paid": "unknown",
+        "payment_location": "Hong Kong"
+      },
+      "dispute": {
+        "trigger": "Employer in Hong Kong gave a termination notice and asked for a separation release.",
+        "employer_stated_reason": "role eliminated in Hong Kong office",
+        "worker_goal": "organize facts and find local-law next steps without applying mainland China rules",
+        "documents_received": [
+          "termination_notice",
+          "separation_release"
+        ],
+        "documents_signed": [],
+        "deadline_or_meeting_time": "2026-06-25"
+      },
+      "evidence": {
+        "contract_or_offer": [
+          "employment_contract"
+        ],
+        "wage_records": [
+          "bank_records"
+        ],
+        "attendance_records": [],
+        "chat_or_email_records": [
+          "hr_email"
+        ],
+        "termination_or_agreement_docs": [
+          "termination_notice",
+          "separation_release"
+        ],
+        "social_insurance_records": [],
+        "other": []
+      },
+      "risk_flags": {
+        "pregnancy_or_maternity": false,
+        "medical_period": false,
+        "occupational_disease_or_work_injury": false,
+        "non_compete": false,
+        "executive_or_confidential_role": false,
+        "foreign_worker": false,
+        "group_layoff": false
+      }
+    },
+    "expected": {
+      "status": "unsupported_jurisdiction",
+      "termination_maps_contain": [
+        "unclear_or_mixed"
+      ]
+    }
+  }
+]

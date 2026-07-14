@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "first_response_headings": [
+    "现在先不要做什么",
+    "今天应当保存什么",
+    "当前可能涉及哪些权益",
+    "下一步需要补充什么信息"
+  ],
+  "legal_statuses": [
+    "confirmed_fact",
+    "supported_assessment",
+    "estimate",
+    "local_verify",
+    "lawyer_review",
+    "out_of_scope"
+  ],
+  "stable_interfaces": [
+    "worker_rights_cn.orchestrator.route_case",
+    "worker_rights_cn.safety.classify_request",
+    "worker_rights_cn.safety.review_output",
+    "worker_rights_cn.privacy.redaction_preview",
+    "worker_rights_cn.privacy.confirm_save"
+  ],
+  "routing_policy": "Use the decisions returned by the stable interfaces; never reproduce their routing conditions in the guide.",
+  "save_policy": "Do not save or upload automatically. Preview redaction and destination, require explicit confirmation, and stop if confirmation is absent.",
+  "canonical_host": "Codex",
+  "thin_adapters": [
+    "Claude Code",
+    "OpenCode",
+    "OpenClaw"
+  ]
+}

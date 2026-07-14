@@ -1,0 +1,287 @@
+[
+  {
+    "id": "session-missing-average-wage-then-ready",
+    "source_user_intake_case_id": "user-intake-missing-average-wage-needs-follow-up",
+    "expected_initial": {
+      "status": "needs_more_input",
+      "export_profile": "pre_signing_72h",
+      "missing_inputs": ["case.wage.average_monthly_wage"],
+      "question_paths": ["case.wage.average_monthly_wage"],
+      "question_count": 1,
+      "product_screen": "intake_follow_up",
+      "package_generated": false,
+      "editable_paths_contain": ["case.wage.average_monthly_wage"],
+      "workbench_action_ids_contain": ["answer:case__wage__average_monthly_wage"],
+      "export_kinds_contain": [
+        "workbench_state_json",
+        "case_package_json",
+        "redacted_share_packet_json"
+      ],
+      "share_redacted_paths_contain": [
+        "case.parties.employer_legal_name",
+        "case.evidence.chat_or_email_records"
+      ],
+      "termination_maps_contain": ["mutual_termination"]
+    },
+    "turns": [
+      {
+        "answers": {
+          "case.wage.average_monthly_wage": 15000,
+          "case.wage.last_12_months_wage_records": ["bank_records", "tax_app"]
+        },
+        "expected": {
+          "status": "ready",
+          "export_profile": "pre_signing_72h",
+          "product_screen": "case_package_ready",
+          "package_generated": true,
+          "package_sections": [
+            "case_snapshot",
+            "money_summary",
+            "evidence_directory",
+            "negotiation_plan",
+            "agreement_review_summary",
+            "safety_and_review_notes"
+          ],
+          "excluded_sections": ["arbitration_draft_pack"],
+          "editable_paths_contain": ["case.wage.average_monthly_wage"],
+          "workbench_action_ids_contain": [
+            "review:agreement_before_signing",
+            "export:case_package_json",
+            "export:redacted_share_packet"
+          ],
+          "export_kinds_contain": [
+            "workbench_state_json",
+            "case_package_json",
+            "redacted_share_packet_json"
+          ],
+          "termination_maps_contain": ["mutual_termination"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "session-forced-resignation-suggests-arbitration",
+    "source_user_intake_case_id": "user-intake-forced-resignation-unpaid-wages-arbitration",
+    "drop_export_profile": true,
+    "expected_initial": {
+      "status": "ready",
+      "export_profile": "arbitration_ready",
+      "product_screen": "case_package_ready",
+      "package_generated": true,
+      "package_sections": [
+        "case_snapshot",
+        "money_summary",
+        "evidence_directory",
+        "arbitration_draft_pack",
+        "safety_and_review_notes"
+      ],
+      "excluded_sections": ["negotiation_plan", "agreement_review_summary"],
+      "workbench_action_ids_contain": [
+        "verify:arbitration_form",
+        "export:case_package_json",
+        "export:redacted_share_packet"
+      ],
+      "export_kinds_contain": [
+        "workbench_state_json",
+        "case_package_json",
+        "redacted_share_packet_json"
+      ],
+      "termination_maps_contain": ["employee_resignation", "constructive_dismissal"]
+    }
+  },
+  {
+    "id": "session-core-facts-missing-then-ready",
+    "initial": {
+      "case": {
+        "jurisdiction": {
+          "country": "China",
+          "city": "Guangzhou"
+        },
+        "parties": {
+          "worker_name_or_alias": "worker-gz-session"
+        },
+        "employment": {
+          "current_status": "notice_given",
+          "written_contract_signed": true
+        },
+        "wage": {
+          "average_monthly_wage": "unknown",
+          "unpaid_wages_amount": 0
+        },
+        "social_security": {
+          "social_insurance_paid": true,
+          "housing_fund_paid": true,
+          "payment_location": "Guangzhou"
+        },
+        "dispute": {
+          "trigger": "HR says optimization and asks worker to sign a separation agreement before Friday.",
+          "worker_goal": "check compensation, document wording, and evidence before signing",
+          "documents_received": ["separation_agreement_draft"],
+          "documents_signed": [],
+          "deadline_or_meeting_time": "2026-06-19"
+        },
+        "evidence": {
+          "contract_or_offer": ["labor_contract"],
+          "wage_records": [],
+          "attendance_records": ["attendance_app"],
+          "chat_or_email_records": ["hr_wechat"],
+          "termination_or_agreement_docs": ["separation_agreement_draft"],
+          "social_insurance_records": ["social_insurance_app"],
+          "other": []
+        },
+        "risk_flags": {
+          "group_layoff": false
+        }
+      }
+    },
+    "expected_initial": {
+      "status": "needs_more_input",
+      "export_profile": "pre_signing_72h",
+      "product_screen": "intake_follow_up",
+      "missing_inputs": [
+        "case.parties.employer_legal_name",
+        "case.employment.start_date",
+        "case.employment.end_date_or_expected_end",
+        "case.wage.average_monthly_wage"
+      ],
+      "question_count": 4,
+      "editable_paths_contain": [
+        "case.parties.employer_legal_name",
+        "case.employment.start_date",
+        "case.wage.average_monthly_wage"
+      ],
+      "workbench_action_ids_contain": [
+        "answer:case__parties__employer_legal_name",
+        "answer:case__employment__start_date",
+        "answer:case__wage__average_monthly_wage"
+      ],
+      "package_generated": false
+    },
+    "turns": [
+      {
+        "answers": {
+          "case.parties.employer_legal_name": "Example Services Guangzhou Co., Ltd.",
+          "case.employment.start_date": "2022-07-01",
+          "case.employment.end_date_or_expected_end": "2026-06-30",
+          "case.wage.average_monthly_wage": 12000,
+          "case.wage.last_12_months_wage_records": ["bank_records", "tax_app"]
+        },
+        "expected": {
+          "status": "ready",
+          "export_profile": "pre_signing_72h",
+          "product_screen": "case_package_ready",
+          "package_generated": true,
+          "package_sections": [
+            "case_snapshot",
+            "termination_assessment",
+            "money_summary",
+            "evidence_directory",
+            "negotiation_plan",
+            "agreement_review_summary",
+            "safety_and_review_notes"
+          ],
+          "excluded_sections": ["arbitration_draft_pack"],
+          "workbench_action_ids_contain": [
+            "review:agreement_before_signing",
+            "export:case_package_json"
+          ],
+          "termination_maps_contain": ["economic_layoff", "mutual_termination"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "session-profile-resuggests-after-goal-answer",
+    "initial": {
+      "case": {
+        "jurisdiction": {
+          "country": "China",
+          "city": "Shenzhen",
+          "main_work_location": "Shenzhen"
+        },
+        "parties": {
+          "worker_name_or_alias": "worker-sz-session",
+          "employer_legal_name": "Example Platform Shenzhen Co., Ltd."
+        },
+        "employment": {
+          "start_date": "2024-01-01",
+          "end_date_or_expected_end": "2026-06-30",
+          "current_status": "employed",
+          "written_contract_signed": true
+        },
+        "wage": {
+          "average_monthly_wage": 14000,
+          "local_average_monthly_wage": 13000,
+          "unpaid_wages_amount": 28000,
+          "last_12_months_wage_records": ["bank_records", "payslips"]
+        },
+        "social_security": {
+          "social_insurance_paid": true,
+          "housing_fund_paid": "unknown",
+          "payment_location": "Shenzhen"
+        },
+        "dispute": {
+          "trigger": "Two months of wages are unpaid and HR has not given a written plan.",
+          "worker_goal": "unknown",
+          "documents_received": [],
+          "documents_signed": [],
+          "deadline_or_meeting_time": "2026-06-20"
+        },
+        "evidence": {
+          "contract_or_offer": ["labor_contract"],
+          "wage_records": ["bank_records", "payslips"],
+          "attendance_records": ["attendance_app"],
+          "chat_or_email_records": ["hr_wechat"],
+          "termination_or_agreement_docs": [],
+          "social_insurance_records": ["social_insurance_app"],
+          "other": []
+        },
+        "risk_flags": {
+          "group_layoff": false
+        }
+      }
+    },
+    "expected_initial": {
+      "status": "needs_more_input",
+      "export_profile": "full_case_package",
+      "product_screen": "intake_follow_up",
+      "missing_inputs": ["case.dispute.worker_goal"],
+      "question_count": 1,
+      "editable_paths_contain": ["case.dispute.worker_goal"],
+      "workbench_action_ids_contain": ["answer:case__dispute__worker_goal"],
+      "package_generated": false,
+      "termination_maps_contain": ["constructive_dismissal"]
+    },
+    "turns": [
+      {
+        "answers": {
+          "case.dispute.worker_goal": "prepare arbitration for unpaid wages if employer still refuses to pay"
+        },
+        "expected": {
+          "status": "ready",
+          "export_profile": "arbitration_ready",
+          "product_screen": "case_package_ready",
+          "package_generated": true,
+          "package_sections": [
+            "case_snapshot",
+            "termination_assessment",
+            "money_summary",
+            "evidence_directory",
+            "arbitration_draft_pack",
+            "safety_and_review_notes"
+          ],
+          "excluded_sections": ["negotiation_plan", "agreement_review_summary"],
+          "workbench_action_ids_contain": [
+            "verify:arbitration_form",
+            "export:case_package_json"
+          ],
+          "share_redacted_paths_contain": [
+            "case.parties.employer_legal_name",
+            "case.evidence.wage_records"
+          ],
+          "termination_maps_contain": ["constructive_dismissal"]
+        }
+      }
+    ]
+  }
+]

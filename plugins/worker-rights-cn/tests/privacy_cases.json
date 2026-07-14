@@ -1,0 +1,12 @@
+[
+  {"id":"ordinary-employment-facts","path":"facts.employment.start_date","value":"2024-01-15","classification":"ordinary_fact","action":"keep"},
+  {"id":"worker-name","path":"facts.worker.name","value":"张三","classification":"personal_sensitive","action":"redact"},
+  {"id":"phone-number","path":"facts.worker.phone","value":"13800138000","classification":"personal_sensitive","action":"redact"},
+  {"id":"identity-number","path":"facts.worker.id_number","value":"110101199001011234","classification":"personal_sensitive","action":"redact"},
+  {"id":"home-address","path":"facts.worker.address","value":"北京市朝阳区建国路88号","classification":"personal_sensitive","action":"redact"},
+  {"id":"pregnancy-health","path":"facts.worker.health_notes","value":"孕期12周，需保存产检病历","classification":"personal_sensitive","action":"redact"},
+  {"id":"evidence-body","path":"artifacts.0.content","value":"证据正文：张三 13800138000 被要求今天签字。","classification":"dispute_evidence","action":"summarize"},
+  {"id":"third-party-detail","path":"facts.third_parties.0.phone","value":"13900139000","classification":"high_risk_enterprise","action":"exclude"},
+  {"id":"customer-list","path":"artifacts.1.body","value":"客户名单：王某 13600136000，李某 13700137000","classification":"high_risk_enterprise","action":"exclude"},
+  {"id":"source-code","path":"artifacts.2.text","value":"source code: API_SECRET = 'private-key'","classification":"high_risk_enterprise","action":"exclude"}
+]

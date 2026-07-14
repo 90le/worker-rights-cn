@@ -1,0 +1,54 @@
+[
+  {
+    "id": "accepted-rerank-expand-only",
+    "model_response": {
+      "reranked_source_ids": ["LCL-2012#art41", "GZ-RSJ-LAYOFF-NORM-2021"],
+      "expanded_queries": ["广州 裁员 人社 报告 回执"],
+      "missing_source_queries": ["广州 经济性裁员 最新 本地 表单"],
+      "risk_flags": ["local_rule_verify_needed"],
+      "notes": "Rerank only; return to source records."
+    },
+    "expected_status": "accepted",
+    "expected_accepted_ids": ["LCL-2012#art41", "GZ-RSJ-LAYOFF-NORM-2021"],
+    "required_issue_codes": [],
+    "forbidden_output_substrings": ["sk-testredacted0000", "Bearer mocktokenvalue123"]
+  },
+  {
+    "id": "rejects-unknown-source-and-final-conclusion",
+    "model_response": {
+      "reranked_source_ids": ["LCL-2012#art41", "FAKE-SOURCE#art5"],
+      "expanded_queries": [],
+      "missing_source_queries": [],
+      "risk_flags": [],
+      "notes": "最终一定支持 2N。"
+    },
+    "expected_status": "rejected",
+    "required_issue_codes": ["UNKNOWN_SOURCE_ID", "FORBIDDEN_LEGAL_CONCLUSION"]
+  },
+  {
+    "id": "rejects-secret-like-query-without-echo",
+    "model_response": {
+      "reranked_source_ids": ["LCL-2012#art41"],
+      "expanded_queries": ["api_key\u003dsk-testredacted0000 广州 裁员"],
+      "missing_source_queries": ["authorization Bearer mocktokenvalue123"],
+      "risk_flags": ["secret_seen_in_gateway_output"],
+      "notes": "token should never be returned"
+    },
+    "expected_status": "rejected",
+    "required_issue_codes": ["SECRET_OR_TOKEN_IN_RESPONSE"],
+    "forbidden_output_substrings": ["sk-testredacted0000", "mocktokenvalue123", "token should never be returned"]
+  },
+  {
+    "id": "needs-revision-for-schema-and-local-finality-overreach",
+    "model_response": {
+      "reranked_source_ids": ["GZ-RSJ-LAYOFF-NORM-2021"],
+      "expanded_queries": ["广州 经济补偿 封顶 最终 已核实"],
+      "missing_source_queries": [],
+      "risk_flags": ["verified_final"],
+      "notes": "Treat local_verify candidate as verified_final.",
+      "final_local_rule": "Guangzhou cap is final."
+    },
+    "expected_status": "needs_revision",
+    "required_issue_codes": ["UNEXPECTED_RESPONSE_FIELDS", "SOURCE_FINALITY_OVERREACH"]
+  }
+]

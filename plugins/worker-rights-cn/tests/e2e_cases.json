@@ -1,0 +1,847 @@
+[
+  {
+    "id": "mutual-low-offer-to-counter",
+    "scenario": "Employer proposes mutual termination with a low offer before signing.",
+    "workflow": [
+      "case-intake",
+      "safety-guardrails",
+      "layoff-defense",
+      "compensation-calculator",
+      "evidence-builder",
+      "agreement-review",
+      "negotiation-coach"
+    ],
+    "intake": {
+      "case": {
+        "jurisdiction": {
+          "country": "China",
+          "city": "Shanghai",
+          "main_work_location": "Shanghai"
+        },
+        "parties": {
+          "worker_name_or_alias": "worker-a",
+          "employer_legal_name": "Example Technology Shanghai Co., Ltd.",
+          "actual_managing_entity": "Example Technology Shanghai Co., Ltd.",
+          "dispatch_or_outsourcing": false
+        },
+        "employment": {
+          "job_title": "product manager",
+          "start_date": "2020-04-01",
+          "end_date_or_expected_end": "2026-06-16",
+          "current_status": "notice_given",
+          "written_contract_signed": true,
+          "contract_sign_date": "2020-04-01",
+          "contract_end_date": "2027-03-31",
+          "probation": false
+        },
+        "wage": {
+          "average_monthly_wage": 15000,
+          "last_12_months_wage_records": ["bank_records", "tax_app"],
+          "unpaid_wages_amount": 0,
+          "overtime_or_bonus_dispute": false
+        },
+        "social_security": {
+          "social_insurance_paid": true,
+          "housing_fund_paid": true,
+          "payment_location": "Shanghai"
+        },
+        "dispute": {
+          "trigger": "HR proposed mutual termination with a low one-time payment.",
+          "employer_stated_reason": "team adjustment",
+          "worker_goal": "counteroffer before signing",
+          "documents_received": ["separation_agreement_draft"],
+          "documents_signed": [],
+          "deadline_or_meeting_time": "2026-06-18"
+        },
+        "evidence": {
+          "contract_or_offer": ["labor_contract"],
+          "wage_records": ["bank_records", "tax_app"],
+          "attendance_records": ["attendance_app"],
+          "chat_or_email_records": ["hr_wechat", "meeting_invite"],
+          "termination_or_agreement_docs": ["separation_agreement_draft"],
+          "social_insurance_records": ["social_insurance_app"],
+          "other": []
+        },
+        "risk_flags": {
+          "pregnancy_or_maternity": false,
+          "medical_period": false,
+          "occupational_disease_or_work_injury": false,
+          "non_compete": false,
+          "executive_or_confidential_role": false,
+          "foreign_worker": false,
+          "group_layoff": false
+        }
+      }
+    },
+    "compensation_input": {
+      "start_date": "2020-04-01",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 15000,
+      "local_average_monthly_wage": 12000,
+      "termination_type": "mutual"
+    },
+    "expected": {
+      "intake_required_paths": [
+        "case.jurisdiction.city",
+        "case.parties.employer_legal_name",
+        "case.employment.start_date",
+        "case.employment.end_date_or_expected_end",
+        "case.wage.average_monthly_wage",
+        "case.dispute.trigger",
+        "case.evidence.termination_or_agreement_docs"
+      ],
+      "safety_guardrails": {
+        "categories": ["lawful_evidence_preservation"],
+        "decision": "proceed_with_caution",
+        "required_response_elements": [
+          "confirm_lawful_scope",
+          "preserve_original_context",
+          "avoid_unrelated_personal_or_company_data"
+        ],
+        "safe_alternative_ids": [
+          "evidence_preservation_checklist",
+          "written_reason_request",
+          "next_skill_route"
+        ],
+        "source_anchors": [
+          "LDA-2007#art6",
+          "SPC-LDI-1-2020#art44",
+          "PIPL-2021#art6"
+        ]
+      },
+      "termination_maps": ["mutual_termination"],
+      "compensation": {
+        "service_period.n_months": 6.5,
+        "base_amounts.economic_compensation_n": 97500,
+        "claim_paths.economic_compensation_n": 97500
+      },
+      "evidence_item_ids": [
+        "separation_agreement_versions",
+        "proposal_origin_evidence",
+        "twelve_month_wage_basis",
+        "hr_chat_email_meeting_records"
+      ],
+      "agreement_review": {
+        "document_type": "separation_agreement",
+        "clause_types": [
+          "all_claims_waiver",
+          "payment_amount_and_date",
+          "termination_certificate"
+        ],
+        "risk_levels": ["critical", "high"]
+      },
+      "negotiation": {
+        "scenario": "separation_offer_counter",
+        "message_blocks": [
+          "request_written_terms",
+          "counteroffer_amount_basis",
+          "rights_reservation"
+        ],
+        "evidence_ids": [
+          "separation_agreement_versions",
+          "proposal_origin_evidence",
+          "twelve_month_wage_basis"
+        ],
+        "forbidden_phrases": [
+          "我自愿主动离职",
+          "双方再无任何争议"
+        ]
+      },
+      "source_anchors": [
+        "LCL-2012#art36",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-REG-2008#art27",
+        "LDA-2007#art4",
+        "LDA-2007#art6",
+        "PIPL-2021#art6",
+        "SPC-LDI-1-2020#art44",
+        "SPC-LDI-1-2020#art35"
+      ]
+    }
+  },
+  {
+    "id": "forced-resignation-unpaid-wages-to-arbitration",
+    "scenario": "Employer pressures personal-reason resignation while wages are unpaid.",
+    "workflow": [
+      "case-intake",
+      "safety-guardrails",
+      "layoff-defense",
+      "compensation-calculator",
+      "evidence-builder",
+      "negotiation-coach",
+      "arbitration-drafter"
+    ],
+    "intake": {
+      "case": {
+        "jurisdiction": {
+          "country": "China",
+          "city": "Hangzhou",
+          "main_work_location": "Hangzhou"
+        },
+        "parties": {
+          "worker_name_or_alias": "worker-b",
+          "employer_legal_name": "Example Network Hangzhou Co., Ltd.",
+          "actual_managing_entity": "Example Network Hangzhou Co., Ltd.",
+          "dispatch_or_outsourcing": false
+        },
+        "employment": {
+          "job_title": "operations specialist",
+          "start_date": "2023-01-10",
+          "end_date_or_expected_end": "2026-06-16",
+          "current_status": "employed",
+          "written_contract_signed": true,
+          "contract_sign_date": "2023-01-10",
+          "contract_end_date": "2027-01-09",
+          "probation": false
+        },
+        "wage": {
+          "average_monthly_wage": 10000,
+          "last_12_months_wage_records": ["bank_records", "payslips"],
+          "unpaid_wages_amount": 30000,
+          "overtime_or_bonus_dispute": false
+        },
+        "social_security": {
+          "social_insurance_paid": false,
+          "housing_fund_paid": "unknown",
+          "payment_location": "Hangzhou"
+        },
+        "dispute": {
+          "trigger": "HR asked worker to submit personal-reason resignation while three months of wages remain unpaid.",
+          "employer_stated_reason": "cost control",
+          "worker_goal": "refuse false resignation and prepare arbitration if unpaid",
+          "documents_received": ["resignation_template"],
+          "documents_signed": [],
+          "deadline_or_meeting_time": "2026-06-17"
+        },
+        "evidence": {
+          "contract_or_offer": ["labor_contract"],
+          "wage_records": ["bank_records", "payslips"],
+          "attendance_records": ["attendance_app"],
+          "chat_or_email_records": ["hr_wechat"],
+          "termination_or_agreement_docs": ["resignation_template"],
+          "social_insurance_records": ["social_insurance_app"],
+          "other": ["worker_timeline"]
+        },
+        "risk_flags": {
+          "pregnancy_or_maternity": false,
+          "medical_period": false,
+          "occupational_disease_or_work_injury": false,
+          "non_compete": false,
+          "executive_or_confidential_role": false,
+          "foreign_worker": false,
+          "group_layoff": false
+        }
+      }
+    },
+    "compensation_input": {
+      "start_date": "2023-01-10",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 10000,
+      "local_average_monthly_wage": 11000,
+      "termination_type": "unknown",
+      "unpaid_wages": 30000
+    },
+    "expected": {
+      "intake_required_paths": [
+        "case.jurisdiction.city",
+        "case.parties.employer_legal_name",
+        "case.employment.current_status",
+        "case.wage.unpaid_wages_amount",
+        "case.dispute.trigger",
+        "case.evidence.wage_records",
+        "case.evidence.chat_or_email_records"
+      ],
+      "safety_guardrails": {
+        "categories": ["lawful_evidence_preservation"],
+        "decision": "proceed_with_caution",
+        "required_response_elements": [
+          "confirm_lawful_scope",
+          "preserve_original_context",
+          "avoid_unrelated_personal_or_company_data"
+        ],
+        "safe_alternative_ids": [
+          "evidence_preservation_checklist",
+          "written_reason_request",
+          "next_skill_route"
+        ],
+        "source_anchors": [
+          "LDA-2007#art6",
+          "SPC-LDI-1-2020#art44",
+          "PIPL-2021#art6"
+        ]
+      },
+      "termination_maps": ["employee_resignation", "constructive_dismissal"],
+      "compensation": {
+        "service_period.n_months": 3.5,
+        "base_amounts.economic_compensation_n": 35000,
+        "claim_paths.economic_compensation_n": 65000,
+        "claim_paths.unlawful_termination_2n": 100000
+      },
+      "evidence_item_ids": [
+        "resignation_text_and_delivery",
+        "employer_breach_evidence",
+        "unpaid_wage_or_social_insurance_gap",
+        "chronology_memo"
+      ],
+      "negotiation": {
+        "scenario": "forced_resignation_response",
+        "message_blocks": [
+          "factual_refusal_to_resign",
+          "employer_breach_record_request",
+          "rights_reservation"
+        ],
+        "evidence_ids": [
+          "resignation_text_and_delivery",
+          "employer_breach_evidence",
+          "written_objection_or_request"
+        ],
+        "forbidden_phrases": [
+          "因个人原因离职",
+          "我主动申请离职"
+        ]
+      },
+      "arbitration": {
+        "claim_types": ["economic_compensation", "unpaid_wages"],
+        "sections": [
+          "jurisdiction",
+          "limitation",
+          "arbitration_requests",
+          "evidence_directory"
+        ],
+        "evidence_needed": [
+          "unpaid_wage_or_social_insurance_gap",
+          "payroll_tax_social_insurance_records"
+        ]
+      },
+      "source_anchors": [
+        "LCL-2012#art30",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "LCL-2012#art85",
+        "LDA-2007#art6",
+        "LDA-2007#art9",
+        "LDA-2007#art27",
+        "PIPL-2021#art6",
+        "SPC-LDI-1-2020#art44",
+        "SPC-LDI-1-2020#art45",
+        "SPC-LDI-2-2025#art19"
+      ]
+    }
+  },
+  {
+    "id": "article40-no-notice-to-arbitration",
+    "scenario": "Non-fault dismissal without 30-day notice or substitute notice wage.",
+    "workflow": [
+      "case-intake",
+      "safety-guardrails",
+      "layoff-defense",
+      "compensation-calculator",
+      "evidence-builder",
+      "negotiation-coach",
+      "arbitration-drafter"
+    ],
+    "intake": {
+      "case": {
+        "jurisdiction": {
+          "country": "China",
+          "city": "Beijing",
+          "main_work_location": "Beijing"
+        },
+        "parties": {
+          "worker_name_or_alias": "worker-c",
+          "employer_legal_name": "Example Services Beijing Co., Ltd.",
+          "actual_managing_entity": "Example Services Beijing Co., Ltd.",
+          "dispatch_or_outsourcing": false
+        },
+        "employment": {
+          "job_title": "account manager",
+          "start_date": "2022-01-01",
+          "end_date_or_expected_end": "2026-06-16",
+          "current_status": "terminated",
+          "written_contract_signed": true,
+          "contract_sign_date": "2022-01-01",
+          "contract_end_date": "2026-12-31",
+          "probation": false
+        },
+        "wage": {
+          "average_monthly_wage": 20000,
+          "last_12_months_wage_records": ["bank_records", "tax_app"],
+          "unpaid_wages_amount": 5000,
+          "overtime_or_bonus_dispute": false
+        },
+        "social_security": {
+          "social_insurance_paid": true,
+          "housing_fund_paid": true,
+          "payment_location": "Beijing"
+        },
+        "dispute": {
+          "trigger": "Employer gave same-day non-fault dismissal notice and did not pay substitute notice wage.",
+          "employer_stated_reason": "objective circumstances changed",
+          "worker_goal": "claim N+1 and unpaid items",
+          "documents_received": ["termination_notice"],
+          "documents_signed": [],
+          "deadline_or_meeting_time": "2026-06-16"
+        },
+        "evidence": {
+          "contract_or_offer": ["labor_contract"],
+          "wage_records": ["bank_records", "tax_app"],
+          "attendance_records": ["attendance_app"],
+          "chat_or_email_records": ["hr_email"],
+          "termination_or_agreement_docs": ["termination_notice"],
+          "social_insurance_records": ["social_insurance_app"],
+          "other": ["annual_leave_balance"]
+        },
+        "risk_flags": {
+          "pregnancy_or_maternity": false,
+          "medical_period": false,
+          "occupational_disease_or_work_injury": false,
+          "non_compete": false,
+          "executive_or_confidential_role": false,
+          "foreign_worker": false,
+          "group_layoff": false
+        }
+      }
+    },
+    "compensation_input": {
+      "start_date": "2022-01-01",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 20000,
+      "local_average_monthly_wage": 12000,
+      "previous_month_wage": 18000,
+      "termination_type": "article40_no_notice",
+      "unpaid_wages": 5000,
+      "unused_annual_leave_days": 3
+    },
+    "expected": {
+      "intake_required_paths": [
+        "case.jurisdiction.city",
+        "case.parties.employer_legal_name",
+        "case.employment.current_status",
+        "case.dispute.employer_stated_reason",
+        "case.evidence.termination_or_agreement_docs",
+        "case.evidence.wage_records"
+      ],
+      "safety_guardrails": {
+        "categories": ["lawful_evidence_preservation"],
+        "decision": "proceed_with_caution",
+        "required_response_elements": [
+          "confirm_lawful_scope",
+          "preserve_original_context",
+          "avoid_unrelated_personal_or_company_data"
+        ],
+        "safe_alternative_ids": [
+          "evidence_preservation_checklist",
+          "written_reason_request",
+          "next_skill_route"
+        ],
+        "source_anchors": [
+          "LDA-2007#art6",
+          "SPC-LDI-1-2020#art44",
+          "PIPL-2021#art6"
+        ]
+      },
+      "termination_maps": ["non_fault_dismissal"],
+      "compensation": {
+        "service_period.n_months": 4.5,
+        "base_amounts.economic_compensation_n": 90000,
+        "base_amounts.substitute_notice_wage": 18000,
+        "claim_paths.n_plus_one": 118517.24
+      },
+      "evidence_item_ids": [
+        "article40_ground_evidence",
+        "notice_or_substitute_wage_evidence",
+        "twelve_month_wage_basis",
+        "training_transfer_or_consultation_records"
+      ],
+      "negotiation": {
+        "scenario": "termination_reason_request",
+        "message_blocks": [
+          "request_written_reason",
+          "work_availability",
+          "evidence_preservation"
+        ],
+        "evidence_ids": [
+          "termination_notice_exact_reason",
+          "written_objection_or_request",
+          "work_access_and_attendance_records"
+        ],
+        "forbidden_phrases": [
+          "我同意解除",
+          "我不要赔偿"
+        ]
+      },
+      "arbitration": {
+        "claim_types": ["economic_compensation", "substitute_notice_wage"],
+        "sections": [
+          "arbitration_requests",
+          "facts_and_reasons",
+          "evidence_directory",
+          "filing_checks"
+        ],
+        "evidence_needed": [
+          "article40_ground_evidence",
+          "notice_or_substitute_wage_evidence"
+        ]
+      },
+      "source_anchors": [
+        "LCL-2012#art40",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-REG-2008#art20",
+        "LCL-REG-2008#art27",
+        "PAID-LEAVE-REG-2007#art5",
+        "PAID-LEAVE-MEASURES-2008#art10",
+        "PAID-LEAVE-MEASURES-2008#art11",
+        "LDA-2007#art6",
+        "LDA-2007#art28",
+        "PIPL-2021#art6",
+        "SPC-LDI-1-2020#art44"
+      ]
+    }
+  },
+  {
+    "id": "unsigned-contract-double-wage-to-arbitration",
+    "scenario": "Worker was employed for more than one month without a written labor contract.",
+    "workflow": [
+      "case-intake",
+      "safety-guardrails",
+      "layoff-defense",
+      "compensation-calculator",
+      "evidence-builder",
+      "arbitration-drafter"
+    ],
+    "intake": {
+      "case": {
+        "jurisdiction": {
+          "country": "China",
+          "city": "Shenzhen",
+          "main_work_location": "Shenzhen"
+        },
+        "parties": {
+          "worker_name_or_alias": "worker-d",
+          "employer_legal_name": "Example Commerce Shenzhen Co., Ltd.",
+          "actual_managing_entity": "Example Commerce Shenzhen Co., Ltd.",
+          "dispatch_or_outsourcing": false
+        },
+        "employment": {
+          "job_title": "customer support",
+          "start_date": "2025-01-01",
+          "end_date_or_expected_end": "2026-06-16",
+          "current_status": "terminated",
+          "written_contract_signed": false,
+          "contract_sign_date": "",
+          "contract_end_date": "",
+          "probation": "unknown"
+        },
+        "wage": {
+          "average_monthly_wage": 8000,
+          "last_12_months_wage_records": ["bank_records"],
+          "unpaid_wages_amount": 0,
+          "overtime_or_bonus_dispute": false
+        },
+        "social_security": {
+          "social_insurance_paid": true,
+          "housing_fund_paid": "unknown",
+          "payment_location": "Shenzhen"
+        },
+        "dispute": {
+          "trigger": "Employer never signed a written labor contract after onboarding.",
+          "employer_stated_reason": "contract was delayed by HR",
+          "worker_goal": "prepare double-wage claim",
+          "documents_received": ["onboarding_form"],
+          "documents_signed": [],
+          "deadline_or_meeting_time": ""
+        },
+        "evidence": {
+          "contract_or_offer": ["offer_letter", "onboarding_form"],
+          "wage_records": ["bank_records"],
+          "attendance_records": ["attendance_app"],
+          "chat_or_email_records": ["hr_contract_delay_chat"],
+          "termination_or_agreement_docs": [],
+          "social_insurance_records": ["social_insurance_app"],
+          "other": ["worker_timeline"]
+        },
+        "risk_flags": {
+          "pregnancy_or_maternity": false,
+          "medical_period": false,
+          "occupational_disease_or_work_injury": false,
+          "non_compete": false,
+          "executive_or_confidential_role": false,
+          "foreign_worker": false,
+          "group_layoff": false
+        }
+      }
+    },
+    "compensation_input": {
+      "start_date": "2025-01-01",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 8000,
+      "local_average_monthly_wage": 10000,
+      "termination_type": "unknown",
+      "unsigned_contract_months_owed": 10
+    },
+    "expected": {
+      "intake_required_paths": [
+        "case.jurisdiction.city",
+        "case.parties.employer_legal_name",
+        "case.employment.written_contract_signed",
+        "case.employment.start_date",
+        "case.wage.average_monthly_wage",
+        "case.evidence.contract_or_offer",
+        "case.evidence.wage_records"
+      ],
+      "safety_guardrails": {
+        "categories": ["lawful_evidence_preservation"],
+        "decision": "proceed_with_caution",
+        "required_response_elements": [
+          "confirm_lawful_scope",
+          "preserve_original_context",
+          "avoid_unrelated_personal_or_company_data"
+        ],
+        "safe_alternative_ids": [
+          "evidence_preservation_checklist",
+          "written_reason_request",
+          "next_skill_route"
+        ],
+        "source_anchors": [
+          "LDA-2007#art6",
+          "SPC-LDI-1-2020#art44",
+          "PIPL-2021#art6"
+        ]
+      },
+      "termination_maps": ["unclear_or_mixed"],
+      "compensation": {
+        "service_period.n_months": 1.5,
+        "base_amounts.economic_compensation_n": 12000,
+        "additional_claims.unsigned_contract_double_wage": 80000,
+        "claim_paths.economic_compensation_n": 92000
+      },
+      "evidence_item_ids": [
+        "labor_contract_and_renewals",
+        "payroll_tax_social_insurance_records",
+        "work_access_and_attendance_records",
+        "limitation_and_filing_timeline"
+      ],
+      "arbitration": {
+        "claim_types": ["unsigned_contract_double_wage"],
+        "sections": [
+          "parties",
+          "limitation",
+          "arbitration_requests",
+          "evidence_directory"
+        ],
+        "evidence_needed": [
+          "labor_contract_and_renewals",
+          "payroll_tax_social_insurance_records",
+          "work_access_and_attendance_records"
+        ]
+      },
+      "source_anchors": [
+        "LCL-2012#art82",
+        "LCL-REG-2008#art6",
+        "LCL-REG-2008#art7",
+        "LDA-2007#art2",
+        "LDA-2007#art6",
+        "LDA-2007#art27",
+        "PIPL-2021#art6",
+        "SPC-LDI-1-2020#art44"
+      ]
+    }
+  },
+  {
+    "id": "guangzhou-ai-transformation-open-ended-layoff",
+    "scenario": "Guangzhou employer shifts legacy business to AI, optimizes an open-ended-contract worker, and gives no clear internal alternative or training record.",
+    "workflow": [
+      "case-intake",
+      "safety-guardrails",
+      "layoff-defense",
+      "compensation-calculator",
+      "evidence-builder",
+      "negotiation-coach",
+      "arbitration-drafter"
+    ],
+    "intake": {
+      "case": {
+        "jurisdiction": {
+          "country": "China",
+          "city": "Guangzhou",
+          "main_work_location": "Guangzhou"
+        },
+        "parties": {
+          "worker_name_or_alias": "worker-e",
+          "employer_legal_name": "Example AI Guangzhou Co., Ltd.",
+          "actual_managing_entity": "Example AI Guangzhou Co., Ltd.",
+          "dispatch_or_outsourcing": false
+        },
+        "employment": {
+          "job_title": "legacy operations lead",
+          "start_date": "2018-03-01",
+          "end_date_or_expected_end": "2026-06-16",
+          "current_status": "notice_given",
+          "written_contract_signed": true,
+          "contract_sign_date": "2018-03-01",
+          "contract_end_date": null,
+          "contract_type": "open_ended",
+          "probation": false
+        },
+        "wage": {
+          "average_monthly_wage": 45000,
+          "last_12_months_wage_records": ["bank_records", "tax_app"],
+          "unpaid_wages_amount": 0,
+          "overtime_or_bonus_dispute": false
+        },
+        "social_security": {
+          "social_insurance_paid": true,
+          "housing_fund_paid": true,
+          "payment_location": "Guangzhou"
+        },
+        "dispute": {
+          "trigger": "Employer says the business is shifting to AI and legacy roles will be optimized.",
+          "employer_stated_reason": "AI transformation, business-method adjustment, and role mismatch",
+          "worker_goal": "test priority retention, internal alternative, training/transfer, and compensation paths before signing",
+          "documents_received": ["optimization_notice", "separation_agreement_draft"],
+          "documents_signed": [],
+          "deadline_or_meeting_time": "2026-06-20"
+        },
+        "evidence": {
+          "contract_or_offer": ["open_ended_labor_contract"],
+          "wage_records": ["bank_records", "tax_app"],
+          "attendance_records": ["attendance_app"],
+          "chat_or_email_records": ["hr_email", "department_meeting_notice"],
+          "termination_or_agreement_docs": ["optimization_notice", "separation_agreement_draft"],
+          "social_insurance_records": ["social_insurance_app"],
+          "other": ["job_postings_for_ai_roles", "organization_change_notice"]
+        },
+        "risk_flags": {
+          "pregnancy_or_maternity": false,
+          "medical_period": false,
+          "occupational_disease_or_work_injury": false,
+          "non_compete": false,
+          "executive_or_confidential_role": false,
+          "foreign_worker": false,
+          "group_layoff": true
+        }
+      }
+    },
+    "compensation_input": {
+      "start_date": "2018-03-01",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 45000,
+      "local_average_monthly_wage": 13276,
+      "previous_month_wage": 45000,
+      "termination_type": "article40_no_notice"
+    },
+    "expected": {
+      "intake_required_paths": [
+        "case.jurisdiction.city",
+        "case.employment.contract_type",
+        "case.dispute.employer_stated_reason",
+        "case.risk_flags.group_layoff",
+        "case.evidence.termination_or_agreement_docs",
+        "case.evidence.chat_or_email_records"
+      ],
+      "safety_guardrails": {
+        "categories": ["lawful_evidence_preservation"],
+        "decision": "proceed_with_caution",
+        "required_response_elements": [
+          "confirm_lawful_scope",
+          "preserve_original_context",
+          "avoid_unrelated_personal_or_company_data"
+        ],
+        "safe_alternative_ids": [
+          "evidence_preservation_checklist",
+          "written_reason_request",
+          "next_skill_route"
+        ],
+        "source_anchors": [
+          "LDA-2007#art6",
+          "SPC-LDI-1-2020#art44",
+          "PIPL-2021#art6"
+        ]
+      },
+      "termination_maps": ["economic_layoff", "non_fault_dismissal"],
+      "compensation": {
+        "service_period.n_months": 8.5,
+        "base_amounts.wage_cap_applied": true,
+        "base_amounts.monthly_wage_for_n": 39828,
+        "base_amounts.economic_compensation_n": 338538,
+        "base_amounts.substitute_notice_wage": 45000,
+        "claim_paths.n_plus_one": 383538,
+        "claim_paths.unlawful_termination_2n": 677076
+      },
+      "evidence_item_ids": [
+        "layoff_threshold_and_plan",
+        "ai_transformation_contract_change_and_internal_alternatives",
+        "priority_retention_and_rehire_evidence",
+        "training_transfer_or_consultation_records",
+        "thirty_day_explanation_opinion_report",
+        "guangzhou_layoff_report_package",
+        "termination_notice_exact_reason",
+        "twelve_month_wage_basis"
+      ],
+      "negotiation": {
+        "scenario": "economic_layoff_report_request",
+        "message_blocks": [
+          "request_written_reason",
+          "request_economic_layoff_report_package",
+          "rights_reservation",
+          "evidence_preservation"
+        ],
+        "evidence_ids": [
+          "layoff_threshold_and_plan",
+          "thirty_day_explanation_opinion_report",
+          "guangzhou_layoff_report_package",
+          "priority_retention_and_rehire_evidence",
+          "termination_notice_exact_reason",
+          "twelve_month_wage_basis"
+        ],
+        "forbidden_phrases": [
+          "我同意解除",
+          "我接受未公示方案",
+          "我可以去拿公司内部资料"
+        ]
+      },
+      "arbitration": {
+        "claim_types": [
+          "economic_compensation",
+          "substitute_notice_wage",
+          "unlawful_termination_compensation"
+        ],
+        "sections": [
+          "arbitration_requests",
+          "facts_and_reasons",
+          "evidence_directory",
+          "filing_checks"
+        ],
+        "evidence_needed": [
+          "labor_contract_and_renewals",
+          "twelve_month_wage_basis",
+          "article40_ground_evidence",
+          "notice_or_substitute_wage_evidence",
+          "termination_notice_exact_reason",
+          "layoff_threshold_and_plan",
+          "thirty_day_explanation_opinion_report",
+          "guangzhou_layoff_report_package",
+          "priority_retention_and_rehire_evidence"
+        ]
+      },
+      "source_anchors": [
+        "LCL-2012#art35",
+        "LCL-2012#art40",
+        "LCL-2012#art41",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "LCL-REG-2008#art19",
+        "LCL-REG-2008#art20",
+        "LCL-REG-2008#art27",
+        "LDA-2007#art6",
+        "LDA-2007#art28",
+        "PIPL-2021#art6",
+        "SPC-LDI-1-2020#art44"
+      ]
+    }
+  }
+]

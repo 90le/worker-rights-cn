@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "cases": [
+    "marketplace_catalog_resolution",
+    "fresh_install",
+    "repeated_install",
+    "upgrade_from_0_1_layout",
+    "uninstall_retains_user_cases",
+    "explicit_confirmed_purge",
+    "missing_python_degradation",
+    "missing_fts5_degradation",
+    "secondary_host_unavailable"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "worker-rights-cn",
+  "version": "0.2.0",
+  "author": {
+    "name": "丘彬彬"
+  },
+  "repository": "https://github.com/90le/worker-rights-cn",
+  "website": "https://90le.github.io/worker-rights-cn/",
+  "license": "Apache-2.0",
+  "release_channel": "public",
+  "publication_status": "public",
+  "policy_documents": {
+    "privacy": "PRIVACY.md",
+    "terms": "TERMS.md",
+    "security": "SECURITY.md"
+  },
+  "public_urls": {
+    "website": "https://90le.github.io/worker-rights-cn/",
+    "privacy": "https://90le.github.io/worker-rights-cn/privacy.html",
+    "terms": "https://90le.github.io/worker-rights-cn/terms.html",
+    "security": "https://90le.github.io/worker-rights-cn/security.html"
+  },
+  "starter_prompts": [
+    "公司让我今天签离职协议，我现在应该先做什么？",
+    "帮我整理被辞退的事实、证据和下一步行动。",
+    "根据我的入职时间和工资，估算可能的补偿范围。"
+  ]
+}

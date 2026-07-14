@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "worker-rights-cn": {
+      "command": "node",
+      "args": ["./mcp/launcher.mjs"],
+      "cwd": ".",
+      "tool_timeout_sec": 120
+    }
+  }
+}

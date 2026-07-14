@@ -1,0 +1,100 @@
+[
+  {
+    "id": "separation-broad-waiver-low-offer",
+    "document_type": "separation_agreement",
+    "expected_clause_types": [
+      "all_claims_waiver",
+      "payment_amount_and_date",
+      "termination_certificate"
+    ],
+    "expected_risk_levels": ["critical", "high"],
+    "expected_source_anchors": [
+      "LCL-2012#art26",
+      "LCL-2012#art46",
+      "LCL-2012#art47",
+      "SPC-LDI-1-2020#art35"
+    ]
+  },
+  {
+    "id": "forced-personal-reason-resignation",
+    "document_type": "resignation_form",
+    "expected_clause_types": [
+      "resignation_characterization",
+      "all_claims_waiver"
+    ],
+    "expected_risk_levels": ["critical"],
+    "expected_source_anchors": [
+      "LCL-2012#art37",
+      "LCL-2012#art38",
+      "LCL-2012#art46",
+      "SPC-LDI-1-2020#art45",
+      "SPC-LDI-2-2025#art19"
+    ]
+  },
+  {
+    "id": "non-compete-no-compensation-broad-scope",
+    "document_type": "non_compete_agreement",
+    "expected_clause_types": [
+      "non_compete",
+      "liquidated_damages",
+      "confidentiality_and_penalty"
+    ],
+    "expected_risk_levels": ["critical", "lawyer_check"],
+    "expected_source_anchors": [
+      "LCL-2012#art23",
+      "LCL-2012#art24",
+      "LCL-2012#art25",
+      "SPC-LDI-1-2020#art36",
+      "SPC-LDI-1-2020#art38",
+      "SPC-LDI-2-2025#art13",
+      "SPC-LDI-2-2025#art15"
+    ]
+  },
+  {
+    "id": "confidentiality-disguised-non-compete",
+    "document_type": "confidentiality_agreement",
+    "expected_clause_types": [
+      "confidentiality_and_penalty",
+      "non_compete",
+      "liquidated_damages"
+    ],
+    "expected_risk_levels": ["critical", "high", "lawyer_check"],
+    "expected_source_anchors": [
+      "LCL-2012#art23",
+      "LCL-2012#art24",
+      "LCL-2012#art25",
+      "LCL-2012#art26",
+      "SPC-LDI-2-2025#art13"
+    ]
+  },
+  {
+    "id": "training-service-period-heavy-penalty",
+    "document_type": "service_period_agreement",
+    "expected_clause_types": [
+      "service_period",
+      "liquidated_damages"
+    ],
+    "expected_risk_levels": ["critical", "high"],
+    "expected_source_anchors": [
+      "LCL-2012#art22",
+      "LCL-2012#art25",
+      "SPC-LDI-2-2025#art12"
+    ]
+  },
+  {
+    "id": "termination-certificate-mislabels-resignation",
+    "document_type": "termination_notice_or_certificate",
+    "expected_clause_types": [
+      "termination_certificate",
+      "resignation_characterization",
+      "payment_amount_and_date"
+    ],
+    "expected_risk_levels": ["critical", "high"],
+    "expected_source_anchors": [
+      "LCL-2012#art50",
+      "LCL-REG-2008#art24",
+      "LDA-2007#art6",
+      "SPC-LDI-1-2020#art44"
+    ]
+  }
+]

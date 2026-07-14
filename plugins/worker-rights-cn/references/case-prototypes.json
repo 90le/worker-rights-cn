@@ -1,0 +1,270 @@
+{
+  "schema_version": "0.2.0",
+  "prototypes": [
+    {
+      "id": "spc-mixed-affiliate-no-contract",
+      "title": "Mixed-affiliate employment and unsigned contract",
+      "summary": "Generalized public-case record covering employer identity, mixed-affiliate work, unsigned-contract claims, and employer-controlled evidence.",
+      "jurisdiction": "national",
+      "issue_tags": [
+        "mixed_affiliate_employment",
+        "employer_identity",
+        "unsigned_contract_double_wage",
+        "unclear_termination"
+      ],
+      "evidence_tags": [
+        "labor_contract_and_renewals",
+        "payroll_tax_social_insurance_records",
+        "work_access_and_attendance_records",
+        "document_conflict_set"
+      ],
+      "workflow_tags": [
+        "case-intake",
+        "safety-guardrails",
+        "layoff-defense",
+        "evidence-builder",
+        "arbitration-drafter"
+      ],
+      "status": "current_reference",
+      "source_anchors": [
+        "LCL-2012#art82",
+        "LCL-REG-2008#art6",
+        "LDA-2007#art2",
+        "LDA-2007#art6",
+        "SPC-LDI-1-2020#art44"
+      ],
+      "source_ids": [
+        "SPC-PUBLIC-CASE-2025-LABOR#case2",
+        "SPC-PUBLIC-CASE-2025-LABOR",
+        "LCL-2012",
+        "LCL-REG-2008",
+        "LDA-2007",
+        "SPC-LDI-1-2020"
+      ],
+      "applicability_notes": "Use when employment facts span affiliated entities or the written-contract record conflicts with payroll, attendance, or social-insurance records."
+    },
+    {
+      "id": "spc-worker-refused-renewal-double-wage-limit",
+      "title": "Worker refusal and unsigned-contract double-wage limits",
+      "summary": "Generalized public-case record for reviewing good-faith contract renewal requests before assessing unsigned-contract double-wage exposure.",
+      "jurisdiction": "national",
+      "issue_tags": [
+        "contract_renewal",
+        "unsigned_contract_double_wage",
+        "worker_refusal",
+        "good_faith_review"
+      ],
+      "evidence_tags": [
+        "contract_expiry_and_renewal_history",
+        "post_expiry_work_continuation",
+        "labor_contract_and_renewals",
+        "chronology_memo",
+        "renewal_request_delivery"
+      ],
+      "workflow_tags": [
+        "case-intake",
+        "safety-guardrails",
+        "layoff-defense",
+        "evidence-builder",
+        "arbitration-drafter"
+      ],
+      "status": "current_reference",
+      "source_anchors": [
+        "LCL-2012#art82",
+        "LDA-2007#art6",
+        "LDA-2007#art27",
+        "SPC-LDI-1-2020#art44"
+      ],
+      "source_ids": [
+        "SPC-PUBLIC-CASE-2025-LABOR#case3",
+        "SPC-PUBLIC-CASE-2025-LABOR",
+        "LCL-2012",
+        "LDA-2007",
+        "SPC-LDI-1-2020"
+      ],
+      "applicability_notes": "Check who initiated renewal, what terms were offered, and whether delivery or refusal evidence exists before estimating a double-wage claim."
+    },
+    {
+      "id": "spc-noncompete-scope-limited-pharma",
+      "title": "Non-compete scope tied to protected confidential interests",
+      "summary": "Generalized public-case record for evaluating role scope, protected information, competitor overlap, payment, and release options in non-compete disputes.",
+      "jurisdiction": "national",
+      "issue_tags": [
+        "non_compete_scope",
+        "confidentiality",
+        "liquidated_damages",
+        "competitor_definition"
+      ],
+      "evidence_tags": [
+        "non_compete_agreement",
+        "role_and_secret_access_evidence",
+        "new_role_and_competition_scope",
+        "compensation_payment_records",
+        "performance_of_non_compete"
+      ],
+      "workflow_tags": [
+        "case-intake",
+        "safety-guardrails",
+        "agreement-review",
+        "negotiation-coach",
+        "arbitration-drafter"
+      ],
+      "status": "current_reference",
+      "source_anchors": [
+        "LCL-2012#art23",
+        "LCL-2012#art24",
+        "LCL-2012#art25",
+        "LCL-2012#art90",
+        "SPC-LDI-2-2025#art13",
+        "SPC-LDI-2-2025#art15"
+      ],
+      "source_ids": [
+        "SPC-PUBLIC-CASE-2025-LABOR#case4",
+        "SPC-PUBLIC-CASE-2025-LABOR",
+        "LCL-2012",
+        "SPC-LDI-2-2025"
+      ],
+      "applicability_notes": "Use for scope and payment review; preserve confidential information and route enforceability conclusions for jurisdiction-specific legal review."
+    },
+    {
+      "id": "spc-social-insurance-waiver-constructive-resignation",
+      "title": "Social-insurance waiver and constructive resignation",
+      "summary": "Generalized public-case record for social-insurance nonpayment, statutory resignation grounds, economic compensation, and written objection evidence.",
+      "jurisdiction": "national",
+      "issue_tags": [
+        "social_insurance_nonpayment",
+        "invalid_waiver",
+        "constructive_resignation",
+        "economic_compensation"
+      ],
+      "evidence_tags": [
+        "resignation_text_and_delivery",
+        "employer_breach_evidence",
+        "unpaid_wage_or_social_insurance_gap",
+        "written_objection_or_request"
+      ],
+      "workflow_tags": [
+        "case-intake",
+        "safety-guardrails",
+        "layoff-defense",
+        "evidence-builder",
+        "negotiation-coach",
+        "arbitration-drafter"
+      ],
+      "status": "current_reference",
+      "source_anchors": [
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "SIL-2018#art60",
+        "SPC-LDI-1-2020#art45",
+        "SPC-LDI-2-2025#art19"
+      ],
+      "source_ids": [
+        "SPC-PUBLIC-CASE-2025-LABOR#case6",
+        "SPC-PUBLIC-CASE-2025-LABOR",
+        "LCL-2012",
+        "SIL-2018",
+        "SPC-LDI-1-2020",
+        "SPC-LDI-2-2025"
+      ],
+      "applicability_notes": "Confirm payment records, waiver wording, objection chronology, and the stated resignation ground before selecting a claim path."
+    },
+    {
+      "id": "mohrss-spc-pregnancy-project-removal-wage-cut",
+      "title": "Pregnancy-related project removal, transfer, and wage reduction",
+      "summary": "Generalized public-case record for protected-status job changes, wage differences, sensitive evidence minimization, and formal dispute preparation.",
+      "jurisdiction": "national",
+      "issue_tags": [
+        "pregnancy_protection",
+        "job_transfer",
+        "wage_reduction",
+        "sensitive_health_information"
+      ],
+      "evidence_tags": [
+        "salary_cut_transfer_objection",
+        "pregnancy_or_medical_status_proof",
+        "payroll_tax_social_insurance_records",
+        "twelve_month_wage_basis"
+      ],
+      "workflow_tags": [
+        "case-intake",
+        "safety-guardrails",
+        "layoff-defense",
+        "evidence-builder",
+        "negotiation-coach",
+        "arbitration-drafter"
+      ],
+      "status": "current_reference",
+      "source_anchors": [
+        "LCL-2012#art30",
+        "PIPL-2021#art28",
+        "PIPL-2021#art29",
+        "WRPL-2022#art48",
+        "FEP-2012#art5",
+        "FEP-2012#art6",
+        "LDA-2007#art2",
+        "LDA-2007#art6"
+      ],
+      "source_ids": [
+        "MOHRSS-SPC-PUBLIC-CASE-2025-BATCH4#case1",
+        "MOHRSS-SPC-PUBLIC-CASE-2025-BATCH4",
+        "LCL-2012",
+        "PIPL-2021",
+        "WRPL-2022",
+        "FEP-2012",
+        "LDA-2007"
+      ],
+      "applicability_notes": "Minimize medical details, preserve wage and transfer records, and separate protected-status facts from unrelated health or family information."
+    },
+    {
+      "id": "guangzhou-hrss-economic-layoff-report-package",
+      "title": "Guangzhou economic-layoff reporting and worker-opinion process",
+      "summary": "Generalized local reference for economic-layoff thresholds, worker-opinion procedure, written reporting materials, authority feedback, and evidence preservation.",
+      "jurisdiction": "Guangzhou",
+      "issue_tags": [
+        "economic_layoff",
+        "worker_opinion_process",
+        "authority_reporting",
+        "priority_retention",
+        "economic_compensation"
+      ],
+      "evidence_tags": [
+        "layoff_threshold_and_plan",
+        "thirty_day_explanation_opinion_report",
+        "guangzhou_layoff_report_package",
+        "priority_retention_and_rehire_evidence",
+        "twelve_month_wage_basis"
+      ],
+      "workflow_tags": [
+        "case-intake",
+        "safety-guardrails",
+        "layoff-defense",
+        "evidence-builder",
+        "negotiation-coach",
+        "arbitration-drafter"
+      ],
+      "status": "verified_candidate",
+      "source_anchors": [
+        "LCL-2012#art41",
+        "LCL-2012#art43",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "LDA-2007#art6",
+        "LDA-2007#art21",
+        "LDA-2007#art27",
+        "LDA-2007#art28",
+        "PIPL-2021#art6"
+      ],
+      "source_ids": [
+        "GZ-RSJ-LAYOFF-NORM-2021#report-package",
+        "GZ-RSJ-LAYOFF-NORM-2021",
+        "LCL-2012",
+        "LDA-2007",
+        "PIPL-2021"
+      ],
+      "applicability_notes": "Use for Guangzhou routing and evidence preparation; verify current local filing practice and authority instructions before final advice."
+    }
+  ]
+}

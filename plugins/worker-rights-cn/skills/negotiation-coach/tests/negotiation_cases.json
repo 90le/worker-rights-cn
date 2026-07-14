@@ -1,0 +1,188 @@
+[
+  {
+    "id": "mutual-termination-low-offer",
+    "scenario": "separation_offer_counter",
+    "expected_message_blocks": [
+      "request_written_terms",
+      "counteroffer_amount_basis",
+      "rights_reservation"
+    ],
+    "expected_evidence_ids": [
+      "separation_agreement_versions",
+      "proposal_origin_evidence",
+      "twelve_month_wage_basis"
+    ],
+    "expected_forbidden_phrases": [
+      "我自愿主动离职",
+      "双方再无任何争议"
+    ],
+    "expected_source_anchors": [
+      "LDA-2007#art4",
+      "LCL-2012#art36",
+      "LCL-2012#art46",
+      "LCL-2012#art47",
+      "SPC-LDI-1-2020#art35"
+    ]
+  },
+  {
+    "id": "forced-resignation-pressure",
+    "scenario": "forced_resignation_response",
+    "expected_message_blocks": [
+      "factual_refusal_to_resign",
+      "employer_breach_record_request",
+      "rights_reservation"
+    ],
+    "expected_evidence_ids": [
+      "resignation_text_and_delivery",
+      "employer_breach_evidence",
+      "written_objection_or_request"
+    ],
+    "expected_forbidden_phrases": [
+      "因个人原因离职",
+      "我主动申请离职"
+    ],
+    "expected_source_anchors": [
+      "LCL-2012#art37",
+      "LCL-2012#art38",
+      "LCL-2012#art46",
+      "LDA-2007#art6",
+      "SPC-LDI-1-2020#art45",
+      "SPC-LDI-2-2025#art19"
+    ]
+  },
+  {
+    "id": "oral-dismissal-no-written-reason",
+    "scenario": "termination_reason_request",
+    "expected_message_blocks": [
+      "request_written_reason",
+      "work_availability",
+      "evidence_preservation"
+    ],
+    "expected_evidence_ids": [
+      "termination_notice_exact_reason",
+      "written_objection_or_request",
+      "work_access_and_attendance_records"
+    ],
+    "expected_forbidden_phrases": [
+      "我同意解除",
+      "我不要赔偿"
+    ],
+    "expected_source_anchors": [
+      "LCL-2012#art39",
+      "LCL-2012#art40",
+      "LCL-2012#art43",
+      "LCL-2012#art48",
+      "LCL-2012#art87",
+      "SPC-LDI-1-2020#art44"
+    ]
+  },
+  {
+    "id": "guangzhou-economic-layoff-report-request",
+    "scenario": "economic_layoff_report_request",
+    "expected_message_blocks": [
+      "request_written_reason",
+      "request_economic_layoff_report_package",
+      "request_rehire_priority_and_replacement_records",
+      "rights_reservation",
+      "evidence_preservation"
+    ],
+    "expected_evidence_ids": [
+      "layoff_threshold_and_plan",
+      "thirty_day_explanation_opinion_report",
+      "guangzhou_layoff_report_package",
+      "priority_retention_and_rehire_evidence",
+      "post_layoff_rehire_or_outsourcing_tracking",
+      "termination_notice_exact_reason"
+    ],
+    "expected_forbidden_phrases": [
+      "我同意解除",
+      "我接受未公示方案",
+      "我可以去拿公司内部资料"
+    ],
+    "expected_source_anchors": [
+      "LCL-2012#art41",
+      "LCL-2012#art43",
+      "LCL-2012#art46",
+      "LCL-2012#art48",
+      "LCL-2012#art87",
+      "LDA-2007#art6"
+    ]
+  },
+  {
+    "id": "unpaid-wage-before-filing",
+    "scenario": "unpaid_wage_demand",
+    "expected_message_blocks": [
+      "itemized_payment_request",
+      "statutory_path_notice",
+      "rights_reservation"
+    ],
+    "expected_evidence_ids": [
+      "payroll_tax_social_insurance_records",
+      "twelve_month_wage_basis",
+      "unpaid_wage_or_social_insurance_gap"
+    ],
+    "expected_forbidden_phrases": [
+      "不给钱我就闹",
+      "金额你们看着给"
+    ],
+    "expected_source_anchors": [
+      "LCL-2012#art30",
+      "LCL-2012#art85",
+      "LDA-2007#art5",
+      "LDA-2007#art9",
+      "LDA-2007#art27"
+    ]
+  },
+  {
+    "id": "non-compete-no-payment",
+    "scenario": "non_compete_payment_or_release",
+    "expected_message_blocks": [
+      "payment_or_release_request",
+      "scope_limit_question",
+      "lawyer_check"
+    ],
+    "expected_evidence_ids": [
+      "non_compete_agreement",
+      "compensation_payment_records",
+      "performance_of_non_compete"
+    ],
+    "expected_forbidden_phrases": [
+      "我已经违反竞业",
+      "我承认违约金合理"
+    ],
+    "expected_source_anchors": [
+      "LCL-2012#art23",
+      "LCL-2012#art24",
+      "LCL-2012#art25",
+      "SPC-LDI-1-2020#art36",
+      "SPC-LDI-1-2020#art38",
+      "SPC-LDI-1-2020#art39",
+      "SPC-LDI-2-2025#art13",
+      "SPC-LDI-2-2025#art15"
+    ]
+  },
+  {
+    "id": "settlement-payment-default",
+    "scenario": "settlement_payment_default",
+    "expected_message_blocks": [
+      "payment_default_notice",
+      "itemized_payment_request",
+      "statutory_path_notice"
+    ],
+    "expected_evidence_ids": [
+      "separation_agreement_versions",
+      "payment_amount_and_date",
+      "payment_records"
+    ],
+    "expected_forbidden_phrases": [
+      "逾期也没关系",
+      "我放弃违约责任"
+    ],
+    "expected_source_anchors": [
+      "LCL-2012#art50",
+      "LDA-2007#art5",
+      "LDA-2007#art51",
+      "SPC-LDI-1-2020#art35"
+    ]
+  }
+]

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Local Rules Adapter"
+  short_description: "Route city-specific labor rule checks"
+  default_prompt: "Use $local-rules-adapter to identify local labor-rule verification needs for a China worker-rights case."
+policy:
+  allow_implicit_invocation: false

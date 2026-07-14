@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Worker Rights CN">
+  <rect width="64" height="64" rx="14" fill="#f5f8f2"/>
+  <path d="M32 7 52 15v15c0 13-8.2 22.2-20 27C20.2 52.2 12 43 12 30V15Z" fill="#0b5d35"/>
+  <path d="M22 18h20v26H22Z" fill="#fffdf7"/>
+  <path d="M27 25h10M27 31h10M27 37h7" fill="none" stroke="#0b5d35" stroke-linecap="round" stroke-width="3"/>
+</svg>

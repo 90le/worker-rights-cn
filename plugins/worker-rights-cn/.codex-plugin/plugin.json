@@ -1,0 +1,30 @@
+{
+  "name": "worker-rights-cn",
+  "version": "0.2.0",
+  "description": "China labor rights assistant plugin for worker-side intake, safety guardrails, layoff defense, lawful recovery strategy optimization, compensation estimation, local rule routing, evidence, negotiation, agreement review, and arbitration drafting workflows.",
+  "author": {
+    "name": "丘彬彬"
+  },
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Worker Rights CN",
+    "shortDescription": "Worker-side China labor rights workflows.",
+    "longDescription": "Worker Rights CN provides structured Codex skills for China labor dispute intake, safety guardrails, layoff and dismissal risk assessment, lawful recovery strategy optimization, compensation range calculation, local rule routing, evidence planning, negotiation drafting, agreement review, and arbitration drafting. It is an assistant for fact organization and draft generation, not a substitute for licensed legal advice.",
+    "developerName": "丘彬彬",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "公司让我今天签离职协议，我现在应该先做什么？",
+      "帮我整理被辞退的事实、证据和下一步行动。",
+      "根据我的入职时间和工资，估算可能的补偿范围。"
+    ],
+    "websiteURL": "https://90le.github.io/worker-rights-cn/",
+    "privacyPolicyURL": "https://90le.github.io/worker-rights-cn/privacy.html",
+    "termsOfServiceURL": "https://90le.github.io/worker-rights-cn/terms.html",
+    "securityURL": "https://90le.github.io/worker-rights-cn/security.html"
+  },
+  "repository": "https://github.com/90le/worker-rights-cn",
+  "license": "Apache-2.0",
+  "homepage": "https://90le.github.io/worker-rights-cn/"
+}

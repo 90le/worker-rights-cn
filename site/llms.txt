@@ -1,0 +1,12 @@
+# Worker Rights CN
+
+> 面向中国大陆普通劳动者的开源权益助手，帮助整理事实、保存证据、估算金额和准备草稿。
+
+- Website: https://90le.github.io/worker-rights-cn/
+- Repository: https://github.com/90le/worker-rights-cn
+- License: Apache-2.0
+- Privacy: https://90le.github.io/worker-rights-cn/privacy.html
+- Terms: https://90le.github.io/worker-rights-cn/terms.html
+- Security: https://90le.github.io/worker-rights-cn/security.html
+
+This project is not a lawyer, law firm, government service, or substitute for licensed legal advice. It does not guarantee case outcomes.

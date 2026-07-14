@@ -1,0 +1,32 @@
+name: 文档改进
+description: 报告文档错误、缺失或不清楚之处
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请勿提交真实个案证据或敏感个人信息，包括真实姓名、身份证号、手机号、合同、聊天记录、录音、病历、银行卡信息或访问凭据。法律来源请优先提供官方公开链接。
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 隐私确认
+      options:
+        - label: 我确认未提交真实个案证据或敏感个人信息。
+          required: true
+  - type: input
+    id: location
+    attributes:
+      label: 文档位置
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题与建议修改
+    validations:
+      required: true
+  - type: input
+    id: legal_source
+    attributes:
+      label: 官方法律来源（如适用）

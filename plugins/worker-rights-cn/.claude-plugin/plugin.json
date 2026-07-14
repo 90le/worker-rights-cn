@@ -1,0 +1,32 @@
+{
+  "name": "worker-rights-cn",
+  "version": "0.2.0",
+  "description": "China worker-side labor-rights skills, MCP tools, hooks, SQLite/FTS source search, audit chain, evidence planning, compensation calculation, and bundle export.",
+  "author": {
+    "name": "丘彬彬"
+  },
+  "skills": "./skills",
+  "mcpServers": {
+    "worker-rights-cn": {
+      "command": "python3",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/scripts/mcp_server.py"
+      ],
+      "cwd": "${CLAUDE_PLUGIN_ROOT}",
+      "env": {
+        "WORKER_RIGHTS_CN_HOST": "claude-code"
+      }
+    }
+  },
+  "keywords": [
+    "labor-rights",
+    "china",
+    "worker",
+    "mcp",
+    "hooks",
+    "sqlite"
+  ],
+  "repository": "https://github.com/90le/worker-rights-cn",
+  "license": "Apache-2.0",
+  "homepage": "https://90le.github.io/worker-rights-cn/"
+}

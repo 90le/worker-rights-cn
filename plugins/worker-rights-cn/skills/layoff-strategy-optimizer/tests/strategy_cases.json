@@ -1,0 +1,542 @@
+[
+  {
+    "id": "low-mutual-offer-before-signing",
+    "facts": {
+      "city": "Shanghai",
+      "trigger": "HR offers N but asks worker to sign all-claims settlement today.",
+      "signed": false
+    },
+    "expected": {
+      "scenario_ids": [
+        "mutual_low_offer_pre_signing"
+      ],
+      "termination_maps": [
+        "mutual_termination"
+      ],
+      "evidence_item_ids": [
+        "separation_agreement_versions",
+        "proposal_origin_evidence",
+        "twelve_month_wage_basis"
+      ],
+      "negotiation_scenarios": [
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "unpaid_wages"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation"
+      ],
+      "source_anchors": [
+        "LCL-2012#art36",
+        "LCL-2012#art46",
+        "LCL-2012#art47"
+      ],
+      "forbidden_moves": [
+        "sign_all_claims_waiver_before_payment_terms"
+      ]
+    }
+  },
+  {
+    "id": "guangzhou-economic-layoff-no-report",
+    "facts": {
+      "city": "Guangzhou",
+      "trigger": "Company announces department layoff without 30-day explanation or HRSS report.",
+      "group_layoff": true
+    },
+    "expected": {
+      "scenario_ids": [
+        "economic_layoff_procedure_gap"
+      ],
+      "termination_maps": [
+        "economic_layoff"
+      ],
+      "evidence_item_ids": [
+        "layoff_threshold_and_plan",
+        "thirty_day_explanation_opinion_report",
+        "guangzhou_layoff_report_package",
+        "priority_retention_and_rehire_evidence"
+      ],
+      "negotiation_scenarios": [
+        "economic_layoff_report_request",
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "unlawful_termination_compensation"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation"
+      ],
+      "source_anchors": [
+        "LCL-2012#art41",
+        "LCL-2012#art48",
+        "LCL-2012#art87"
+      ],
+      "local_source_ids": [
+        "GZ-RSJ-LAYOFF-NORM-2021"
+      ],
+      "local_rule_checks": [
+        "economic_layoff_local_procedure",
+        "guangzhou_economic_layoff_report_package"
+      ],
+      "forbidden_moves": [
+        "state_2N_as_guaranteed"
+      ]
+    }
+  },
+  {
+    "id": "guangzhou-ai-transformation-open-ended-priority-retention",
+    "facts": {
+      "city": "Guangzhou",
+      "trigger": "Company says the business is shifting to AI, cancels legacy roles, and selects an open-ended-contract worker for optimization.",
+      "contract_type": "open_ended",
+      "claimed_reason": "AI transformation and role mismatch",
+      "group_layoff": true
+    },
+    "expected": {
+      "scenario_ids": [
+        "guangzhou_ai_transformation_open_ended_layoff"
+      ],
+      "termination_maps": [
+        "economic_layoff",
+        "non_fault_dismissal"
+      ],
+      "evidence_item_ids": [
+        "ai_transformation_contract_change_and_internal_alternatives",
+        "priority_retention_and_rehire_evidence",
+        "training_transfer_or_consultation_records",
+        "thirty_day_explanation_opinion_report",
+        "guangzhou_layoff_report_package",
+        "labor_contract_and_renewals"
+      ],
+      "negotiation_scenarios": [
+        "economic_layoff_report_request",
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "substitute_notice_wage",
+        "unlawful_termination_compensation"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "outcome_guarantee_or_overconfident_legal_advice"
+      ],
+      "source_anchors": [
+        "LCL-2012#art35",
+        "LCL-2012#art40",
+        "LCL-2012#art41",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "LCL-REG-2008#art19",
+        "LCL-REG-2008#art20"
+      ],
+      "local_source_ids": [
+        "GZ-RSJ-LAYOFF-NORM-2021"
+      ],
+      "local_rule_checks": [
+        "economic_layoff_local_procedure",
+        "guangzhou_economic_layoff_report_package",
+        "economic_compensation_high_wage_cap"
+      ],
+      "forbidden_moves": [
+        "state_training_is_always_mandatory_for_every_AI_transformation_layoff",
+        "ignore_open_ended_contract_priority_retention"
+      ]
+    }
+  },
+  {
+    "id": "non-fault-dismissal-no-advance-notice",
+    "facts": {
+      "city": "Beijing",
+      "trigger": "Employer cites objective change and terminates immediately without substitute notice wage.",
+      "notice_days": 0
+    },
+    "expected": {
+      "scenario_ids": [
+        "non_fault_no_notice_or_weak_ground"
+      ],
+      "termination_maps": [
+        "non_fault_dismissal"
+      ],
+      "evidence_item_ids": [
+        "article40_ground_evidence",
+        "notice_or_substitute_wage_evidence",
+        "training_transfer_or_consultation_records"
+      ],
+      "negotiation_scenarios": [
+        "termination_reason_request"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "substitute_notice_wage",
+        "unlawful_termination_compensation"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation"
+      ],
+      "source_anchors": [
+        "LCL-2012#art40",
+        "LCL-REG-2008#art20",
+        "LCL-2012#art87"
+      ]
+    }
+  },
+  {
+    "id": "forced-personal-resignation-with-wage-arrears",
+    "facts": {
+      "city": "Hangzhou",
+      "trigger": "HR asks worker to submit personal-reason resignation while two months wages are unpaid.",
+      "unpaid_wages": true
+    },
+    "expected": {
+      "scenario_ids": [
+        "forced_resignation_or_personal_reason_template"
+      ],
+      "termination_maps": [
+        "employee_resignation",
+        "constructive_dismissal"
+      ],
+      "evidence_item_ids": [
+        "resignation_text_and_delivery",
+        "employer_breach_evidence",
+        "unpaid_wage_or_social_insurance_gap"
+      ],
+      "negotiation_scenarios": [
+        "forced_resignation_response",
+        "unpaid_wage_demand"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "unpaid_wages"
+      ],
+      "safety_categories": [
+        "unsupported_or_exaggerated_claims"
+      ],
+      "source_anchors": [
+        "LCL-2012#art30",
+        "LCL-2012#art38",
+        "LCL-2012#art46"
+      ],
+      "forbidden_moves": [
+        "sign_personal_reason_resignation_if_not_true"
+      ]
+    }
+  },
+  {
+    "id": "salary-cut-transfer-pressure",
+    "facts": {
+      "city": "Shenzhen",
+      "trigger": "Company reduces salary and transfers worker to unrelated role after layoff discussion.",
+      "salary_cut": true
+    },
+    "expected": {
+      "scenario_ids": [
+        "salary_cut_transfer_pressure"
+      ],
+      "termination_maps": [
+        "constructive_dismissal",
+        "unclear_or_mixed"
+      ],
+      "evidence_item_ids": [
+        "salary_cut_transfer_objection",
+        "labor_contract_and_renewals",
+        "payroll_tax_social_insurance_records"
+      ],
+      "negotiation_scenarios": [
+        "forced_resignation_response",
+        "termination_reason_request"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "unpaid_wages"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation"
+      ],
+      "source_anchors": [
+        "LCL-2012#art35",
+        "LCL-2012#art38",
+        "LCL-2012#art46"
+      ]
+    }
+  },
+  {
+    "id": "pregnancy-layoff-protected-status",
+    "facts": {
+      "city": "Guangzhou",
+      "trigger": "Pregnant worker is included in economic layoff list and salary is reduced.",
+      "pregnancy": true
+    },
+    "expected": {
+      "scenario_ids": [
+        "protected_status_layoff_or_dismissal"
+      ],
+      "termination_maps": [
+        "non_fault_dismissal",
+        "economic_layoff",
+        "contract_expiry"
+      ],
+      "evidence_item_ids": [
+        "pregnancy_or_medical_status_proof",
+        "termination_notice_exact_reason",
+        "salary_cut_transfer_objection"
+      ],
+      "negotiation_scenarios": [
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "unlawful_termination_compensation",
+        "pregnancy_wage_difference"
+      ],
+      "safety_categories": [
+        "sensitive_health_or_pregnancy_information",
+        "personal_information_or_doxxing"
+      ],
+      "source_anchors": [
+        "LCL-2012#art42",
+        "LCL-2012#art45",
+        "WRPL-2022#art48",
+        "FEP-2012#art5"
+      ],
+      "forbidden_moves": [
+        "publish_sensitive_medical_or_pregnancy_records"
+      ]
+    }
+  },
+  {
+    "id": "unsigned-contract-with-termination",
+    "facts": {
+      "city": "Shanghai",
+      "trigger": "Worker has no written contract for 8 months and is now dismissed.",
+      "contract_signed": false
+    },
+    "expected": {
+      "scenario_ids": [
+        "unsigned_contract_or_open_ended_leverage"
+      ],
+      "termination_maps": [
+        "unclear_or_mixed",
+        "contract_expiry"
+      ],
+      "evidence_item_ids": [
+        "labor_contract_and_renewals",
+        "payroll_tax_social_insurance_records",
+        "limitation_and_filing_timeline"
+      ],
+      "negotiation_scenarios": [
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "unsigned_contract_double_wage",
+        "economic_compensation"
+      ],
+      "safety_categories": [
+        "unsupported_or_exaggerated_claims"
+      ],
+      "source_anchors": [
+        "LCL-2012#art82",
+        "LCL-REG-2008#art6",
+        "LDA-2007#art27"
+      ]
+    }
+  },
+  {
+    "id": "high-wage-local-cap-dispute",
+    "facts": {
+      "city": "Guangzhou",
+      "trigger": "Employer applies a social-insurance base as the economic-compensation cap for a high-wage worker.",
+      "high_wage": true
+    },
+    "expected": {
+      "scenario_ids": [
+        "high_wage_cap_and_city_rule"
+      ],
+      "termination_maps": [
+        "mutual_termination",
+        "economic_layoff",
+        "non_fault_dismissal"
+      ],
+      "evidence_item_ids": [
+        "twelve_month_wage_basis",
+        "local_average_wage_source",
+        "payroll_tax_social_insurance_records"
+      ],
+      "negotiation_scenarios": [
+        "separation_offer_counter",
+        "unpaid_wage_demand"
+      ],
+      "arbitration_claims": [
+        "economic_compensation",
+        "unlawful_termination_compensation"
+      ],
+      "safety_categories": [
+        "outcome_guarantee_or_overconfident_legal_advice"
+      ],
+      "source_anchors": [
+        "LCL-2012#art47",
+        "LCL-REG-2008#art27"
+      ],
+      "local_rule_checks": [
+        "economic_compensation_high_wage_cap",
+        "social_insurance_base",
+        "housing_fund_base"
+      ],
+      "forbidden_moves": [
+        "use_social_insurance_base_as_final_compensation_cap_without_verification"
+      ]
+    }
+  },
+  {
+    "id": "unpaid-wage-social-insurance-stack",
+    "facts": {
+      "city": "Beijing",
+      "trigger": "Employer owes wages and stopped social insurance before asking workers to leave.",
+      "unpaid_wages": true,
+      "social_insurance_gap": true
+    },
+    "expected": {
+      "scenario_ids": [
+        "unpaid_wage_social_insurance_stack"
+      ],
+      "termination_maps": [
+        "constructive_dismissal",
+        "employee_resignation"
+      ],
+      "evidence_item_ids": [
+        "payroll_tax_social_insurance_records",
+        "unpaid_wage_or_social_insurance_gap",
+        "work_access_and_attendance_records"
+      ],
+      "negotiation_scenarios": [
+        "unpaid_wage_demand",
+        "forced_resignation_response"
+      ],
+      "arbitration_claims": [
+        "unpaid_wages",
+        "unused_annual_leave",
+        "economic_compensation"
+      ],
+      "safety_categories": [
+        "threats_extortion_or_harassment"
+      ],
+      "source_anchors": [
+        "LCL-2012#art30",
+        "LCL-2012#art38",
+        "LDA-2007#art9",
+        "SIL-2018#art60"
+      ],
+      "forbidden_moves": [
+        "condition_silence_or_non_exposure_on_payment"
+      ]
+    }
+  },
+  {
+    "id": "non-compete-pressure-after-layoff",
+    "facts": {
+      "city": "Shanghai",
+      "trigger": "Separation agreement demands non-compete and confidentiality but no clear compensation or scope.",
+      "non_compete": true
+    },
+    "expected": {
+      "scenario_ids": [
+        "non_compete_or_confidentiality_after_layoff"
+      ],
+      "termination_maps": [
+        "mutual_termination",
+        "unclear_or_mixed"
+      ],
+      "evidence_item_ids": [
+        "separation_agreement_versions",
+        "labor_contract_and_renewals",
+        "hr_chat_email_meeting_records"
+      ],
+      "negotiation_scenarios": [
+        "non_compete_payment_or_release",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "non_compete_compensation",
+        "non_compete_scope_invalid_or_limited"
+      ],
+      "safety_categories": [
+        "confidentiality_noncompete_or_service_period_evasion",
+        "illegal_company_data_or_trade_secrets"
+      ],
+      "source_anchors": [
+        "LCL-2012#art23",
+        "LCL-2012#art24",
+        "SPC-LDI-2-2025#art13"
+      ],
+      "forbidden_moves": [
+        "copy_trade_secrets_as_leverage"
+      ]
+    }
+  },
+  {
+    "id": "guangzhou-post-layoff-rehire-or-outsourcing",
+    "facts": {
+      "city": "Guangzhou",
+      "trigger": "Employer completed an economic layoff, then posted substantially similar roles and used outsourced staff for the same work within six months.",
+      "group_layoff": true,
+      "within_six_months": true,
+      "replacement_channel": "recruitment_and_outsourcing"
+    },
+    "expected": {
+      "scenario_ids": [
+        "guangzhou_post_layoff_rehire_or_outsourcing"
+      ],
+      "termination_maps": [
+        "economic_layoff"
+      ],
+      "evidence_item_ids": [
+        "post_layoff_rehire_or_outsourcing_tracking",
+        "priority_retention_and_rehire_evidence",
+        "layoff_threshold_and_plan",
+        "guangzhou_layoff_report_package",
+        "termination_notice_exact_reason"
+      ],
+      "negotiation_scenarios": [
+        "economic_layoff_report_request",
+        "termination_reason_request",
+        "separation_offer_counter"
+      ],
+      "arbitration_claims": [
+        "unlawful_termination_compensation",
+        "economic_compensation",
+        "unpaid_wages"
+      ],
+      "safety_categories": [
+        "lawful_evidence_preservation",
+        "illegal_company_data_or_trade_secrets",
+        "outcome_guarantee_or_overconfident_legal_advice"
+      ],
+      "source_anchors": [
+        "LCL-2012#art41",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "LDA-2007#art6",
+        "PIPL-2021#art6"
+      ],
+      "local_source_ids": [
+        "GZ-RSJ-LAYOFF-NORM-2021"
+      ],
+      "local_rule_checks": [
+        "economic_layoff_local_procedure",
+        "guangzhou_economic_layoff_report_package",
+        "economic_compensation_high_wage_cap"
+      ],
+      "forbidden_moves": [
+        "impersonate_applicant_to_collect_recruitment_evidence",
+        "copy_internal_staffing_or_outsourcing_files",
+        "state_2N_as_guaranteed"
+      ]
+    }
+  }
+]

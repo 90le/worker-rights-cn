@@ -1,0 +1,18 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "worker-rights-cn": {
+      "type": "local",
+      "command": [
+        "python3",
+        "./scripts/mcp_server.py"
+      ],
+      "enabled": true,
+      "environment": {
+        "WORKER_RIGHTS_CN_HOST": "opencode"
+      }
+    }
+  },
+  "name": "worker-rights-cn",
+  "version": "0.2.0"
+}

@@ -1,0 +1,415 @@
+[
+  {
+    "id": "store-answer-then-ready-bundle",
+    "source_session_case_id": "session-missing-average-wage-then-ready",
+    "operations": [
+      {
+        "op": "create",
+        "generated_at": "2026-06-18T11:00:00Z",
+        "expected": {
+          "state_status": "needs_more_input",
+          "turn_index": 0,
+          "export_profile": "pre_signing_72h",
+          "version_count": 1,
+          "bundle_count": 0,
+          "bundle_export_count": 0,
+          "audit_event_types": ["session_created"]
+        }
+      },
+      {
+        "op": "answer",
+        "source_turn_index": 0,
+        "generated_at": "2026-06-18T11:01:00Z",
+        "expected": {
+          "state_status": "ready",
+          "turn_index": 1,
+          "export_profile": "pre_signing_72h",
+          "version_count": 2,
+          "bundle_count": 0,
+          "bundle_export_count": 0,
+          "changed_paths_contain": [
+            "case.wage.average_monthly_wage",
+            "case.wage.last_12_months_wage_records"
+          ],
+          "audit_event_types": ["session_created", "answers_applied"]
+        }
+      },
+      {
+        "op": "export_bundle",
+        "generated_at": "2026-06-18T11:02:00Z",
+        "confirmations": {
+          "actor": "worker",
+          "accepted_at": "2026-06-18T11:02:00Z",
+          "accepted_confirmations": [
+            "not_legal_opinion",
+            "verify_local_rules",
+            "lawyer_check_before_signing_or_filing",
+            "redaction_review",
+            "lawful_evidence_only"
+          ]
+        },
+        "expected": {
+          "state_status": "ready",
+          "turn_index": 1,
+          "version_count": 2,
+          "bundle_count": 1,
+          "bundle_export_count": 1,
+          "bundle_status": "ready_for_download",
+          "share_access_status": "enabled",
+          "missing_confirmations": [],
+          "audit_event_types": [
+            "session_created",
+            "answers_applied",
+            "bundle_exported"
+          ],
+          "artifact_paths_contain": [
+            "private/session_state.json",
+            "private/workbench_state.json",
+            "private/case_package.json",
+            "docs/workbench_preview.md",
+            "docs/case_package_review.md",
+            "share/redacted_share_packet.md",
+            "share/redacted_share_packet.json"
+          ],
+          "content_excludes": {
+            "share/redacted_share_packet.md": [
+              "Example Technology Shanghai Co., Ltd.",
+              "worker-sh",
+              "hr_wechat"
+            ],
+            "share/redacted_share_packet.json": [
+              "Example Technology Shanghai Co., Ltd.",
+              "worker-sh",
+              "hr_wechat"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "store-draft-bundle-pending-required-facts",
+    "source_session_case_id": "session-core-facts-missing-then-ready",
+    "operations": [
+      {
+        "op": "create",
+        "generated_at": "2026-06-18T11:05:00Z",
+        "expected": {
+          "state_status": "needs_more_input",
+          "turn_index": 0,
+          "export_profile": "pre_signing_72h",
+          "version_count": 1,
+          "bundle_count": 0,
+          "bundle_export_count": 0,
+          "audit_event_types": ["session_created"]
+        }
+      },
+      {
+        "op": "export_bundle",
+        "generated_at": "2026-06-18T11:06:00Z",
+        "confirmations": {
+          "actor": "worker",
+          "accepted_at": "2026-06-18T11:06:00Z",
+          "accepted_confirmations": [
+            "not_legal_opinion",
+            "verify_local_rules",
+            "redaction_review",
+            "lawful_evidence_only"
+          ]
+        },
+        "expected": {
+          "state_status": "needs_more_input",
+          "turn_index": 0,
+          "version_count": 1,
+          "bundle_count": 1,
+          "bundle_export_count": 1,
+          "bundle_status": "draft_pending_required_facts",
+          "share_access_status": "disabled_pending_required_facts",
+          "missing_confirmations": [],
+          "audit_event_types": ["session_created", "bundle_exported"],
+          "artifact_paths_contain": [
+            "private/session_state.json",
+            "private/workbench_state.json",
+            "docs/workbench_preview.md",
+            "share/redacted_share_packet.md",
+            "share/redacted_share_packet.json"
+          ],
+          "artifact_paths_exclude": [
+            "private/case_package.json",
+            "docs/case_package_review.md"
+          ],
+          "content_contains": {
+            "share/redacted_share_packet.md": [
+              "draft_pending_required_facts",
+              "No package sections yet"
+            ]
+          },
+          "content_excludes": {
+            "share/redacted_share_packet.md": [
+              "worker-gz-session",
+              "hr_wechat"
+            ],
+            "share/redacted_share_packet.json": [
+              "worker-gz-session",
+              "hr_wechat"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "store-confirmation-update-audited",
+    "source_session_case_id": "session-profile-resuggests-after-goal-answer",
+    "operations": [
+      {
+        "op": "create",
+        "generated_at": "2026-06-18T11:10:00Z",
+        "expected": {
+          "state_status": "needs_more_input",
+          "turn_index": 0,
+          "export_profile": "full_case_package",
+          "version_count": 1,
+          "bundle_count": 0,
+          "bundle_export_count": 0,
+          "audit_event_types": ["session_created"]
+        }
+      },
+      {
+        "op": "answer",
+        "source_turn_index": 0,
+        "generated_at": "2026-06-18T11:11:00Z",
+        "expected": {
+          "state_status": "ready",
+          "turn_index": 1,
+          "export_profile": "arbitration_ready",
+          "version_count": 2,
+          "bundle_count": 0,
+          "bundle_export_count": 0,
+          "audit_event_types": ["session_created", "answers_applied"]
+        }
+      },
+      {
+        "op": "export_bundle",
+        "generated_at": "2026-06-18T11:12:00Z",
+        "confirmations": {
+          "actor": "worker",
+          "accepted_at": "2026-06-18T11:12:00Z",
+          "accepted_confirmations": [
+            "not_legal_opinion",
+            "verify_local_rules",
+            "lawyer_check_before_signing_or_filing",
+            "lawful_evidence_only"
+          ]
+        },
+        "expected": {
+          "state_status": "ready",
+          "turn_index": 1,
+          "version_count": 2,
+          "bundle_count": 1,
+          "bundle_export_count": 1,
+          "bundle_status": "blocked_pending_confirmations",
+          "share_access_status": "disabled_pending_confirmations",
+          "missing_confirmations": ["redaction_review"],
+          "audit_event_types": [
+            "session_created",
+            "answers_applied",
+            "bundle_exported"
+          ]
+        }
+      },
+      {
+        "op": "export_bundle",
+        "generated_at": "2026-06-18T11:13:00Z",
+        "confirmations": {
+          "actor": "worker",
+          "accepted_at": "2026-06-18T11:13:00Z",
+          "accepted_confirmations": [
+            "not_legal_opinion",
+            "verify_local_rules",
+            "lawyer_check_before_signing_or_filing",
+            "redaction_review",
+            "lawful_evidence_only"
+          ]
+        },
+        "expected": {
+          "state_status": "ready",
+          "turn_index": 1,
+          "version_count": 2,
+          "bundle_count": 1,
+          "bundle_export_count": 2,
+          "bundle_status": "ready_for_download",
+          "share_access_status": "enabled",
+          "missing_confirmations": [],
+          "audit_event_types": [
+            "session_created",
+            "answers_applied",
+            "bundle_exported",
+            "bundle_exported"
+          ],
+          "content_excludes": {
+            "share/redacted_share_packet.md": [
+              "Example Platform Shenzhen Co., Ltd.",
+              "worker-sz-session",
+              "bank_records"
+            ],
+            "share/redacted_share_packet.json": [
+              "Example Platform Shenzhen Co., Ltd.",
+              "worker-sz-session",
+              "bank_records"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "store-workbench-update-stales-bundle",
+    "source_session_case_id": "session-missing-average-wage-then-ready",
+    "operations": [
+      {
+        "op": "create",
+        "generated_at": "2026-06-18T11:20:00Z",
+        "expected": {
+          "state_status": "needs_more_input",
+          "turn_index": 0,
+          "export_profile": "pre_signing_72h",
+          "version_count": 1,
+          "bundle_count": 0,
+          "bundle_export_count": 0,
+          "audit_event_types": ["session_created"]
+        }
+      },
+      {
+        "op": "answer",
+        "source_turn_index": 0,
+        "generated_at": "2026-06-18T11:21:00Z",
+        "expected": {
+          "state_status": "ready",
+          "turn_index": 1,
+          "export_profile": "pre_signing_72h",
+          "version_count": 2,
+          "bundle_count": 0,
+          "bundle_export_count": 0,
+          "audit_event_types": ["session_created", "answers_applied"]
+        }
+      },
+      {
+        "op": "export_bundle",
+        "generated_at": "2026-06-18T11:22:00Z",
+        "confirmations": {
+          "actor": "worker",
+          "accepted_at": "2026-06-18T11:22:00Z",
+          "accepted_confirmations": [
+            "not_legal_opinion",
+            "verify_local_rules",
+            "lawyer_check_before_signing_or_filing",
+            "redaction_review",
+            "lawful_evidence_only"
+          ]
+        },
+        "expected": {
+          "state_status": "ready",
+          "turn_index": 1,
+          "version_count": 2,
+          "bundle_count": 1,
+          "bundle_export_count": 1,
+          "bundle_status": "ready_for_download",
+          "share_access_status": "enabled",
+          "bundle_freshnesses": ["current"],
+          "bundle_export_freshnesses": ["current"],
+          "audit_event_types": [
+            "session_created",
+            "answers_applied",
+            "bundle_exported"
+          ]
+        }
+      },
+      {
+        "op": "update",
+        "generated_at": "2026-06-18T11:23:00Z",
+        "update": {
+          "export_profile": "arbitration_ready",
+          "field_updates": {
+            "case.dispute.worker_goal": "prepare arbitration filing if settlement is not signed by the deadline",
+            "case.dispute.documents_signed": ["settlement_agreement_signed"]
+          },
+          "note": "Worker changed goal after signing discussion moved toward filing preparation."
+        },
+        "expected": {
+          "state_status": "ready",
+          "turn_index": 2,
+          "export_profile": "arbitration_ready",
+          "version_count": 3,
+          "bundle_count": 1,
+          "bundle_export_count": 1,
+          "changed_paths_contain": [
+            "case.dispute.worker_goal",
+            "case.dispute.documents_signed",
+            "export_profile"
+          ],
+          "bundle_freshnesses": ["stale_after_state_update"],
+          "bundle_export_freshnesses": ["stale_after_state_update"],
+          "package_sections": ["arbitration_draft_pack"],
+          "excluded_sections": ["negotiation_plan", "agreement_review_summary"],
+          "workbench_action_ids_contain": ["verify:arbitration_form"],
+          "audit_event_types": [
+            "session_created",
+            "answers_applied",
+            "bundle_exported",
+            "session_updated"
+          ]
+        }
+      },
+      {
+        "op": "export_bundle",
+        "generated_at": "2026-06-18T11:24:00Z",
+        "confirmations": {
+          "actor": "worker",
+          "accepted_at": "2026-06-18T11:24:00Z",
+          "accepted_confirmations": [
+            "not_legal_opinion",
+            "verify_local_rules",
+            "lawyer_check_before_signing_or_filing",
+            "redaction_review",
+            "lawful_evidence_only"
+          ]
+        },
+        "expected": {
+          "state_status": "ready",
+          "turn_index": 2,
+          "export_profile": "arbitration_ready",
+          "version_count": 3,
+          "bundle_count": 2,
+          "bundle_export_count": 2,
+          "bundle_status": "ready_for_download",
+          "share_access_status": "enabled",
+          "bundle_freshnesses": ["stale_after_state_update", "current"],
+          "bundle_export_freshnesses": ["stale_after_state_update", "current"],
+          "package_sections": ["arbitration_draft_pack"],
+          "excluded_sections": ["negotiation_plan", "agreement_review_summary"],
+          "workbench_action_ids_contain": ["verify:arbitration_form"],
+          "audit_event_types": [
+            "session_created",
+            "answers_applied",
+            "bundle_exported",
+            "session_updated",
+            "bundle_exported"
+          ],
+          "content_excludes": {
+            "share/redacted_share_packet.md": [
+              "Example Technology Shanghai Co., Ltd.",
+              "worker-sh",
+              "hr_wechat"
+            ],
+            "share/redacted_share_packet.json": [
+              "Example Technology Shanghai Co., Ltd.",
+              "worker-sh",
+              "hr_wechat"
+            ]
+          }
+        }
+      }
+    ]
+  }
+]

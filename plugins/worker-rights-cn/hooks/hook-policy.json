@@ -1,0 +1,428 @@
+{
+  "schema_version": "0.1.0",
+  "retrieved_at": "2026-06-23",
+  "purpose": "Host-agnostic hook policy for worker-rights-cn. The policy is intentionally small and deterministic: it gates privacy leakage, unsafe evidence or pressure tactics, dangerous local tool use, sensitive file access, and source-currency reminders before host adapters add platform-specific wiring.",
+  "decision_order": [
+    "allow",
+    "warn",
+    "block"
+  ],
+  "events": [
+    "user_prompt_submit",
+    "pre_tool_use",
+    "post_tool_use",
+    "stop",
+    "pre_compact"
+  ],
+  "rules": [
+    {
+      "id": "fabricated_or_tampered_evidence",
+      "events": [
+        "user_prompt_submit"
+      ],
+      "decision": "block",
+      "severity": "critical",
+      "message": "Do not help create, alter, crop, delete, hide, or backdate evidence for labor dispute use.",
+      "match": {
+        "any_text_regex": [
+          "(伪造|假的|假)(工资条|银行流水|证据|合同|考勤|截图|录音|离职证明)",
+          "(倒签|篡改|P图|p图|裁掉|删掉|删除|隐藏).*(合同|流水|考勤|截图|聊天|证据|不利)",
+          "(fake|forge|forged|backdate|alter|tamper).*(evidence|contract|payslip|bank|screenshot|recording)"
+        ]
+      },
+      "required_response_elements": [
+        "brief_refusal",
+        "explain_evidence_integrity",
+        "offer_lawful_evidence_list",
+        "preserve_original_context"
+      ],
+      "safe_alternatives": [
+        "preserve_original_records",
+        "request_employer_controlled_documents",
+        "write_chronology_memo"
+      ],
+      "source_anchors": [
+        "LDA-2007#art6",
+        "LDA-2007#art39",
+        "CPL-2023#art114",
+        "SPC-LDI-1-2020#art44"
+      ]
+    },
+    {
+      "id": "threats_extortion_or_harassment",
+      "events": [
+        "user_prompt_submit"
+      ],
+      "decision": "block",
+      "severity": "critical",
+      "message": "Do not help threaten HR, managers, coworkers, or the company through exposure, harassment, disruption, or payment-for-silence pressure.",
+      "match": {
+        "any_text_regex": [
+          "(不给|不赔|不付).*(曝光|上热搜|发网上|公开|人肉|骚扰|闹到)",
+          "(曝光|上热搜|发网上|公开).*(HR|老板|经理|主管|公司|手机号|住址|身份证)",
+          "(威胁|勒索|敲诈|人肉|电话轰炸|堵门|拉横幅)",
+          "(blackmail|extort|doxx|harass|public shame|go viral)"
+        ]
+      },
+      "required_response_elements": [
+        "brief_refusal",
+        "replace_threat_with_formal_demand",
+        "offer_lawful_escalation_paths"
+      ],
+      "safe_alternatives": [
+        "formal_payment_demand",
+        "lawful_complaint_or_arbitration",
+        "meeting_followup_record"
+      ],
+      "source_anchors": [
+        "SPC-EXTORTION-2013#art1",
+        "SPC-EXTORTION-2013#art2",
+        "SPC-EXTORTION-2013#art3",
+        "LDA-2007#art5",
+        "LDA-2007#art9"
+      ]
+    },
+    {
+      "id": "illegal_company_data_or_trade_secrets",
+      "events": [
+        "user_prompt_submit",
+        "pre_tool_use"
+      ],
+      "decision": "block",
+      "severity": "critical",
+      "message": "Do not help copy, export, or use unrelated company data, credentials, customer lists, source code, pricing files, logs, or trade secrets as leverage.",
+      "match": {
+        "any_text_regex": [
+          "(客户名单|客户资料|报价表|价格表|源代码|源码|数据库|账号密码|凭证|日志|商业秘密).*(拷|复制|导出|下载|带走|拿来谈|施压|要挟)",
+          "(copy|export|download|exfiltrate|scrape).*(customer list|pricing|source code|credentials|logs|trade secret|company data)",
+          "(scp|rsync|curl|wget).*(客户名单|报价表|source code|credentials|\\.env|id_rsa|private_key)"
+        ]
+      },
+      "required_response_elements": [
+        "brief_refusal",
+        "separate_lawful_personal_evidence_from_company_data",
+        "offer_document_request_path"
+      ],
+      "safe_alternatives": [
+        "use_personal_work_records",
+        "request_disclosure_in_arbitration",
+        "lawyer_review_before_using_sensitive_material"
+      ],
+      "source_anchors": [
+        "LCL-2012#art23",
+        "PIPL-2021#art10",
+        "PIPL-2021#art13",
+        "SPC-IP-CRIM-2025#art16",
+        "SPC-IP-CRIM-2025#art17"
+      ]
+    },
+    {
+      "id": "employer_side_evasion_or_underpayment",
+      "events": [
+        "user_prompt_submit",
+        "pre_tool_use"
+      ],
+      "decision": "block",
+      "severity": "critical",
+      "message": "Do not help employers, HR, managers, or company counsel evade layoff procedures, reduce statutory compensation, induce personal-reason resignation, or bypass protected-status limits.",
+      "match": {
+        "any_text_regex": [
+          "(公司|HR|人事|老板|法务|我们单位).{0,24}(少赔|不赔|压低|降低|规避|绕开).{0,24}(N\\+1|N\\+1|2N|赔偿金|经济补偿|代通知金|裁员程序)",
+          "(规避|绕开|不走).{0,18}(经济性裁员|裁员).{0,18}(30日|三十日|说明|听取意见|报告|人社|优先留用)",
+          "(诱导|引导|逼|让).{0,18}(员工|劳动者).{0,18}(个人原因|主动离职|辞职|自愿离职|签离职协议|低价)",
+          "(孕期|产假|医疗期|工伤|职业病|保护期).{0,24}(怎么辞退|如何辞退|绕开|规避|解除|优化掉)",
+          "(employer|company|HR|manager|in-house counsel).{0,32}(avoid|evade|reduce|underpay|skip).{0,32}(severance|compensation|N\\+1|2N|layoff procedure|notice wage)",
+          "(induce|pressure|make).{0,24}(employee|worker).{0,24}(resign|personal reason|sign a resignation|low settlement)"
+        ]
+      },
+      "required_response_elements": [
+        "brief_refusal",
+        "state_worker_side_boundary",
+        "replace_evasion_with_compliance_path",
+        "recommend_lawyer_or_hr_compliance_review"
+      ],
+      "safe_alternatives": [
+        "lawful_layoff_or_termination_checklist",
+        "pay_statutory_compensation",
+        "complete_notice_opinion_and_hrss_report_procedure",
+        "document_reason_and_evidence_lawfully",
+        "worker_side_rights_explanation"
+      ],
+      "source_anchors": [
+        "LCL-2012#art40",
+        "LCL-2012#art41",
+        "LCL-2012#art42",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art87"
+      ]
+    },
+    {
+      "id": "personal_information_minimization",
+      "events": [
+        "user_prompt_submit",
+        "pre_tool_use",
+        "post_tool_use",
+        "pre_compact"
+      ],
+      "decision": "warn",
+      "severity": "high",
+      "message": "Minimize and redact third-party or sensitive personal information before sharing, exporting, compacting, or storing case materials.",
+      "match": {
+        "any_text_regex": [
+          "(身份证|身份证号|手机号|电话|住址|家庭住址|银行卡|病历|诊断|产检|怀孕|孕期|工伤|职业病|家属)",
+          "[1-9][0-9]{5}(18|19|20)[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[0-9]{3}[0-9Xx]",
+          "(?<![0-9])1[3-9][0-9]{9}(?![0-9])",
+          "(ID card|phone number|address|medical record|diagnosis|pregnancy|family member|bank card)"
+        ]
+      },
+      "required_response_elements": [
+        "minimize_personal_information",
+        "redact_third_party_data",
+        "formal_channel_only"
+      ],
+      "safe_alternatives": [
+        "redacted_submission_set",
+        "formal_channel_submission",
+        "limit_to_necessary_case_facts"
+      ],
+      "source_anchors": [
+        "PIPL-2021#art5",
+        "PIPL-2021#art6",
+        "PIPL-2021#art10",
+        "PIPL-2021#art13",
+        "PIPL-2021#art28",
+        "PIPL-2021#art29"
+      ]
+    },
+    {
+      "id": "recording_or_filming_evidence_boundary",
+      "events": [
+        "user_prompt_submit",
+        "pre_tool_use"
+      ],
+      "decision": "warn",
+      "severity": "high",
+      "message": "Recordings, screenshots, photos, and videos should be limited to lawful evidence preservation, original context, necessary participants, and formal dispute channels.",
+      "match": {
+        "any_text_regex": [
+          "(偷录|偷偷录|录音|录像|偷拍|截图|录屏).*(HR|老板|主管|会议|谈话|沟通|办公室|工位)",
+          "(record|recording|film|screenshot|screen record).*(HR|manager|meeting|conversation|workplace|office)",
+          "(录音|录像|截图|录屏).*(能不能用|是否合法|怎么提交|作为证据)"
+        ]
+      },
+      "required_response_elements": [
+        "confirm_lawful_evidence_scope",
+        "preserve_original_context",
+        "avoid_secret_or_unrelated_data",
+        "lawyer_check_before_public_use"
+      ],
+      "safe_alternatives": [
+        "meeting_followup_record",
+        "written_reason_request",
+        "redacted_evidence_manifest"
+      ],
+      "source_anchors": [
+        "LDA-2007#art6",
+        "SPC-LDI-1-2020#art44",
+        "PIPL-2021#art6",
+        "PIPL-2021#art10"
+      ]
+    },
+    {
+      "id": "medical_work_injury_privacy_material",
+      "events": [
+        "user_prompt_submit",
+        "pre_tool_use",
+        "post_tool_use",
+        "pre_compact"
+      ],
+      "decision": "warn",
+      "severity": "high",
+      "message": "Work-injury, occupational-disease, pregnancy, diagnosis, treatment, and family medical materials are sensitive personal information; minimize, redact, and use formal channels.",
+      "match": {
+        "any_text_regex": [
+          "(工伤|职业病|病历|诊断证明|出院小结|伤残|劳动能力鉴定|医院|处方|检查报告|产检|孕期).*(上传|发送|整理|分享|公开|仲裁|投诉|证据)",
+          "(work injury|occupational disease|medical record|diagnosis|hospital|pregnancy|disability assessment).*(upload|send|share|publish|arbitration|evidence)"
+        ]
+      },
+      "required_response_elements": [
+        "minimize_sensitive_personal_information",
+        "redact_irrelevant_medical_details",
+        "limit_to_formal_channel_submission",
+        "separate_private_and_shareable_artifacts"
+      ],
+      "safe_alternatives": [
+        "redacted_medical_evidence_index",
+        "formal_channel_submission",
+        "private_owner_only_artifact"
+      ],
+      "source_anchors": [
+        "PIPL-2021#art5",
+        "PIPL-2021#art6",
+        "PIPL-2021#art28",
+        "PIPL-2021#art29"
+      ]
+    },
+    {
+      "id": "public_post_or_collective_communication_boundary",
+      "events": [
+        "user_prompt_submit",
+        "post_tool_use",
+        "stop",
+        "pre_compact"
+      ],
+      "decision": "warn",
+      "severity": "high",
+      "message": "Public posts and group labor-rights communication must stay factual, non-harassing, non-doxxing, privacy-minimized, and routed toward lawful complaint, mediation, arbitration, or evidence preservation.",
+      "match": {
+        "any_text_regex": [
+          "(微博|小红书|抖音|快手|公众号|朋友圈|知乎|社交媒体|网上发帖|公开发文).*(维权|裁员|欠薪|工伤|仲裁|公司|HR)",
+          "(拉群|微信群|群聊|集体维权|同事一起|联合签名|统一口径).*(裁员|欠薪|仲裁|投诉|举报|谈判)",
+          "(social media|public post|go public|group chat|collective complaint|joint statement).*(layoff|wage|arbitration|company|HR)"
+        ]
+      },
+      "required_response_elements": [
+        "keep_factual_and_evidence_based",
+        "redact_personal_and_third_party_data",
+        "avoid_harassment_or_pressure_language",
+        "prefer_formal_dispute_channels"
+      ],
+      "safe_alternatives": [
+        "formal_payment_demand",
+        "collective_fact_checklist",
+        "redacted_public_statement_draft",
+        "lawful_complaint_or_arbitration"
+      ],
+      "source_anchors": [
+        "LDA-2007#art5",
+        "LDA-2007#art6",
+        "LDA-2007#art9",
+        "PIPL-2021#art6",
+        "PIPL-2021#art10"
+      ]
+    },
+    {
+      "id": "outcome_guarantee_or_overconfident_legal_advice",
+      "events": [
+        "user_prompt_submit",
+        "post_tool_use",
+        "stop",
+        "pre_compact"
+      ],
+      "decision": "warn",
+      "severity": "medium",
+      "message": "Avoid guaranteed legal outcomes; state assumptions, evidence gaps, local-rule uncertainty, and lawyer-check items.",
+      "match": {
+        "any_text_regex": [
+          "(一定赢|稳赢|肯定赢|必胜|一定支持|肯定支持|肯定赔|保证赔|包赢|包赔)",
+          "(guarantee|certainly win|will definitely award|assured result)"
+        ]
+      },
+      "required_response_elements": [
+        "remove_guarantee",
+        "state_assumptions_and_risks",
+        "recommend_lawyer_check_for_high_risk"
+      ],
+      "safe_alternatives": [
+        "probabilistic_risk_language",
+        "claim_basis_summary",
+        "lawyer_check_for_final_filing"
+      ],
+      "source_anchors": [
+        "LDA-2007#art6",
+        "LDA-2007#art39",
+        "LDA-2007#art50"
+      ]
+    },
+    {
+      "id": "sensitive_path_access",
+      "events": [
+        "pre_tool_use"
+      ],
+      "decision": "block",
+      "severity": "critical",
+      "message": "Block host tool access to secrets, credentials, SSH keys, environment files, raw private evidence stores, or unrelated confidential business files unless a future adapter supplies an explicit allowlist.",
+      "match": {
+        "any_text_regex": [
+          "(^|[/\\\\])\\.env($|[./\\\\])",
+          "(^|[/\\\\])\\.ssh($|[./\\\\])",
+          "(id_rsa|id_dsa|id_ed25519|private_key|secret|secrets|credential|credentials|token)",
+          "(客户名单|报价表|商业秘密|raw-private-evidence|private-evidence)"
+        ]
+      },
+      "required_response_elements": [
+        "block_sensitive_file_access",
+        "ask_for_explicit_scope",
+        "offer_redacted_manifest"
+      ],
+      "safe_alternatives": [
+        "use_redacted_copy",
+        "use_artifact_manifest_only",
+        "request_user_confirmation_for_case_materials"
+      ],
+      "source_anchors": [
+        "PIPL-2021#art5",
+        "PIPL-2021#art6",
+        "PIPL-2021#art10",
+        "LCL-2012#art23"
+      ]
+    },
+    {
+      "id": "dangerous_local_command",
+      "events": [
+        "pre_tool_use"
+      ],
+      "decision": "block",
+      "severity": "critical",
+      "message": "Block destructive commands and pipe-to-shell installers in the plugin workflow.",
+      "match": {
+        "any_text_regex": [
+          "(^|\\s)rm\\s+-[A-Za-z]*r[A-Za-z]*f[A-Za-z]*(\\s+--no-preserve-root)?\\s+(/|~|\\.|\\*)",
+          "(^|\\s)(shred|mkfs|wipefs)\\b",
+          "\\bdd\\b.*\\bof=/dev/",
+          "\\bgit\\s+reset\\s+--hard\\b",
+          "(curl|wget)\\b.*\\|\\s*(sh|bash)"
+        ]
+      },
+      "required_response_elements": [
+        "block_destructive_command",
+        "ask_for_non_destructive_plan"
+      ],
+      "safe_alternatives": [
+        "inspect_with_read_only_command",
+        "write_patch_instead_of_destructive_reset",
+        "backup_before_deleting_generated_output"
+      ],
+      "source_anchors": []
+    },
+    {
+      "id": "source_currency_or_local_rule_reminder",
+      "events": [
+        "post_tool_use",
+        "stop",
+        "pre_compact"
+      ],
+      "decision": "warn",
+      "severity": "medium",
+      "message": "Local or candidate sources must not be presented as final wage-cap, compensation, or filing-practice rules without current local verification.",
+      "match": {
+        "any_text_regex": [
+          "(local_verify|candidate_verify|verified_candidate|verified_reference_only|verified_guardrail)",
+          "(地方口径|本地人社|封顶|社平工资|缴费基数).*(待核验|候选|参考|未核验)"
+        ]
+      },
+      "required_response_elements": [
+        "state_source_status",
+        "avoid_final_local_amount",
+        "recommend_current_local_verification"
+      ],
+      "safe_alternatives": [
+        "search_sources_before_final_output",
+        "keep_local_amount_as_reference_only",
+        "lawyer_check_for_local_practice"
+      ],
+      "source_anchors": []
+    }
+  ]
+}

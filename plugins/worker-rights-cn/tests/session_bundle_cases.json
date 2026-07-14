@@ -1,0 +1,156 @@
+[
+  {
+    "id": "bundle-pre-signing-ready-all-confirmed",
+    "source_session_case_id": "session-missing-average-wage-then-ready",
+    "generated_at": "2026-06-18T10:00:00Z",
+    "confirmations": {
+      "actor": "worker",
+      "accepted_at": "2026-06-18T10:00:00Z",
+      "accepted_confirmations": [
+        "not_legal_opinion",
+        "verify_local_rules",
+        "lawyer_check_before_signing_or_filing",
+        "redaction_review",
+        "lawful_evidence_only"
+      ]
+    },
+    "expected": {
+      "bundle_status": "ready_for_download",
+      "share_access_status": "enabled",
+      "missing_confirmations": [],
+      "artifact_paths_contain": [
+        "private/session_state.json",
+        "private/workbench_state.json",
+        "private/case_package.json",
+        "docs/workbench_preview.md",
+        "docs/case_package_review.md",
+        "share/redacted_share_packet.md",
+        "share/redacted_share_packet.json"
+      ],
+      "artifact_ids_contain": [
+        "session_state_json",
+        "workbench_state_json",
+        "case_package_json",
+        "workbench_preview_md",
+        "case_package_review_md",
+        "redacted_share_packet_md",
+        "redacted_share_packet_json"
+      ],
+      "content_contains": {
+        "share/redacted_share_packet.md": [
+          "# Redacted Share Packet",
+          "Redaction level: standard",
+          "Sharing Limits"
+        ]
+      },
+      "content_excludes": {
+        "share/redacted_share_packet.md": [
+          "Example Technology Shanghai Co., Ltd.",
+          "worker-sh",
+          "hr_wechat"
+        ],
+        "share/redacted_share_packet.json": [
+          "Example Technology Shanghai Co., Ltd.",
+          "worker-sh",
+          "hr_wechat"
+        ]
+      }
+    }
+  },
+  {
+    "id": "bundle-arbitration-ready-missing-redaction",
+    "source_session_case_id": "session-profile-resuggests-after-goal-answer",
+    "generated_at": "2026-06-18T10:05:00Z",
+    "confirmations": {
+      "actor": "worker",
+      "accepted_at": "2026-06-18T10:05:00Z",
+      "accepted_confirmations": [
+        "not_legal_opinion",
+        "verify_local_rules",
+        "lawyer_check_before_signing_or_filing",
+        "lawful_evidence_only"
+      ]
+    },
+    "expected": {
+      "bundle_status": "blocked_pending_confirmations",
+      "share_access_status": "disabled_pending_confirmations",
+      "missing_confirmations": ["redaction_review"],
+      "artifact_paths_contain": [
+        "private/case_package.json",
+        "docs/case_package_review.md",
+        "share/redacted_share_packet.md",
+        "share/redacted_share_packet.json"
+      ],
+      "content_contains": {
+        "share/redacted_share_packet.md": [
+          "constructive_dismissal",
+          "Sharing Limits"
+        ]
+      },
+      "content_excludes": {
+        "share/redacted_share_packet.md": [
+          "Example Platform Shenzhen Co., Ltd.",
+          "worker-sz-session",
+          "bank_records"
+        ],
+        "share/redacted_share_packet.json": [
+          "Example Platform Shenzhen Co., Ltd.",
+          "worker-sz-session",
+          "bank_records"
+        ]
+      }
+    }
+  },
+  {
+    "id": "bundle-follow-up-draft-no-case-package",
+    "source_session_case_id": "session-core-facts-missing-then-ready",
+    "initial_only": true,
+    "generated_at": "2026-06-18T10:10:00Z",
+    "confirmations": {
+      "actor": "worker",
+      "accepted_at": "2026-06-18T10:10:00Z",
+      "accepted_confirmations": [
+        "not_legal_opinion",
+        "verify_local_rules",
+        "redaction_review",
+        "lawful_evidence_only"
+      ]
+    },
+    "expected": {
+      "bundle_status": "draft_pending_required_facts",
+      "share_access_status": "disabled_pending_required_facts",
+      "missing_confirmations": [],
+      "artifact_paths_contain": [
+        "private/session_state.json",
+        "private/workbench_state.json",
+        "docs/workbench_preview.md",
+        "share/redacted_share_packet.md",
+        "share/redacted_share_packet.json"
+      ],
+      "artifact_paths_exclude": [
+        "private/case_package.json",
+        "docs/case_package_review.md"
+      ],
+      "content_contains": {
+        "docs/workbench_preview.md": [
+          "intake_follow_up",
+          "case.parties.employer_legal_name"
+        ],
+        "share/redacted_share_packet.md": [
+          "draft_pending_required_facts",
+          "No package sections yet"
+        ]
+      },
+      "content_excludes": {
+        "share/redacted_share_packet.md": [
+          "worker-gz-session",
+          "hr_wechat"
+        ],
+        "share/redacted_share_packet.json": [
+          "worker-gz-session",
+          "hr_wechat"
+        ]
+      }
+    }
+  }
+]

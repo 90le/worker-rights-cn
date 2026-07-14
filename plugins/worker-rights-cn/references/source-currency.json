@@ -1,0 +1,287 @@
+{
+  "schema_version": "0.1.0",
+  "audit_date": "2026-06-16",
+  "current_as_of": "2026-06-16",
+  "purpose": "Machine-readable 2026 currency audit for legal and official source cards used by worker-rights-cn. This file verifies source identity, official host, retrieval date, and effective/current status; article-level anchors remain indexed in layoff-defense/references/legal-map.md.",
+  "status_values": [
+    "current_effective",
+    "current_reference",
+    "candidate_verify",
+    "local_verify",
+    "deprecated_do_not_use"
+  ],
+  "official_host_allowlist": [
+    "flk.npc.gov.cn",
+    "fgk.chinatax.gov.cn",
+    "xzfg.moj.gov.cn",
+    "www.moj.gov.cn",
+    "www.gov.cn",
+    "gov.cn",
+    "www.court.gov.cn",
+    "court.gov.cn",
+    "www.mohrss.gov.cn",
+    "mohrss.gov.cn",
+    "gongbao.court.gov.cn",
+    "ipc.court.gov.cn",
+    "www.gjxfj.gov.cn",
+    "www.cac.gov.cn",
+    "www.spp.gov.cn",
+    "www.nhc.gov.cn",
+    "rsj.beijing.gov.cn",
+    "tjj.beijing.gov.cn",
+    "rsj.sh.gov.cn",
+    "tjj.sz.gov.cn",
+    "www.sz.gov.cn",
+    "rsj.gz.gov.cn",
+    "www.gz.gov.cn",
+    "gjj.gz.gov.cn",
+    "hrss.gd.gov.cn",
+    "guangdong.chinatax.gov.cn",
+    "zhejiang.chinatax.gov.cn"
+  ],
+  "currency_policy": {
+    "national_law_rule": "A national law, administrative regulation, department rule, or judicial interpretation may be cited as current only when it has an official source card, retrieved_at in 2026 or later, current_effective status, and no deprecated_do_not_use flag.",
+    "local_rule_rule": "Local wage, social-insurance, housing-fund, and filing-practice sources must keep their local source_status. Candidate/reference sources cannot be used as final economic-compensation wage caps unless the city rule is later marked verified_final for that use.",
+    "output_rule": "User-facing legal outputs must cite SOURCE-ID#artN anchors and must avoid saying a local amount is final when the source is candidate_verify, verified_candidate, verified_reference_only, verified_guardrail, or local_verify.",
+    "reaudit_rule": "Re-run official source search before changing any source card, before adding a new jurisdiction, and at least once per calendar year."
+  },
+  "deprecated_url_patterns": [
+    {
+      "url": "https://www.gov.cn/zhengce/2008-09/28/content_2603139.htm",
+      "replacement_url": "https://www.moj.gov.cn/pub/sfbgw/flfggz/flfggzbmgz/200902/t20090209_144625.html",
+      "audited_at": "2026-06-16",
+      "reason": "Returned 404 during the 2026 audit; replaced by the official Ministry of Justice page for 企业职工带薪年休假实施办法."
+    }
+  ],
+  "national_sources": {
+    "LCL-2012": {
+      "title": "中华人民共和国劳动合同法",
+      "authority": "全国人民代表大会常务委员会",
+      "jurisdiction": "national",
+      "source_type": "law",
+      "source_of_truth_url": "https://flk.npc.gov.cn/detail2.html?MmM5MDlmZGQ2NzhiZjE3OTAxNjc4YmY3NGQ3MTA2YjM%3D=",
+      "verification_urls": [
+        "https://fgk.chinatax.gov.cn/zcfgk/c100009/c5193025/content.html"
+      ],
+      "publish_date": "2012-12-28 amendment",
+      "effective_date": "2008-01-01; 2012 amendment effective 2013-07-01",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Current project source card uses the NPC legal database plus an official tax-system text mirror for article reading."
+    },
+    "LCL-REG-2008": {
+      "title": "中华人民共和国劳动合同法实施条例",
+      "authority": "国务院",
+      "jurisdiction": "national",
+      "source_type": "administrative_regulation",
+      "source_of_truth_url": "https://xzfg.moj.gov.cn/front/law/detail?LawID=284",
+      "verification_urls": [],
+      "publish_date": "2008-09-18",
+      "effective_date": "2008-09-18",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Ministry of Justice administrative-regulation database source."
+    },
+    "PAID-LEAVE-REG-2007": {
+      "title": "职工带薪年休假条例",
+      "authority": "国务院",
+      "jurisdiction": "national",
+      "source_type": "administrative_regulation",
+      "source_of_truth_url": "https://xzfg.moj.gov.cn/front/law/detail?LawID=208",
+      "verification_urls": [],
+      "publish_date": "2007-12-14",
+      "effective_date": "2008-01-01",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Replaces the older local HRSS mirror with the Ministry of Justice national administrative-regulation database entry."
+    },
+    "PAID-LEAVE-MEASURES-2008": {
+      "title": "企业职工带薪年休假实施办法",
+      "authority": "人力资源和社会保障部",
+      "jurisdiction": "national",
+      "source_type": "department_rule",
+      "source_of_truth_url": "https://www.moj.gov.cn/pub/sfbgw/flfggz/flfggzbmgz/200902/t20090209_144625.html",
+      "verification_urls": [],
+      "publish_date": "2008-09-18",
+      "effective_date": "2008-09-18",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Official Ministry of Justice publication of the ministry rule text; replaced a State Council portal URL that returned 404 during the 2026 audit."
+    },
+    "LDA-2007": {
+      "title": "中华人民共和国劳动争议调解仲裁法",
+      "authority": "全国人民代表大会常务委员会",
+      "jurisdiction": "national",
+      "source_type": "law",
+      "source_of_truth_url": "https://gongbao.court.gov.cn/Details/997e66171cf55d219c613ec18dc370.html",
+      "verification_urls": [
+        "https://www.gjxfj.gov.cn/gjxfj/xxgk/fgwj/flfg/webinfo/2016/03/1460585589964384.htm"
+      ],
+      "publish_date": "2007-12-29",
+      "effective_date": "2008-05-01",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Court Gazette source plus official government repost verification."
+    },
+    "SPC-LDI-1-2020": {
+      "title": "最高人民法院关于审理劳动争议案件适用法律问题的解释（一）",
+      "authority": "最高人民法院",
+      "jurisdiction": "national",
+      "source_type": "judicial_interpretation",
+      "source_of_truth_url": "https://www.court.gov.cn/fabu/xiangqing/282121.html",
+      "verification_urls": [],
+      "publish_date": "2020-12-29",
+      "effective_date": "2021-01-01",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Official Supreme People's Court publication."
+    },
+    "SPC-LDI-2-2025": {
+      "title": "最高人民法院关于审理劳动争议案件适用法律问题的解释（二）",
+      "authority": "最高人民法院",
+      "jurisdiction": "national",
+      "source_type": "judicial_interpretation",
+      "source_of_truth_url": "https://www.court.gov.cn/fabu/xiangqing/472691.html",
+      "verification_urls": [],
+      "publish_date": "2025-08-01",
+      "effective_date": "2025-09-01",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Official Supreme People's Court publication; effective before the 2026 audit date."
+    },
+    "PIPL-2021": {
+      "title": "中华人民共和国个人信息保护法",
+      "authority": "全国人民代表大会常务委员会",
+      "jurisdiction": "national",
+      "source_type": "law",
+      "source_of_truth_url": "https://www.cac.gov.cn/2021-08/20/c_1631050028355286.htm",
+      "verification_urls": [],
+      "publish_date": "2021-08-20",
+      "effective_date": "2021-11-01",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Official Cyberspace Administration publication of the NPC law text."
+    },
+    "WRPL-2022": {
+      "title": "中华人民共和国妇女权益保障法",
+      "authority": "全国人民代表大会常务委员会",
+      "jurisdiction": "national",
+      "source_type": "law",
+      "source_of_truth_url": "https://www.spp.gov.cn/spp/fl/202210/t20221030_591251.shtml",
+      "verification_urls": [],
+      "publish_date": "2022-10-30 amendment",
+      "effective_date": "2023-01-01",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Official Supreme People's Procuratorate publication of the amended law text."
+    },
+    "FEP-2012": {
+      "title": "女职工劳动保护特别规定",
+      "authority": "国务院",
+      "jurisdiction": "national",
+      "source_type": "administrative_regulation",
+      "source_of_truth_url": "https://www.nhc.gov.cn/wjw/flfg/201204/0bdf1bf03a624f6ba02f7cb047fd750b.shtml",
+      "verification_urls": [],
+      "publish_date": "2012-04-28",
+      "effective_date": "2012-04-28",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Official National Health Commission publication of State Council Order No. 619 text."
+    },
+    "SIL-2018": {
+      "title": "中华人民共和国社会保险法",
+      "authority": "全国人民代表大会常务委员会",
+      "jurisdiction": "national",
+      "source_type": "law",
+      "source_of_truth_url": "https://www.gjxfj.gov.cn/gjxfj/xxgk/fgwj/flfg/webinfo/2019/02/1536629579120511.htm",
+      "verification_urls": [],
+      "publish_date": "2018-12-29 amendment",
+      "effective_date": "2011-07-01; 2018 amendment effective 2018-12-29",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Official government repost of the amended Social Insurance Law text."
+    },
+    "CPL-2023": {
+      "title": "中华人民共和国民事诉讼法",
+      "authority": "全国人民代表大会常务委员会",
+      "jurisdiction": "national",
+      "source_type": "law",
+      "source_of_truth_url": "https://gongbao.court.gov.cn/Details/886331ece0f6611a370642e89f08c6.html",
+      "verification_urls": [
+        "https://ipc.court.gov.cn/zh-cn/news/view-3230.html"
+      ],
+      "publish_date": "2023-09-01 amendment",
+      "effective_date": "2024-01-01 amendment effective",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Court Gazette full-text entry plus Supreme People's Court IP Tribunal verification."
+    },
+    "SPC-EXTORTION-2013": {
+      "title": "最高人民法院、最高人民检察院关于办理敲诈勒索刑事案件适用法律若干问题的解释",
+      "authority": "最高人民法院、最高人民检察院",
+      "jurisdiction": "national",
+      "source_type": "judicial_interpretation",
+      "source_of_truth_url": "https://www.spp.gov.cn/zdgz/201304/t20130427_58482.shtml",
+      "verification_urls": [],
+      "publish_date": "2013-04-23",
+      "effective_date": "2013-04-27",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Official Supreme People's Procuratorate publication of the joint SPC/SPP interpretation."
+    },
+    "SPC-IP-CRIM-2025": {
+      "title": "最高人民法院、最高人民检察院关于办理侵犯知识产权刑事案件适用法律若干问题的解释",
+      "authority": "最高人民法院、最高人民检察院",
+      "jurisdiction": "national",
+      "source_type": "judicial_interpretation",
+      "source_of_truth_url": "https://www.court.gov.cn/zixun/xiangqing/463291.html",
+      "verification_urls": [],
+      "publish_date": "2025-04-23",
+      "effective_date": "2025-04-26",
+      "retrieved_at": "2026-06-16",
+      "current_as_of": "2026-06-16",
+      "currency_status": "current_effective",
+      "notes": "Official Supreme People's Court publication."
+    }
+  },
+  "local_source_policy": {
+    "city_rules_file": "skills/local-rules-adapter/references/city-rules.json",
+    "status_values": [
+      "verified_final",
+      "verified_candidate",
+      "verified_reference_only",
+      "verified_guardrail",
+      "local_verify"
+    ],
+    "final_amount_rule": "Only verified_final may be used for final local numeric amounts. Current city data intentionally avoids verified_final for economic-compensation high-wage caps.",
+    "current_verified_local_scopes": [
+      "Guangzhou GZ-RSJ-LAYOFF-NORM-2021 is verified_candidate for economic-layoff local procedure guidance, written HRSS report package checks, HRSS feedback response, final publication, and wage/social-insurance clearance prompts.",
+      "Guangzhou wage, housing-fund, and Guangdong pension-base figures remain reference/candidate data and cannot be auto-applied as final LCL art.47 high-wage cap amounts."
+    ],
+    "current_known_gaps": [
+      "Beijing economic-compensation high-wage cap source remains local_verify.",
+      "Shenzhen economic-compensation high-wage cap source remains local_verify and requires HRSS confirmation.",
+      "Guangzhou wage figures are candidate/reference data and cannot be auto-applied as final LCL art.47 cap.",
+      "Hangzhou city-level economic-compensation wage-cap source is pending."
+    ]
+  },
+  "known_caveats": [
+    "This audit does not replace lawyer review or future official source search.",
+    "Official reposts are used only where the primary law database page is unavailable, slow, or not suitable for article-level reading.",
+    "Local social-insurance, housing-fund, and statistical wage bases are not automatically the economic-compensation high-wage cap.",
+    "If any law is amended after 2026-06-16, this file must be re-audited before user-facing legal advice."
+  ]
+}

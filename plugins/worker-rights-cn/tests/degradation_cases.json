@@ -1,0 +1,74 @@
+[
+  {
+    "id": "missing_facts",
+    "exception": "value_error",
+    "marker": "missing_facts",
+    "expected_code": "missing_facts",
+    "expected_retryable": false,
+    "expected_action_contains": "补充",
+    "expected_fallback": "ask_for_missing_facts"
+  },
+  {
+    "id": "missing_city_data",
+    "exception": "os_error",
+    "marker": "local_verify",
+    "expected_code": "local_verify",
+    "expected_retryable": false,
+    "expected_action_contains": "当地",
+    "expected_fallback": "national_rules_only"
+  },
+  {
+    "id": "expired_legal_data",
+    "exception": "value_error",
+    "marker": "stale_source",
+    "expected_code": "source_expired",
+    "expected_retryable": true,
+    "expected_action_contains": "官方",
+    "expected_fallback": "omit_expired_values"
+  },
+  {
+    "id": "invalid_calculation_input",
+    "exception": "domain_input_error",
+    "marker": null,
+    "expected_code": "invalid_calculation_input",
+    "expected_retryable": false,
+    "expected_action_contains": "输入",
+    "expected_fallback": "preserve_calculation_input"
+  },
+  {
+    "id": "mcp_unavailable",
+    "exception": "os_error",
+    "marker": "mcp_unavailable",
+    "expected_code": "mcp_unavailable",
+    "expected_retryable": true,
+    "expected_action_contains": "稍后",
+    "expected_fallback": "pure_skill_guidance"
+  },
+  {
+    "id": "storage_unwritable",
+    "exception": "os_error",
+    "marker": "storage_unavailable",
+    "expected_code": "storage_unavailable",
+    "expected_retryable": true,
+    "expected_action_contains": "未保存",
+    "expected_fallback": "continue_without_saving"
+  },
+  {
+    "id": "document_rendering_failure",
+    "exception": "os_error",
+    "marker": "document_failed",
+    "expected_code": "document_generation_failed",
+    "expected_retryable": true,
+    "expected_action_contains": "重新生成",
+    "expected_fallback": "preserve_structured_case_data"
+  },
+  {
+    "id": "adapter_failure",
+    "exception": "runtime_error",
+    "marker": "host_adapter_failed",
+    "expected_code": "adapter_unavailable",
+    "expected_retryable": true,
+    "expected_action_contains": "Codex",
+    "expected_fallback": "keep_codex_result"
+  }
+]

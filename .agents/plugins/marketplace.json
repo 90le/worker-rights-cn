@@ -1,0 +1,21 @@
+{
+  "name": "worker-rights-cn",
+  "interface": {
+    "displayName": "Worker Rights CN"
+  },
+  "plugins": [
+    {
+      "name": "worker-rights-cn",
+      "source": "./plugins/worker-rights-cn",
+      "description": "Safety-first China worker-rights fact, evidence, estimate, and drafting workflows.",
+      "category": "Productivity",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "interface": {
+        "displayName": "Worker Rights CN"
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Negotiation Coach"
+  short_description: "Draft HR negotiation messages"
+  default_prompt: "Use $negotiation-coach to draft worker-side HR negotiation messages with lawful boundaries and source anchors."
+policy:
+  allow_implicit_invocation: false

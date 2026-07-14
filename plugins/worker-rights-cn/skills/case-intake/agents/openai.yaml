@@ -1,0 +1,6 @@
+interface:
+  display_name: "Labor Case Intake"
+  short_description: "Collect and structure labor dispute facts"
+  default_prompt: "Use $case-intake to collect and structure the key facts for a labor rights case."
+policy:
+  allow_implicit_invocation: false

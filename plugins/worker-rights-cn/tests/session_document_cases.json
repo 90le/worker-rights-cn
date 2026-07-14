@@ -1,0 +1,136 @@
+[
+  {
+    "id": "document-render-pre-signing-ready",
+    "source_session_case_id": "session-missing-average-wage-then-ready",
+    "expected": {
+      "document_ids": [
+        "workbench_preview",
+        "case_package_review",
+        "redacted_share_packet"
+      ],
+      "content_contains": {
+        "workbench_preview": [
+          "# Case Workbench Preview",
+          "case_package_ready",
+          "Review agreement risk before signing"
+        ],
+        "case_package_review": [
+          "# Case Package Review Draft",
+          "## Money Summary",
+          "## Safety And Review Notes"
+        ],
+        "redacted_share_packet": [
+          "# Redacted Share Packet",
+          "## Redacted Paths",
+          "case.parties.employer_legal_name"
+        ]
+      },
+      "content_excludes": {
+        "redacted_share_packet": [
+          "Example Technology Shanghai Co., Ltd.",
+          "worker-sh",
+          "hr_wechat"
+        ]
+      },
+      "confirmations_contain": {
+        "workbench_preview": ["not_legal_opinion", "lawful_evidence_only"],
+        "case_package_review": [
+          "not_legal_opinion",
+          "verify_local_rules",
+          "lawyer_check_before_signing_or_filing"
+        ],
+        "redacted_share_packet": ["redaction_review", "lawful_evidence_only"]
+      },
+      "manifest_confirmation_ids": [
+        "not_legal_opinion",
+        "verify_local_rules",
+        "lawyer_check_before_signing_or_filing",
+        "redaction_review"
+      ]
+    }
+  },
+  {
+    "id": "document-render-follow-up-draft",
+    "source_session_case_id": "session-core-facts-missing-then-ready",
+    "initial_only": true,
+    "expected": {
+      "document_ids": ["workbench_preview", "redacted_share_packet"],
+      "excluded_document_ids": ["case_package_review"],
+      "content_contains": {
+        "workbench_preview": [
+          "# Case Workbench Preview",
+          "intake_follow_up",
+          "answer_follow_up",
+          "case.parties.employer_legal_name"
+        ],
+        "redacted_share_packet": [
+          "draft_pending_required_facts",
+          "No package sections yet"
+        ]
+      },
+      "content_excludes": {
+        "redacted_share_packet": [
+          "worker-gz-session",
+          "hr_wechat"
+        ]
+      },
+      "confirmations_contain": {
+        "workbench_preview": [
+          "not_legal_opinion",
+          "verify_local_rules",
+          "lawful_evidence_only"
+        ],
+        "redacted_share_packet": ["redaction_review"]
+      },
+      "manifest_confirmation_ids": [
+        "not_legal_opinion",
+        "verify_local_rules",
+        "redaction_review"
+      ]
+    }
+  },
+  {
+    "id": "document-render-arbitration-ready",
+    "source_session_case_id": "session-profile-resuggests-after-goal-answer",
+    "expected": {
+      "document_ids": [
+        "workbench_preview",
+        "case_package_review",
+        "redacted_share_packet"
+      ],
+      "content_contains": {
+        "workbench_preview": [
+          "arbitration_ready",
+          "Verify local arbitration form and commission"
+        ],
+        "case_package_review": [
+          "## Arbitration Draft Pack",
+          "unpaid_wages"
+        ],
+        "redacted_share_packet": [
+          "constructive_dismissal",
+          "case.evidence.wage_records"
+        ]
+      },
+      "content_excludes": {
+        "redacted_share_packet": [
+          "Example Platform Shenzhen Co., Ltd.",
+          "worker-sz-session",
+          "bank_records"
+        ]
+      },
+      "confirmations_contain": {
+        "case_package_review": [
+          "not_legal_opinion",
+          "verify_local_rules"
+        ],
+        "redacted_share_packet": ["redaction_review"]
+      },
+      "manifest_confirmation_ids": [
+        "not_legal_opinion",
+        "verify_local_rules",
+        "redaction_review"
+      ]
+    }
+  }
+]

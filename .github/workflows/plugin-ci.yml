@@ -1,0 +1,76 @@
+name: worker-rights-cn plugin CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plugin-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plugin-test:
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-24.04, macos-latest]
+        python-version: ["3.11", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Check out pinned Plugin Eval source
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          repository: openai/plugins
+          ref: 11c74d6ba24d3a6d48f54a194cd00ef3beea18f9
+          sparse-checkout: plugins/plugin-eval
+          path: .ci-tools/openai-plugins
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+      - name: Require Plugin Eval entrypoint
+        run: python -c "from pathlib import Path; path = Path('.ci-tools/openai-plugins/plugins/plugin-eval/scripts/plugin-eval.js'); raise SystemExit(0 if path.is_file() else 'missing pinned Plugin Eval entrypoint')"
+      - name: Create report directory
+        run: python -c "from pathlib import Path; Path('acceptance-reports').mkdir(exist_ok=True)"
+      - name: Public repository gates
+        run: |
+          python -X utf8 scripts/run_publication_readiness.py
+          python -X utf8 scripts/run_site_cases.py
+          python -X utf8 scripts/run_public_snapshot_cases.py
+      - name: Runtime doctor
+        run: python -X utf8 plugins/worker-rights-cn/scripts/runtime_doctor.py > acceptance-reports/runtime.json
+      - name: Manifest contracts
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_manifest_cases.py > acceptance-reports/manifest.json
+      - name: Phase 1 and required Plugin Eval
+        env:
+          PLUGIN_EVAL_SCRIPT: .ci-tools/openai-plugins/plugins/plugin-eval/scripts/plugin-eval.js
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_phase_1_acceptance.py --require-plugin-eval > acceptance-reports/phase1.json
+      - name: Core orchestrator
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_orchestrator_cases.py > acceptance-reports/orchestrator.json
+      - name: Safety
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_safety_core_cases.py > acceptance-reports/safety.json
+      - name: Privacy
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_privacy_cases.py > acceptance-reports/privacy.json
+      - name: Ordinary worker journey
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_worker_journey_cases.py > acceptance-reports/worker-journey.json
+      - name: Host adapters
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_host_adapter_cases.py > acceptance-reports/host-adapters.json
+      - name: Package contracts
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_package_cases.py > acceptance-reports/package.json
+      - name: Bind matrix job reports
+        run: python -X utf8 plugins/worker-rights-cn/scripts/write_ci_job_report.py --reports acceptance-reports --os "${{ runner.os }}" --python "${{ matrix.python-version }}" --commit "${{ github.sha }}" --run-id "${{ github.run_id }}" --output acceptance-reports/ci-job.json
+      - name: Upload acceptance reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: acceptance-${{ matrix.os }}-py${{ matrix.python-version }}
+          path: acceptance-reports

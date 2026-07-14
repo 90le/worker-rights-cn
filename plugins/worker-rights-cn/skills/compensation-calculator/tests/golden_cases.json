@@ -1,0 +1,250 @@
+[
+  {
+    "id": "probation-dismissal-short-service",
+    "scenario": "试用期被辞退，工龄不足 6 个月",
+    "skill_focus": ["case-intake", "layoff-defense", "compensation-calculator"],
+    "risk_notes": ["需核验试用期约定、录用条件、辞退理由和证据"],
+    "layoff_defense": {
+      "expected_termination_maps": ["fault_dismissal"],
+      "expected_source_anchors": [
+        "LCL-2012#art21",
+        "LCL-2012#art39",
+        "LCL-2012#art43",
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "SPC-LDI-1-2020#art44"
+      ]
+    },
+    "input": {
+      "start_date": "2026-03-01",
+      "end_date": "2026-05-15",
+      "average_monthly_wage": 9000,
+      "local_average_monthly_wage": 10000,
+      "termination_type": "unknown"
+    },
+    "expected": {
+      "service_period.n_months": 0.5,
+      "base_amounts.economic_compensation_n": 4500,
+      "claim_paths.unlawful_termination_2n": 9000
+    }
+  },
+  {
+    "id": "mutual-termination-low-offer",
+    "scenario": "协商解除但公司给出的补偿明显偏低",
+    "skill_focus": ["layoff-defense", "compensation-calculator"],
+    "risk_notes": ["需审查离职协议是否包含一次性结清、弃权、保密和违约责任条款"],
+    "layoff_defense": {
+      "expected_termination_maps": ["mutual_termination"],
+      "expected_source_anchors": [
+        "LCL-2012#art36",
+        "LCL-2012#art46",
+        "SPC-LDI-1-2020#art35"
+      ]
+    },
+    "input": {
+      "start_date": "2020-04-01",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 15000,
+      "local_average_monthly_wage": 12000,
+      "termination_type": "mutual"
+    },
+    "expected": {
+      "service_period.n_months": 6.5,
+      "base_amounts.economic_compensation_n": 97500,
+      "claim_paths.economic_compensation_n": 97500
+    }
+  },
+  {
+    "id": "forced-resignation-unpaid-wages",
+    "scenario": "公司拖欠工资并要求员工主动离职",
+    "skill_focus": ["case-intake", "layoff-defense", "compensation-calculator"],
+    "risk_notes": ["需核验欠薪证据、解除通知措辞和被迫解除路径"],
+    "layoff_defense": {
+      "expected_termination_maps": ["employee_resignation", "constructive_dismissal"],
+      "expected_source_anchors": [
+        "LCL-2012#art30",
+        "LCL-2012#art37",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "LCL-2012#art85",
+        "LDA-2007#art9",
+        "SPC-LDI-1-2020#art45",
+        "SPC-LDI-2-2025#art19"
+      ]
+    },
+    "input": {
+      "start_date": "2023-01-10",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 10000,
+      "local_average_monthly_wage": 11000,
+      "termination_type": "unknown",
+      "unpaid_wages": 30000
+    },
+    "expected": {
+      "service_period.n_months": 3.5,
+      "base_amounts.economic_compensation_n": 35000,
+      "claim_paths.economic_compensation_n": 65000,
+      "claim_paths.unlawful_termination_2n": 100000
+    }
+  },
+  {
+    "id": "no-advance-notice-dismissal",
+    "scenario": "未提前 30 日通知的非过失性解除",
+    "skill_focus": ["layoff-defense", "compensation-calculator"],
+    "risk_notes": ["需核验是否属于可主张代通知金的解除类型"],
+    "layoff_defense": {
+      "expected_termination_maps": ["non_fault_dismissal"],
+      "expected_source_anchors": [
+        "LCL-2012#art40",
+        "LCL-2012#art42",
+        "LCL-2012#art43",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-REG-2008#art20",
+        "LCL-REG-2008#art27",
+        "SPC-LDI-2-2025#art16"
+      ]
+    },
+    "input": {
+      "start_date": "2022-01-01",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 20000,
+      "local_average_monthly_wage": 12000,
+      "termination_type": "article40_no_notice",
+      "unpaid_wages": 5000,
+      "unused_annual_leave_days": 3,
+      "unsigned_contract_months_owed": 0
+    },
+    "expected": {
+      "service_period.n_months": 4.5,
+      "base_amounts.economic_compensation_n": 90000,
+      "base_amounts.substitute_notice_wage": 20000,
+      "claim_paths.n_plus_one": 120517.24
+    }
+  },
+  {
+    "id": "economic-layoff-procedure-gap",
+    "scenario": "经济性裁员但程序可能不完整",
+    "skill_focus": ["case-intake", "layoff-defense", "compensation-calculator"],
+    "risk_notes": ["需核验裁员人数、说明程序、听取意见、向劳动行政部门报告等事实"],
+    "layoff_defense": {
+      "expected_termination_maps": ["economic_layoff"],
+      "expected_source_anchors": [
+        "LCL-2012#art41",
+        "LCL-2012#art42",
+        "LCL-2012#art43",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-REG-2008#art19"
+      ]
+    },
+    "input": {
+      "start_date": "2018-07-01",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 18000,
+      "local_average_monthly_wage": 12000,
+      "termination_type": "economic_layoff"
+    },
+    "expected": {
+      "service_period.n_months": 8,
+      "base_amounts.economic_compensation_n": 144000,
+      "claim_paths.economic_compensation_n": 144000
+    }
+  },
+  {
+    "id": "unsigned-contract-double-wage",
+    "scenario": "入职超过一个月未签劳动合同",
+    "skill_focus": ["case-intake", "compensation-calculator"],
+    "risk_notes": ["需核验未签合同期间、员工是否拒签、仲裁时效和证据"],
+    "layoff_defense": {
+      "expected_termination_maps": ["unclear_or_mixed"],
+      "expected_source_anchors": [
+        "LCL-2012#art82",
+        "LCL-REG-2008#art6",
+        "LCL-REG-2008#art7",
+        "LDA-2007#art6",
+        "LDA-2007#art27",
+        "SPC-LDI-1-2020#art44"
+      ]
+    },
+    "input": {
+      "start_date": "2025-01-01",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 8000,
+      "local_average_monthly_wage": 10000,
+      "termination_type": "unknown",
+      "unsigned_contract_months_owed": 10
+    },
+    "expected": {
+      "service_period.n_months": 1.5,
+      "base_amounts.economic_compensation_n": 12000,
+      "additional_claims.unsigned_contract_double_wage": 80000,
+      "claim_paths.economic_compensation_n": 92000
+    }
+  },
+  {
+    "id": "high-wage-cap-unlawful-termination",
+    "scenario": "高工资员工长期服务后疑似违法解除",
+    "skill_focus": ["layoff-defense", "compensation-calculator"],
+    "risk_notes": ["需核验当地社平工资、三倍封顶和十二年上限适用"],
+    "layoff_defense": {
+      "expected_termination_maps": ["unclear_or_mixed"],
+      "expected_source_anchors": [
+        "LCL-2012#art48",
+        "LCL-2012#art87",
+        "LDA-2007#art6",
+        "SPC-LDI-1-2020#art44"
+      ]
+    },
+    "input": {
+      "start_date": "2008-01-01",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 60000,
+      "local_average_monthly_wage": 12000,
+      "termination_type": "unlawful"
+    },
+    "expected": {
+      "service_period.n_months": 18.5,
+      "service_period.n_months_after_cap": 12,
+      "base_amounts.monthly_wage_for_n": 36000,
+      "base_amounts.wage_cap_applied": true,
+      "base_amounts.economic_compensation_n": 432000,
+      "claim_paths.unlawful_termination_2n": 864000
+    }
+  },
+  {
+    "id": "salary-cut-transfer-constructive-dismissal",
+    "scenario": "调岗降薪逼迫离职并存在欠薪和未休年假",
+    "skill_focus": ["case-intake", "layoff-defense", "compensation-calculator"],
+    "risk_notes": ["需核验调岗合理性、降薪同意、欠薪记录和年假记录"],
+    "layoff_defense": {
+      "expected_termination_maps": ["constructive_dismissal"],
+      "expected_source_anchors": [
+        "LCL-2012#art30",
+        "LCL-2012#art35",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "LCL-2012#art85",
+        "LDA-2007#art9",
+        "SPC-LDI-1-2020#art45",
+        "SPC-LDI-2-2025#art19"
+      ]
+    },
+    "input": {
+      "start_date": "2021-09-15",
+      "end_date": "2026-06-16",
+      "average_monthly_wage": 14000,
+      "local_average_monthly_wage": 11000,
+      "termination_type": "unknown",
+      "unpaid_wages": 14000,
+      "unused_annual_leave_days": 5
+    },
+    "expected": {
+      "service_period.n_months": 5,
+      "base_amounts.economic_compensation_n": 70000,
+      "additional_claims.unused_annual_leave_extra": 6436.8,
+      "claim_paths.economic_compensation_n": 90436.8,
+      "claim_paths.unlawful_termination_2n": 160436.8
+    }
+  }
+]

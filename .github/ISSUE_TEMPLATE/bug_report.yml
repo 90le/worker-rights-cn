@@ -1,0 +1,34 @@
+name: 错误报告
+description: 报告可复现的 Worker Rights CN 程序错误
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请勿提交真实个案证据或敏感个人信息，包括真实姓名、身份证号、手机号、合同、聊天记录、录音、病历、银行卡信息或访问凭据。请仅使用虚构、彻底脱敏的最小复现。
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 隐私确认
+      options:
+        - label: 我确认未提交真实个案证据或敏感个人信息。
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述与复现步骤
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本与运行环境
+    validations:
+      required: true
