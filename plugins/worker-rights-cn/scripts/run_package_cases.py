@@ -277,8 +277,10 @@ def assert_archive_contract(archive: Path, checksum: Path) -> list[str]:
 def assert_extracted_mcp_contract(extracted: Path, db_path: Path) -> None:
     environment = dict(os.environ)
     environment["PYTHONDONTWRITEBYTECODE"] = "1"
+    environment["PYTHONIOENCODING"] = "utf-8"
+    environment["PYTHONUTF8"] = "1"
     process = subprocess.Popen(
-        [sys.executable, str(extracted / "scripts" / "mcp_server.py")],
+        [sys.executable, "-X", "utf8", str(extracted / "scripts" / "mcp_server.py")],
         text=True,
         encoding="utf-8",
         errors="replace",

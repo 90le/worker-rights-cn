@@ -79,7 +79,7 @@
   "plugins/worker-rights-cn/scripts/run_manifest_cases.py": "3d2ad084cc6a126f576bde98cc114a462e4b3fd6b7be7af361f2faad69da3938",
   "plugins/worker-rights-cn/scripts/run_mcp_server_cases.py": "036a61f959cc816b0c0ecc2971bf67a3ce96bb65479207a2ebcc35f7d7b0f9c7",
   "plugins/worker-rights-cn/scripts/run_orchestrator_cases.py": "1f2c5c1a4b058d7623e7d514c92769e97117806aaad57f3dd207acbfaba36ce7",
-  "plugins/worker-rights-cn/scripts/run_package_cases.py": "ee4645a716a84cd7089a14de8255a3e3774be333279b963d828995ad4af47947",
+  "plugins/worker-rights-cn/scripts/run_package_cases.py": "8558aadb19c4b85ca22b40b1435f7d490ce42f2b3aac7858d2be7ea6c7e9bd2b",
   "plugins/worker-rights-cn/scripts/run_persistence_decision_cases.py": "4d6998a409bddc8d9db1a53ed714a10ef96ef17568234009fe53d1b6853866bc",
   "plugins/worker-rights-cn/scripts/run_phase_1_acceptance.py": "b41dc8a296ea40d284efec6a7090ed19277d756b22d1967e08a2b823983d2d5c",
   "plugins/worker-rights-cn/scripts/run_phase_1_acceptance_cases.py": "7f6ad5b2b1a3b5cce0b439dca0cece8e36c11b428d123e90258dec62f721e4f7",
