@@ -11,6 +11,7 @@ from pathlib import Path, PurePosixPath
 import re
 import shutil
 import stat
+import tempfile
 import unicodedata
 
 
@@ -86,7 +87,13 @@ def _is_allowed(relative: str) -> bool:
         return False
     if path.suffix.casefold() in DENIED_SUFFIXES:
         return False
-    if any(INTERNAL_NAME.search(part) for part in path.parts):
+    # Runtime assets inside the distributable plugin legitimately use names such
+    # as "risk" and "plan".  The internal-document heuristic is only a
+    # repository-governance filter; applying it to the plugin tree can silently
+    # produce an incomplete package.
+    if not relative.startswith("plugins/worker-rights-cn/") and any(
+        INTERNAL_NAME.search(part) for part in path.parts
+    ):
         return False
     if relative in EXACT_FILES:
         return True
@@ -136,9 +143,25 @@ def _lexical_absolute(path: Path) -> Path:
     return Path(os.path.abspath(os.fspath(path)))
 
 
+def _ancestry_to_check(lexical, temp_root) -> tuple:
+    inside_temp = lexical == temp_root or temp_root in lexical.parents
+    anchor = type(lexical)(lexical.anchor)
+    candidates = []
+    for candidate in (lexical, *lexical.parents):
+        if candidate == anchor:
+            continue
+        if inside_temp and candidate != lexical and (
+            candidate == temp_root or candidate in temp_root.parents
+        ):
+            continue
+        candidates.append(candidate)
+    return tuple(candidates)
+
+
 def _reject_reparse_ancestry(path: Path, label: str) -> None:
     lexical = _lexical_absolute(path)
-    for candidate in (lexical, *lexical.parents):
+    temp_root = _lexical_absolute(Path(tempfile.gettempdir()))
+    for candidate in _ancestry_to_check(lexical, temp_root):
         if os.path.lexists(candidate) and (candidate.is_symlink() or _is_reparse(candidate)):
             raise ValueError(f"{label} uses a symlink/reparse ancestor: {candidate}")
 

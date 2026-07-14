@@ -7,11 +7,12 @@ import hashlib
 import importlib.util
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,6 +40,12 @@ def seed_source(root: Path) -> None:
     (root / ".superpowers" / "plan.md").write_text("private", encoding="utf-8")
     (root / "plugins" / "worker-rights-cn" / "reports").mkdir(parents=True)
     (root / "plugins" / "worker-rights-cn" / "plugin.txt").write_text("plugin\r\n", encoding="utf-8")
+    (root / "plugins" / "worker-rights-cn" / "skills" / "agreement-review" / "references").mkdir(
+        parents=True
+    )
+    (root / "plugins" / "worker-rights-cn" / "skills" / "agreement-review" / "references" / "clause-risk-matrix.json").write_text(
+        '{"risk": "runtime"}\n', encoding="utf-8"
+    )
     (root / "plugins" / "worker-rights-cn" / "reports" / "local.json").write_text(
         "private", encoding="utf-8"
     )
@@ -62,6 +69,9 @@ class ExportContractTests(unittest.TestCase):
             self.assertNotIn("site/assets/worker-rights-concept.png", inventory)
             self.assertFalse((destination / ".superpowers").exists())
             self.assertFalse((destination / "plugins/worker-rights-cn/reports").exists())
+            self.assertTrue(
+                (destination / "plugins/worker-rights-cn/skills/agreement-review/references/clause-risk-matrix.json").is_file()
+            )
             inventory_path = destination / "public-snapshot-inventory.json"
             disk_inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
             self.assertEqual(list(disk_inventory), sorted(disk_inventory))
@@ -162,6 +172,50 @@ class ExportContractTests(unittest.TestCase):
                 if made_junction and link.exists():
                     os.rmdir(link)
 
+    def test_platform_temp_system_ancestry_is_trusted(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            real_system_root = root / "real-system-root"
+            trusted_temp_real = real_system_root / "platform-temp"
+            trusted_temp_real.mkdir(parents=True)
+            linked_system_root = root / "system-temp-link"
+            made_junction = False
+            try:
+                linked_system_root.symlink_to(real_system_root, target_is_directory=True)
+            except (OSError, NotImplementedError):
+                if os.name != "nt":
+                    self.skipTest("directory symlink creation is unavailable")
+                result = subprocess.run(
+                    ["cmd", "/c", "mklink", "/J", str(linked_system_root), str(real_system_root)],
+                    capture_output=True,
+                    text=True,
+                )
+                if result.returncode:
+                    self.skipTest("directory junction creation is unavailable")
+                made_junction = True
+            try:
+                trusted_temp = linked_system_root / "platform-temp"
+                source = trusted_temp / "case" / "source"
+                source.mkdir(parents=True)
+                seed_source(source)
+                destination = trusted_temp / "case" / "snapshot"
+                with mock.patch("tempfile.gettempdir", return_value=str(trusted_temp)):
+                    inventory = self.exporter.export_snapshot(source, destination)
+                self.assertIn("README.md", inventory)
+            finally:
+                if made_junction and linked_system_root.exists():
+                    os.rmdir(linked_system_root)
+
+    def test_posix_temp_ancestry_policy_skips_var_only_inside_temp(self) -> None:
+        temp_root = PurePosixPath("/var/folders/project/T")
+        inside = PurePosixPath("/var/folders/project/T/case/source")
+        inside_checked = self.exporter._ancestry_to_check(inside, temp_root)
+        self.assertEqual(inside_checked, (inside, inside.parent))
+        outside = PurePosixPath("/var/project/source")
+        outside_checked = self.exporter._ancestry_to_check(outside, temp_root)
+        self.assertIn(PurePosixPath("/var"), outside_checked)
+        self.assertNotIn(PurePosixPath("/"), outside_checked)
+
     def test_sensitive_content_is_rejected(self) -> None:
         bad_values = (
             "C:" + r"\Users\Alice\case.txt",
@@ -248,11 +302,13 @@ class WorkflowContractTests(unittest.TestCase):
             "scripts/run_public_snapshot_cases.py",
             "scripts/run_publication_readiness.py",
             "scripts/run_site_cases.py",
+            "runner.temp }}/worker-rights-acceptance",
         ):
             self.assertIn(required, text)
         self.assertNotIn("PLUGIN_EVAL_SOURCE_URL", text)
         self.assertNotIn("PLUGIN_EVAL_SHA256", text)
         self.assertNotIn("shell: bash", text)
+        self.assertNotIn("> acceptance-reports/", text)
         for match in re.finditer(r"uses:\s*([^\s]+)", text):
             self.assertRegex(match.group(1), r"^[\w.-]+/[\w./-]+@[0-9a-f]{40}$")
 

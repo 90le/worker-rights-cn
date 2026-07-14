@@ -1,0 +1,343 @@
+{
+  "schema_version": "0.1.0",
+  "retrieved_at": "2026-06-16",
+  "source_note": "Use with layoff-defense/references/legal-map.md. Verify current law and local rules before final advice.",
+  "risk_levels": ["critical", "high", "medium", "low", "lawyer_check"],
+  "document_types": {
+    "separation_agreement": {
+      "description": "Mutual termination, settlement, departure, or compensation agreement.",
+      "default_source_anchors": [
+        "LCL-2012#art36",
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "SPC-LDI-1-2020#art35"
+      ],
+      "must_check_clause_types": [
+        "all_claims_waiver",
+        "resignation_characterization",
+        "payment_amount_and_date",
+        "handover_condition",
+        "termination_certificate",
+        "confidentiality_and_penalty",
+        "non_compete"
+      ]
+    },
+    "resignation_form": {
+      "description": "Employee resignation letter, OA resignation form, voluntary resignation template, or personal-reason resignation document.",
+      "default_source_anchors": [
+        "LCL-2012#art37",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "SPC-LDI-1-2020#art45",
+        "SPC-LDI-2-2025#art19"
+      ],
+      "must_check_clause_types": [
+        "resignation_characterization",
+        "all_claims_waiver",
+        "payment_amount_and_date",
+        "handover_condition"
+      ]
+    },
+    "non_compete_agreement": {
+      "description": "Post-employment or in-term non-compete agreement, clause, notice, or release.",
+      "default_source_anchors": [
+        "LCL-2012#art23",
+        "LCL-2012#art24",
+        "LCL-2012#art25",
+        "SPC-LDI-1-2020#art36",
+        "SPC-LDI-1-2020#art37",
+        "SPC-LDI-1-2020#art38",
+        "SPC-LDI-1-2020#art39",
+        "SPC-LDI-1-2020#art40",
+        "SPC-LDI-2-2025#art13",
+        "SPC-LDI-2-2025#art14",
+        "SPC-LDI-2-2025#art15"
+      ],
+      "must_check_clause_types": [
+        "non_compete",
+        "liquidated_damages",
+        "confidentiality_and_penalty",
+        "payment_amount_and_date"
+      ]
+    },
+    "confidentiality_agreement": {
+      "description": "Confidentiality, trade secret, IP, customer information, or data protection agreement.",
+      "default_source_anchors": [
+        "LCL-2012#art23",
+        "LCL-2012#art24",
+        "LCL-2012#art25",
+        "SPC-LDI-2-2025#art13"
+      ],
+      "must_check_clause_types": [
+        "confidentiality_and_penalty",
+        "non_compete",
+        "liquidated_damages"
+      ]
+    },
+    "service_period_agreement": {
+      "description": "Training, special treatment, service-period, or training-cost repayment agreement.",
+      "default_source_anchors": [
+        "LCL-2012#art22",
+        "LCL-2012#art25",
+        "SPC-LDI-2-2025#art12"
+      ],
+      "must_check_clause_types": [
+        "service_period",
+        "liquidated_damages",
+        "payment_amount_and_date"
+      ]
+    },
+    "termination_notice_or_certificate": {
+      "description": "Termination notice, termination certificate, departure confirmation, or receipt.",
+      "default_source_anchors": [
+        "LCL-2012#art39",
+        "LCL-2012#art40",
+        "LCL-2012#art41",
+        "LCL-2012#art48",
+        "LCL-2012#art50",
+        "LCL-2012#art87",
+        "LDA-2007#art6",
+        "SPC-LDI-1-2020#art44"
+      ],
+      "must_check_clause_types": [
+        "resignation_characterization",
+        "termination_certificate",
+        "all_claims_waiver",
+        "payment_amount_and_date"
+      ]
+    }
+  },
+  "clause_types": {
+    "all_claims_waiver": {
+      "label": "All claims settled / no further disputes / rights waiver",
+      "risk_level": "critical",
+      "source_anchors": [
+        "LCL-2012#art26",
+        "SPC-LDI-1-2020#art35",
+        "LDA-2007#art27"
+      ],
+      "triggers": [
+        "all disputes settled",
+        "no further claims",
+        "waive all rights",
+        "one-time settlement",
+        "full and final",
+        "不得再主张任何权利",
+        "双方再无争议",
+        "一次性了结"
+      ],
+      "worker_side_risk": "May release unpaid wages, overtime, annual leave, bonus, social insurance-related claims, double wage, unlawful termination, or future discovered claims.",
+      "recommended_edit": "Carve out unpaid statutory items, social insurance/housing fund, tax, non-compete compensation, undiscovered claims, and claims caused by employer breach or non-payment.",
+      "evidence_impact": "Preserve all drafts and communications showing whether the employer proposed the release and whether pressure, misunderstanding, or unfairness existed.",
+      "must_fix_before_signing": true
+    },
+    "resignation_characterization": {
+      "label": "Voluntary resignation / personal reasons / employee-initiated departure",
+      "risk_level": "critical",
+      "source_anchors": [
+        "LCL-2012#art37",
+        "LCL-2012#art38",
+        "LCL-2012#art46",
+        "SPC-LDI-1-2020#art45",
+        "SPC-LDI-2-2025#art19"
+      ],
+      "triggers": [
+        "personal reasons",
+        "voluntary resignation",
+        "employee applies to resign",
+        "个人原因",
+        "主动离职",
+        "本人申请离职",
+        "自愿离职"
+      ],
+      "worker_side_risk": "Can weaken economic compensation and unlawful termination claims if it contradicts forced resignation or employer breach facts.",
+      "recommended_edit": "Use factual wording: employer proposed termination, parties negotiate termination, or worker terminates because of specific employer statutory breach when evidence supports it.",
+      "evidence_impact": "Preserve employer pressure, unpaid wage/social insurance records, lockout, transfer, salary cut, and objection records.",
+      "must_fix_before_signing": true
+    },
+    "payment_amount_and_date": {
+      "label": "Compensation amount, payment deadline, tax, and default liability",
+      "risk_level": "high",
+      "source_anchors": [
+        "LCL-2012#art46",
+        "LCL-2012#art47",
+        "LCL-2012#art50",
+        "LCL-REG-2008#art20",
+        "LCL-REG-2008#art27"
+      ],
+      "triggers": [
+        "payment after approval",
+        "subject to company process",
+        "tax included",
+        "paid after handover",
+        "另行支付",
+        "审批后支付",
+        "含税",
+        "办完交接后支付"
+      ],
+      "worker_side_risk": "Unclear amount, tax basis, payment date, or default clause can make enforcement harder and reduce actual recovery.",
+      "recommended_edit": "State itemized gross amount, payment date, bank account, tax treatment, social insurance month, overdue liability, and no offset unless agreed in writing.",
+      "evidence_impact": "Preserve wage basis, settlement sheet, payment schedule, bank records, and 12-month wage proof.",
+      "must_fix_before_signing": true
+    },
+    "handover_condition": {
+      "label": "Handover, return of property, account deletion, and conditional payment",
+      "risk_level": "medium",
+      "source_anchors": [
+        "LCL-2012#art50",
+        "LDA-2007#art6",
+        "SPC-LDI-1-2020#art44"
+      ],
+      "triggers": [
+        "after handover",
+        "all company property",
+        "delete all files",
+        "no copies retained",
+        "交接完成后",
+        "删除全部资料",
+        "不得保留任何资料"
+      ],
+      "worker_side_risk": "Overbroad handover or deletion duties can destroy evidence or let employer delay payment.",
+      "recommended_edit": "Define handover list, deadline, receipt, lawful evidence preservation, and payment not unreasonably withheld for disputed handover.",
+      "evidence_impact": "Preserve handover checklist, receipt, account lockout timing, and lawful copies of personal employment records.",
+      "must_fix_before_signing": false
+    },
+    "termination_certificate": {
+      "label": "Termination certificate and departure reason wording",
+      "risk_level": "high",
+      "source_anchors": [
+        "LCL-2012#art50",
+        "LCL-REG-2008#art24",
+        "LDA-2007#art6",
+        "SPC-LDI-1-2020#art44"
+      ],
+      "triggers": [
+        "certificate",
+        "departure proof",
+        "reason: resignation",
+        "离职证明",
+        "解除证明",
+        "离职原因"
+      ],
+      "worker_side_risk": "Incorrect reason can affect unemployment benefits, future employment explanation, and dispute characterization.",
+      "recommended_edit": "State neutral lawful wording, termination date, position, service years, and avoid untrue voluntary resignation or misconduct labels.",
+      "evidence_impact": "Preserve certificate drafts and employer refusal or delay records.",
+      "must_fix_before_signing": true
+    },
+    "non_compete": {
+      "label": "Non-compete scope, period, compensation, release, and breach exposure",
+      "risk_level": "lawyer_check",
+      "source_anchors": [
+        "LCL-2012#art23",
+        "LCL-2012#art24",
+        "LCL-2012#art25",
+        "SPC-LDI-1-2020#art36",
+        "SPC-LDI-1-2020#art37",
+        "SPC-LDI-1-2020#art38",
+        "SPC-LDI-1-2020#art39",
+        "SPC-LDI-1-2020#art40",
+        "SPC-LDI-2-2025#art13",
+        "SPC-LDI-2-2025#art14",
+        "SPC-LDI-2-2025#art15"
+      ],
+      "triggers": [
+        "non-compete",
+        "competitive restriction",
+        "restricted company",
+        "竞业限制",
+        "竞业禁止",
+        "竞争关系",
+        "竞品公司"
+      ],
+      "worker_side_risk": "Overbroad scope, no compensation, wrong personnel scope, excessive geography or term, and high liquidated damages can block new work or create major liability.",
+      "recommended_edit": "Limit personnel basis, protected secrets, competitors, region, duration, compensation amount/date, release mechanism, and breach calculation.",
+      "evidence_impact": "Preserve role, access to secrets/IP, compensation payments, employer release notice, and intended new role facts.",
+      "must_fix_before_signing": true
+    },
+    "confidentiality_and_penalty": {
+      "label": "Confidentiality, trade secrets, IP, customer data, and penalty clauses",
+      "risk_level": "high",
+      "source_anchors": [
+        "LCL-2012#art23",
+        "LCL-2012#art24",
+        "LCL-2012#art25",
+        "LCL-2012#art26",
+        "SPC-LDI-2-2025#art13"
+      ],
+      "triggers": [
+        "confidentiality",
+        "trade secret",
+        "customer information",
+        "IP",
+        "保密",
+        "商业秘密",
+        "客户资料",
+        "知识产权"
+      ],
+      "worker_side_risk": "Confidentiality can be used as disguised non-compete or penalty clause beyond statutory liquidated damages limits.",
+      "recommended_edit": "Define confidential information narrowly, exclude public/known/worker-owned information, remove disguised non-compete and unsupported penalty language.",
+      "evidence_impact": "Preserve job scope and actual access to confidential matters; do not copy company secrets as evidence.",
+      "must_fix_before_signing": false
+    },
+    "liquidated_damages": {
+      "label": "Worker-paid liquidated damages, penalty, clawback, or indemnity",
+      "risk_level": "critical",
+      "source_anchors": [
+        "LCL-2012#art22",
+        "LCL-2012#art23",
+        "LCL-2012#art25",
+        "SPC-LDI-1-2020#art40",
+        "SPC-LDI-2-2025#art12",
+        "SPC-LDI-2-2025#art15"
+      ],
+      "triggers": [
+        "liquidated damages",
+        "penalty",
+        "indemnify employer",
+        "clawback",
+        "违约金",
+        "赔偿公司全部损失",
+        "返还补偿",
+        "罚款"
+      ],
+      "worker_side_risk": "Worker-paid penalties are generally limited to statutory service-period and non-compete contexts; broad indemnity may be invalid or excessive.",
+      "recommended_edit": "Delete non-statutory penalties; cap training repayment to remaining allocable training cost; tie non-compete damages to effective agreement and actual breach.",
+      "evidence_impact": "Preserve training invoices, special treatment proof, non-compete compensation proof, and employer loss calculation.",
+      "must_fix_before_signing": true
+    },
+    "service_period": {
+      "label": "Service period, training cost repayment, and special treatment",
+      "risk_level": "high",
+      "source_anchors": [
+        "LCL-2012#art22",
+        "LCL-2012#art25",
+        "SPC-LDI-2-2025#art12"
+      ],
+      "triggers": [
+        "service period",
+        "training fee",
+        "special training",
+        "服务期",
+        "培训费",
+        "专项培训",
+        "特殊待遇"
+      ],
+      "worker_side_risk": "Employer may claim repayment or damages after early resignation; enforceability depends on special training/treatment, actual cost, fault, and remaining period.",
+      "recommended_edit": "Require itemized training cost, actual invoices, amortization schedule, service-period end date, and statutory解除 carve-outs.",
+      "evidence_impact": "Preserve training content, invoice, attendance, certificate, and whether it was ordinary onboarding or special technical training.",
+      "must_fix_before_signing": true
+    }
+  },
+  "review_outputs": {
+    "must_fix_before_signing": "Clauses with critical/high risk or missing essential terms.",
+    "negotiate": "Clauses that should be narrowed, clarified, or priced.",
+    "verify_amounts": "Payment, tax, wage-base, cap, non-compete compensation, or service-period cost checks.",
+    "lawyer_check": "Non-compete, stock options, executive status, foreign worker, high-value settlement, group layoff, or broad release."
+  },
+  "global_safety_rules": [
+    "Do not draft fake resignation reasons, fake payment receipts, or backdated agreements.",
+    "Do not advise signing broad all-claims waivers before amounts, payment date, and carve-outs are clear.",
+    "Do not tell the worker to copy company secrets or customer data as evidence.",
+    "If already signed, analyze validity, revocation, performance, and non-payment instead of pretending the document is unsigned."
+  ]
+}

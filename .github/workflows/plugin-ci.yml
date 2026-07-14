@@ -14,6 +14,8 @@ concurrency:
 
 jobs:
   plugin-test:
+    env:
+      REPORT_DIR: ${{ runner.temp }}/worker-rights-acceptance
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -40,37 +42,37 @@ jobs:
       - name: Require Plugin Eval entrypoint
         run: python -c "from pathlib import Path; path = Path('.ci-tools/openai-plugins/plugins/plugin-eval/scripts/plugin-eval.js'); raise SystemExit(0 if path.is_file() else 'missing pinned Plugin Eval entrypoint')"
       - name: Create report directory
-        run: python -c "from pathlib import Path; Path('acceptance-reports').mkdir(exist_ok=True)"
+        run: python -c "import os; from pathlib import Path; Path(os.environ['REPORT_DIR']).mkdir(parents=True, exist_ok=True)"
       - name: Public repository gates
         run: |
           python -X utf8 scripts/run_publication_readiness.py
           python -X utf8 scripts/run_site_cases.py
           python -X utf8 scripts/run_public_snapshot_cases.py
       - name: Runtime doctor
-        run: python -X utf8 plugins/worker-rights-cn/scripts/runtime_doctor.py > acceptance-reports/runtime.json
+        run: python -X utf8 plugins/worker-rights-cn/scripts/runtime_doctor.py > "${{ runner.temp }}/worker-rights-acceptance/runtime.json"
       - name: Manifest contracts
-        run: python -X utf8 plugins/worker-rights-cn/scripts/run_manifest_cases.py > acceptance-reports/manifest.json
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_manifest_cases.py > "${{ runner.temp }}/worker-rights-acceptance/manifest.json"
       - name: Phase 1 and required Plugin Eval
         env:
           PLUGIN_EVAL_SCRIPT: .ci-tools/openai-plugins/plugins/plugin-eval/scripts/plugin-eval.js
-        run: python -X utf8 plugins/worker-rights-cn/scripts/run_phase_1_acceptance.py --require-plugin-eval > acceptance-reports/phase1.json
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_phase_1_acceptance.py --require-plugin-eval > "${{ runner.temp }}/worker-rights-acceptance/phase1.json"
       - name: Core orchestrator
-        run: python -X utf8 plugins/worker-rights-cn/scripts/run_orchestrator_cases.py > acceptance-reports/orchestrator.json
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_orchestrator_cases.py > "${{ runner.temp }}/worker-rights-acceptance/orchestrator.json"
       - name: Safety
-        run: python -X utf8 plugins/worker-rights-cn/scripts/run_safety_core_cases.py > acceptance-reports/safety.json
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_safety_core_cases.py > "${{ runner.temp }}/worker-rights-acceptance/safety.json"
       - name: Privacy
-        run: python -X utf8 plugins/worker-rights-cn/scripts/run_privacy_cases.py > acceptance-reports/privacy.json
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_privacy_cases.py > "${{ runner.temp }}/worker-rights-acceptance/privacy.json"
       - name: Ordinary worker journey
-        run: python -X utf8 plugins/worker-rights-cn/scripts/run_worker_journey_cases.py > acceptance-reports/worker-journey.json
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_worker_journey_cases.py > "${{ runner.temp }}/worker-rights-acceptance/worker-journey.json"
       - name: Host adapters
-        run: python -X utf8 plugins/worker-rights-cn/scripts/run_host_adapter_cases.py > acceptance-reports/host-adapters.json
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_host_adapter_cases.py > "${{ runner.temp }}/worker-rights-acceptance/host-adapters.json"
       - name: Package contracts
-        run: python -X utf8 plugins/worker-rights-cn/scripts/run_package_cases.py > acceptance-reports/package.json
+        run: python -X utf8 plugins/worker-rights-cn/scripts/run_package_cases.py > "${{ runner.temp }}/worker-rights-acceptance/package.json"
       - name: Bind matrix job reports
-        run: python -X utf8 plugins/worker-rights-cn/scripts/write_ci_job_report.py --reports acceptance-reports --os "${{ runner.os }}" --python "${{ matrix.python-version }}" --commit "${{ github.sha }}" --run-id "${{ github.run_id }}" --output acceptance-reports/ci-job.json
+        run: python -X utf8 plugins/worker-rights-cn/scripts/write_ci_job_report.py --reports "${{ runner.temp }}/worker-rights-acceptance" --os "${{ runner.os }}" --python "${{ matrix.python-version }}" --commit "${{ github.sha }}" --run-id "${{ github.run_id }}" --output "${{ runner.temp }}/worker-rights-acceptance/ci-job.json"
       - name: Upload acceptance reports
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: acceptance-${{ matrix.os }}-py${{ matrix.python-version }}
-          path: acceptance-reports
+          path: ${{ runner.temp }}/worker-rights-acceptance
