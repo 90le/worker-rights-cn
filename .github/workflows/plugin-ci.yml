@@ -14,8 +14,6 @@ concurrency:
 
 jobs:
   plugin-test:
-    env:
-      REPORT_DIR: ${{ runner.temp }}/worker-rights-acceptance
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -42,7 +40,7 @@ jobs:
       - name: Require Plugin Eval entrypoint
         run: python -c "from pathlib import Path; path = Path('.ci-tools/openai-plugins/plugins/plugin-eval/scripts/plugin-eval.js'); raise SystemExit(0 if path.is_file() else 'missing pinned Plugin Eval entrypoint')"
       - name: Create report directory
-        run: python -c "import os; from pathlib import Path; Path(os.environ['REPORT_DIR']).mkdir(parents=True, exist_ok=True)"
+        run: python -c "import os; from pathlib import Path; Path(os.environ['RUNNER_TEMP'], 'worker-rights-acceptance').mkdir(parents=True, exist_ok=True)"
       - name: Public repository gates
         run: |
           python -X utf8 scripts/run_publication_readiness.py
