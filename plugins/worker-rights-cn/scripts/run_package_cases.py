@@ -13,6 +13,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+import traceback
 import zipfile
 from pathlib import Path, PurePosixPath
 from typing import Any, Callable
@@ -724,7 +725,13 @@ def main() -> int:
         try:
             case()
         except Exception as error:
-            failures.append({"case": name, "error": f"{type(error).__name__}: {error}"})
+            failures.append(
+                {
+                    "case": name,
+                    "error": f"{type(error).__name__}: {error}",
+                    "traceback": traceback.format_exc(),
+                }
+            )
     result = {
         "script": Path(__file__).name,
         "case_count": len(cases),
