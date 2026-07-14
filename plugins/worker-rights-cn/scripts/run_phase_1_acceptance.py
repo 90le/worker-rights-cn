@@ -242,10 +242,14 @@ def parse_plugin_eval_result(output: str, *, exit_code: int | None) -> dict[str,
             budgets.get("trigger_cost_tokens", {}).get("band"),
             budgets.get("invoke_cost_tokens", {}).get("band"),
         }
+        deferred_only = error_ids == {"deferred_cost_tokens-budget-high"}
         exception_is_safe = (
             len(error_ids) == error_count
             and error_ids.issubset(acknowledged)
-            and not active_bands.intersection({"heavy", "excessive"})
+            and (
+                deferred_only
+                or not active_bands.intersection({"heavy", "excessive"})
+            )
         )
     except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
         return {

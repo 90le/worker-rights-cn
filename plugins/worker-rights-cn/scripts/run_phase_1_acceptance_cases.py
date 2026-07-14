@@ -196,6 +196,31 @@ class AcceptanceRunnerCases(unittest.TestCase):
         self.assertEqual(result["status"], "failed", result)
         self.assertEqual(result["details"]["error_count"], 5, result)
 
+    def test_deferred_only_plugin_eval_error_is_platform_stable(self) -> None:
+        output = json.dumps(
+            {
+                "summary": {
+                    "checkCounts": {"error": 1},
+                    "grade": "D",
+                    "deductions": [
+                        {
+                            "id": "deferred_cost_tokens-budget-high",
+                            "severity": "error",
+                            "status": "fail",
+                        }
+                    ],
+                },
+                "budgets": {
+                    "trigger_cost_tokens": {"band": "heavy"},
+                    "invoke_cost_tokens": {"band": "moderate"},
+                    "deferred_cost_tokens": {"band": "excessive"},
+                },
+            }
+        )
+        result = self.runner.parse_plugin_eval_result(output, exit_code=0)
+        self.assertEqual(result["status"], "passed", result)
+        self.assertTrue(result["details"]["acknowledged_static_or_external"], result)
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 3 and sys.argv[1] == "--tree-child":
