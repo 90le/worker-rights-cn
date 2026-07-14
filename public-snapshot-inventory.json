@@ -71,7 +71,7 @@
   "plugins/worker-rights-cn/scripts/run_e2e_cases.py": "770d33329f998f5674456e14728261bf328fc125b1c03dcd2583f930143e070d",
   "plugins/worker-rights-cn/scripts/run_forward_cases.py": "6f36a05ae2cce251758fb50c99bb4bb9ea4c041a050f2c850fd7c1b18b76320a",
   "plugins/worker-rights-cn/scripts/run_hook_cases.py": "4963f5e197211d4293ddfbe583502156ed2d769fcdd2b58d14703224a0da7b26",
-  "plugins/worker-rights-cn/scripts/run_host_adapter_cases.py": "a3968ad6a3768f2582f9399ee86bdfc4e670f346a25d5e350709b8d0ea60b848",
+  "plugins/worker-rights-cn/scripts/run_host_adapter_cases.py": "754cdba2093c7ece48272cad08ea434ff19469d3c17527b04a1ba3ea557c740a",
   "plugins/worker-rights-cn/scripts/run_host_e2e_smoke.py": "d8b199cc253989265c3a9c7f7e3b47a9a6559a2bed2e716acaad6c947b0f1762",
   "plugins/worker-rights-cn/scripts/run_install_cases.py": "312cb51a8f6c0be7f5f4d29423360d817b983310d2c60cfc99c765785266f9e0",
   "plugins/worker-rights-cn/scripts/run_intake_session_cases.py": "80a268f81aa6ffb545a46f97dcf568eda89acd3d9204b0a4d10c85a534b68b35",

@@ -34,10 +34,15 @@ def require(condition: bool, failure: dict[str, Any], failures: list[dict[str, A
 
 
 def run_python_adapter(event: dict[str, Any], failures: list[dict[str, Any]]) -> dict[str, Any]:
+    environment = os.environ.copy()
+    environment["PYTHONIOENCODING"] = "utf-8"
+    environment["PYTHONUTF8"] = "1"
     with tempfile.TemporaryDirectory(prefix="worker-rights-claude-adapter-") as tmpdir:
         process = subprocess.run(
             [
                 sys.executable,
+                "-X",
+                "utf8",
                 str(CLAUDE_ADAPTER),
                 "--audit",
                 "--db-path",
@@ -45,9 +50,11 @@ def run_python_adapter(event: dict[str, Any], failures: list[dict[str, Any]]) ->
             ],
             input=json.dumps(event, ensure_ascii=False),
             text=True,
+            encoding="utf-8",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             check=False,
+            env=environment,
         )
     if process.returncode != 0:
         failures.append(
