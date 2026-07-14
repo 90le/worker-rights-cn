@@ -13,8 +13,8 @@
 ## 30 秒 Codex 开始
 
 1. 运行 `codex plugin marketplace add 90le/worker-rights-cn --ref main`。这只是添加 marketplace 来源，不会直接安装插件。
-2. 重启或刷新 Codex/ChatGPT 桌面端，打开 **Plugins**。
-3. 选择 **Worker Rights CN** marketplace，再安装 **Worker Rights CN**。
+2. 运行 `codex plugin add worker-rights-cn@worker-rights-cn` 完成安装。
+3. 或者重启/刷新 Codex/ChatGPT 桌面端，在 **Plugins** 中选择 **Worker Rights CN** marketplace 后安装。
 
 安装后不必先学法律术语，直接讲发生了什么。
 
@@ -63,7 +63,7 @@
 
 ## 安装、更新、卸载与数据保留
 
-- **安装**：先添加 marketplace，刷新桌面端，再在 Plugins 中安装。marketplace-add 不是一键安装。
+- **安装**：先添加 marketplace，再运行 `codex plugin add worker-rights-cn@worker-rights-cn`；也可以刷新桌面端后在 Plugins 中安装。marketplace-add 本身不是安装命令。
 - **更新**：运行 `codex plugin marketplace upgrade worker-rights-cn`，然后刷新桌面端并按界面提示更新或重新安装。
 - **卸载**：在 Plugins 中卸载 Worker Rights CN。卸载插件默认不代表删除你曾明确保存的用户数据。
 - **彻底清除**：先确认不再需要导出材料，再在宿主展示的数据目录中删除 `worker-rights-cn` 目录，并复查目录、索引与关联审计记录。这是不可恢复操作，必须明确确认。

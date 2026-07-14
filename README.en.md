@@ -11,8 +11,8 @@ This project is not a lawyer, law firm, government service, or case representati
 ## 30-second Codex start
 
 1. Run `codex plugin marketplace add 90le/worker-rights-cn --ref main`. This adds a marketplace source; it does not install the plugin directly.
-2. Restart or refresh the Codex/ChatGPT desktop app and open **Plugins**.
-3. Select the **Worker Rights CN** marketplace, then install **Worker Rights CN**.
+2. Run `codex plugin add worker-rights-cn@worker-rights-cn` to install it.
+3. Or restart/refresh the Codex/ChatGPT desktop app and install it from the **Worker Rights CN** marketplace in **Plugins**.
 
 First prompt: “Help me separate confirmed facts from missing information, identify what I should not do yet and what evidence to preserve today, then outline possible rights and next steps. Do not save or upload my materials.”
 
