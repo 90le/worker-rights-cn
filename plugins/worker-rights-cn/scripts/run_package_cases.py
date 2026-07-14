@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import errno
 import os
 import posixpath
 import re
@@ -342,7 +343,11 @@ def assert_extracted_mcp_contract(extracted: Path, db_path: Path) -> None:
         if leaked:
             problems.append({"test_resources_advertised": leaked})
     finally:
-        process.stdin.close()
+        try:
+            process.stdin.close()
+        except OSError as error:
+            if error.errno != errno.EINVAL:
+                raise
         return_code = process.wait(timeout=10)
         stderr = process.stderr.read()
         if return_code != 0:
