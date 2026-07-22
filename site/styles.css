@@ -244,7 +244,7 @@ button { font: 700 14px/1 var(--font); }
   .official-account-qr { max-width: 360px; margin-inline: auto; }
   .author-layout { grid-template-columns: 1fr; gap: 36px; }
   .author-contact { width: 100%; max-width: 420px; margin-inline: auto; }
-  .author-image { max-height: none; }
+  .author-image { max-height: 420px; }
   .closing-boundary .shell, .footer-top, .footer-bottom { display: block; }
   .closing-boundary p { margin-top: 6px; }
   .footer-top nav { justify-content: flex-start; margin-top: 24px; }
