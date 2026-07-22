@@ -145,6 +145,15 @@ button { font: 700 14px/1 var(--font); }
 .doc-links strong { color: var(--green-900); }
 .doc-links span { margin-top: 4px; color: var(--muted); font-size: 14px; }
 
+.official-account { border-block: 1px solid #e1eae3; background: var(--paper); }
+.official-account-layout { display: grid; grid-template-columns: 1fr 330px; align-items: center; gap: 100px; }
+.official-account h2 { margin: 0; color: var(--green-900); font-size: clamp(30px, 3.4vw, 44px); line-height: 1.2; letter-spacing: -.025em; }
+.official-account-copy > p:not(.project-label) { max-width: 640px; color: #354139; font-size: 17px; }
+.official-account-note { margin-top: 24px; padding: 14px 16px; border-left: 3px solid var(--amber); background: var(--amber-pale); color: #614313 !important; font-size: 14px !important; }
+.official-account-qr { width: 100%; margin: 0; padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: var(--white); box-shadow: var(--shadow); }
+.official-account-qr img { width: 100%; height: auto; }
+.official-account-qr figcaption { margin-top: 12px; color: var(--muted); font-size: 13px; text-align: center; }
+
 .author { background: var(--green-100); }
 .author-layout { display: grid; grid-template-columns: 1fr 380px; align-items: center; gap: 80px; }
 .location { display: inline-block; margin: 12px 0 20px; color: var(--green-700); font-weight: 750; }
@@ -185,6 +194,7 @@ button { font: 700 14px/1 var(--font); }
   .trust-rail article:not(:nth-child(3n + 1)) { border-left: 1px solid #46775a; }
   .trust-rail article:nth-child(-n + 3) { border-bottom: 1px solid #46775a; }
   .install-layout { grid-template-columns: 1fr; }
+  .official-account-layout { gap: 48px; }
 }
 
 @media (max-width: 767px) {
@@ -230,6 +240,8 @@ button { font: 700 14px/1 var(--font); }
   .doc-links { grid-template-columns: 1fr; }
   .doc-links a, .doc-links a:nth-child(-n + 3), .doc-links a:not(:nth-child(3n + 1)) { border-right: 0; border-bottom: 1px solid var(--border); border-left: 0; }
   .doc-links a:last-child { border-bottom: 0; }
+  .official-account-layout { grid-template-columns: 1fr; gap: 36px; }
+  .official-account-qr { max-width: 360px; margin-inline: auto; }
   .author-layout { grid-template-columns: 1fr; gap: 36px; }
   .author-contact { width: 100%; max-width: 420px; margin-inline: auto; }
   .author-image { max-height: none; }
