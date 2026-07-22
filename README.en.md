@@ -34,6 +34,12 @@ Codex is primary. Claude Code, OpenCode, and OpenClaw reuse the same domain rule
 - Uninstall through Plugins. Uninstalling the plugin does not automatically erase user data that you explicitly chose to save.
 - For an explicit purge, first export anything needed, then delete the host-disclosed `worker-rights-cn` data directory and verify related indexes/audit records. Purge is irreversible and requires confirmation.
 
+## Official WeChat account
+
+Follow the official account for project updates, usage guides, and publicly shared worker-rights content. It is for general information only: do not send real case evidence, and it does not provide private legal advice or representation.
+
+![Worker Rights CN official WeChat account QR code](site/assets/official-account-qr.jpg)
+
 ## Project
 
 Author: 丘彬彬, Guangzhou, Guangdong. WeChat `binstudy` is for project and community collaboration only, not private case advice or representation. Contributions follow [CONTRIBUTING.md](CONTRIBUTING.md); security reports follow [SECURITY.md](SECURITY.md). Licensed under [Apache-2.0](LICENSE).

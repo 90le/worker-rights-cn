@@ -82,6 +82,12 @@
 
 作者：**丘彬彬**（广东广州）；微信：**binstudy**。该联系方式仅用于开源项目、产品改进与社区协作，不接收真实个案证据，不提供私人法律咨询或代理。
 
+## 关注项目公众号
+
+关注公众号可获取项目更新、使用指南和劳动权益相关的公开内容。公众号用于信息分享，不接收真实个案证据，也不提供私人法律咨询或代理服务。
+
+![Worker Rights CN 公众号二维码](site/assets/official-account-qr.jpg)
+
 ## 贡献、安全与许可
 
 贡献前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 和 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。安全问题请按 [SECURITY.md](SECURITY.md) 私密报告，不要在公开 Issue 中上传真实个案材料。
