@@ -110,6 +110,7 @@ def base_audit_args(db_path: Path, session_id: str) -> dict[str, Any]:
         "audit": True,
         "audit_session_id": session_id,
         "audit_db_path": str(db_path),
+        "db_path": str(db_path),
         "audit_actor": "host_e2e_smoke",
     }
 
