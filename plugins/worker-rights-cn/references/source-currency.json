@@ -30,6 +30,7 @@
     "rsj.beijing.gov.cn",
     "tjj.beijing.gov.cn",
     "rsj.sh.gov.cn",
+    "hrss.sz.gov.cn",
     "tjj.sz.gov.cn",
     "www.sz.gov.cn",
     "rsj.gz.gov.cn",
@@ -330,7 +331,8 @@
     "final_amount_rule": "Only verified_final may be used for final local numeric amounts. Current city data intentionally avoids verified_final for economic-compensation high-wage caps.",
     "current_verified_local_scopes": [
       "Guangzhou GZ-RSJ-LAYOFF-NORM-2021 is verified_candidate for economic-layoff local procedure guidance, written HRSS report package checks, HRSS feedback response, final publication, and wage/social-insurance clearance prompts.",
-      "Guangzhou wage, housing-fund, and Guangdong pension-base figures remain reference/candidate data and cannot be auto-applied as final LCL art.47 high-wage cap amounts."
+      "Guangzhou wage, housing-fund, and Guangdong pension-base figures remain reference/candidate data and cannot be auto-applied as final LCL art.47 high-wage cap amounts.",
+      "Beijing BJ-RSJ-MIN-WAGE-2025, Shanghai SH-RSJ-MIN-WAGE-2025, Shenzhen SZ-HRSS-MIN-WAGE-2025, and Guangzhou GZ-RSJ-MIN-WAGE-2025 are verified_final only for their stated current minimum-wage and wage-gap screening uses; they remain blocked from economic-compensation high-wage cap use."
     ],
     "current_known_gaps": [
       "Beijing economic-compensation high-wage cap source remains local_verify.",

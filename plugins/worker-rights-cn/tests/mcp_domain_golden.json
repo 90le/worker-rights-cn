@@ -165,7 +165,7 @@
         "schema_version": "0.1.0",
         "tool": "worker_rights.plan_ai_recall",
         "status": "planned",
-        "candidate_source_ids": ["LCL-2012#art41", "GZ-RSJ-LAYOFF-NORM-2021", "guangzhou", "guangzhou-hrss-economic-layoff-report-package", "LCL-2012#art46", "LCL-2012#art85", "LCL-2012#art87", "LCL-REG-2008#art19", "LCL-REG-2008#art22", "LCL-2012#art44"],
+        "candidate_source_ids": ["LCL-2012#art41", "GZ-RSJ-LAYOFF-NORM-2021", "guangzhou", "guangzhou-hrss-economic-layoff-report-package", "LCL-2012#art46", "LCL-2012#art85", "GZ-RSJ-MIN-WAGE-2025", "LCL-2012#art87", "LCL-REG-2008#art19", "LCL-REG-2008#art22"],
         "provider": "host_agent",
         "plugin_network_calls": "none"
       }
