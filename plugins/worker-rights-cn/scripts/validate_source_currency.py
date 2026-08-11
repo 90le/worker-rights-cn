@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import sys
 from datetime import date
@@ -64,6 +65,10 @@ def host(value: str | None) -> str | None:
         return None
     parsed = urlparse(value)
     return parsed.netloc.lower() or None
+
+
+def is_finite_number(value: Any) -> bool:
+    return type(value) is int or (type(value) is float and math.isfinite(value))
 
 
 def list_urls(source: dict[str, Any]) -> list[str]:
@@ -162,11 +167,21 @@ def validate_date_field(
     field: str,
     value: Any,
     *,
+    as_of: date,
     min_year: int = 2026,
 ) -> None:
     parsed = parse_iso_date(value)
     if parsed is None:
         failures.append({"location": location, "invalid_date_field": field, "value": value})
+    elif parsed > as_of:
+        failures.append(
+            {
+                "location": location,
+                "future_date_field": field,
+                "value": value,
+                "as_of": as_of.isoformat(),
+            }
+        )
     elif parsed.year < min_year:
         failures.append(
             {
@@ -198,6 +213,8 @@ def validate_urls(
         failures.append({"location": location, "missing_official_url": True})
         return
     for url in urls:
+        if urlparse(url).scheme.lower() != "https":
+            failures.append({"location": location, "non_https_official_url": url})
         url_host = host(url)
         if url_host not in allowed_hosts:
             failures.append(
@@ -213,11 +230,36 @@ def validate_national_sources(
     data: dict[str, Any],
     legal_cards: list[dict[str, str]],
     failures: list[dict[str, Any]],
+    *,
+    as_of: date,
 ) -> dict[str, Any]:
     statuses = set(data.get("status_values", []))
     allowed_hosts = set(data.get("official_host_allowlist", []))
     national_sources: dict[str, Any] = data.get("national_sources", {})
     legal_by_id = {card["id"]: card for card in legal_cards if card.get("id")}
+    local_policy = data.get("local_source_policy", {})
+    narrative_fields = [
+        data.get("purpose"),
+        *(value for key, value in data.get("currency_policy", {}).items() if key != "max_review_age_days"),
+        *(item.get("reason") for item in data.get("deprecated_url_patterns", [])),
+        *(source.get("notes") for source in national_sources.values()),
+        local_policy.get("final_amount_rule"),
+        *local_policy.get("current_verified_local_scopes", []),
+        *local_policy.get("current_known_gaps", []),
+        *data.get("known_caveats", []),
+    ]
+    non_chinese_narratives = [
+        index
+        for index, value in enumerate(narrative_fields)
+        if not isinstance(value, str) or not re.match(r"\s*[\u3400-\u9fff]", value)
+    ]
+    if len(narrative_fields) != 36 or non_chinese_narratives:
+        failures.append(
+            {
+                "source_currency_narrative_field_count": len(narrative_fields),
+                "non_chinese_narrative_indexes": non_chinese_narratives,
+            }
+        )
 
     missing_currency = sorted(set(legal_by_id) - set(national_sources))
     orphan_currency = sorted(set(national_sources) - set(legal_by_id))
@@ -255,8 +297,8 @@ def validate_national_sources(
         if source.get("currency_status") == "deprecated_do_not_use":
             failures.append({"location": location, "deprecated_source_used": source_id})
 
-        validate_date_field(failures, location, "retrieved_at", source.get("retrieved_at"))
-        validate_date_field(failures, location, "current_as_of", source.get("current_as_of"))
+        validate_date_field(failures, location, "retrieved_at", source.get("retrieved_at"), as_of=as_of)
+        validate_date_field(failures, location, "current_as_of", source.get("current_as_of"), as_of=as_of)
         validate_nullable_date_field(failures, location, "effective_date", source.get("effective_date"))
         validate_nullable_date_field(failures, location, "expiry_date", source.get("expiry_date"))
         validate_urls(failures, location, list_urls(source), allowed_hosts)
@@ -272,10 +314,57 @@ def validate_national_sources(
                     },
                 }
             )
+        if legal_card and set(list_urls(legal_card)) != set(list_urls(source)):
+            failures.append(
+                {
+                    "location": location,
+                    "url_mismatch_with_legal_map": {
+                        "legal_map": sorted(set(list_urls(legal_card))),
+                        "source_currency": sorted(set(list_urls(source))),
+                    },
+                }
+            )
+        if legal_card and legal_card.get("retrieved_at") != source.get("retrieved_at"):
+            failures.append(
+                {
+                    "location": location,
+                    "retrieved_at_mismatch_with_legal_map": {
+                        "legal_map": legal_card.get("retrieved_at"),
+                        "source_currency": source.get("retrieved_at"),
+                    },
+                }
+            )
+
+    valid_current_dates = {
+        source_id: parsed
+        for source_id, source in national_sources.items()
+        if (parsed := parse_iso_date(source.get("current_as_of"))) is not None
+    }
+    catalog_current_as_of = min(valid_current_dates.values()) if valid_current_dates else None
+    declared_current_as_of = parse_iso_date(data.get("current_as_of"))
+    if (
+        catalog_current_as_of is not None
+        and declared_current_as_of is not None
+        and declared_current_as_of != catalog_current_as_of
+    ):
+        failures.append(
+            {
+                "location": "source-currency",
+                "catalog_current_as_of_mismatch": {
+                    "declared": declared_current_as_of.isoformat(),
+                    "expected_oldest_national_source": catalog_current_as_of.isoformat(),
+                    "oldest_source_ids": sorted(
+                        source_id
+                        for source_id, parsed in valid_current_dates.items()
+                        if parsed == catalog_current_as_of
+                    ),
+                },
+            }
+        )
 
     for source_id, card in legal_by_id.items():
         location = f"legal-map source_cards.{source_id}"
-        validate_date_field(failures, location, "retrieved_at", card.get("retrieved_at"))
+        validate_date_field(failures, location, "retrieved_at", card.get("retrieved_at"), as_of=as_of)
         if card.get("reliability") != "official":
             failures.append(
                 {
@@ -288,22 +377,53 @@ def validate_national_sources(
     return {
         "national_source_count": len(national_sources),
         "legal_map_source_count": len(legal_by_id),
+        "source_currency_narrative_field_count": len(narrative_fields),
+        "national_current_as_of_floor": (
+            catalog_current_as_of.isoformat() if catalog_current_as_of else None
+        ),
     }
 
 
 def validate_calculation_rules(
     data: dict[str, Any],
     failures: list[dict[str, Any]],
+    *,
+    as_of: date,
 ) -> dict[str, Any]:
     allowed_hosts = set(data.get("official_host_allowlist", []))
-    national_titles = {source.get("title") for source in data.get("national_sources", {}).values()}
+    national_by_title = {
+        source.get("title"): source for source in data.get("national_sources", {}).values()
+    }
     cards = calculation_source_cards(CALCULATION_RULES.read_text(encoding="utf-8"))
     for card in cards:
         title = card.get("title", "<missing-title>")
         location = f"calculation-rules source_card.{title}"
-        if title not in national_titles:
+        source = national_by_title.get(title)
+        if source is None:
             failures.append({"location": location, "title_not_in_source_currency": title})
-        validate_date_field(failures, location, "retrieved_at", card.get("retrieved_at"))
+        else:
+            unexpected_urls = sorted(set(list_urls(card)) - set(list_urls(source)))
+            if unexpected_urls:
+                failures.append(
+                    {
+                        "location": location,
+                        "unexpected_urls_not_in_source_currency": {
+                            "unexpected": unexpected_urls,
+                            "source_currency": sorted(set(list_urls(source))),
+                        },
+                    }
+                )
+            if card.get("retrieved_at") != source.get("retrieved_at"):
+                failures.append(
+                    {
+                        "location": location,
+                        "retrieved_at_mismatch_with_source_currency": {
+                            "calculation_rules": card.get("retrieved_at"),
+                            "source_currency": source.get("retrieved_at"),
+                        },
+                    }
+                )
+        validate_date_field(failures, location, "retrieved_at", card.get("retrieved_at"), as_of=as_of)
         validate_urls(failures, location, list_urls(card), allowed_hosts)
     return {"calculation_source_count": len(cards)}
 
@@ -312,12 +432,29 @@ def validate_local_rules(
     data: dict[str, Any],
     city_data: dict[str, Any],
     failures: list[dict[str, Any]],
+    *,
+    as_of: date,
 ) -> dict[str, Any]:
     allowed_hosts = set(data.get("official_host_allowlist", []))
     local_statuses = set(data.get("local_source_policy", {}).get("status_values", []))
+    human_field_count = 1
+    source_note = city_data.get("source_note")
+    if not isinstance(source_note, str) or not source_note or re.search(r"[A-Za-z]{3,}", source_note):
+        failures.append({"location": "city-rules", "non_chinese_human_field": "source_note"})
 
     for source_id, card in city_data.get("source_cards", {}).items():
         location = f"city-rules source_cards.{source_id}"
+        for field in ("title", "notes"):
+            value = card.get(field)
+            human_field_count += 1
+            if not isinstance(value, str) or not value or re.search(r"[A-Za-z]{3,}", value):
+                failures.append({"location": location, "non_chinese_human_field": field})
+        for field in ("allowed_uses", "not_allowed_uses"):
+            values = card.get(field)
+            if not isinstance(values, list) or not values or not all(
+                isinstance(value, str) and value for value in values
+            ):
+                failures.append({"location": location, "invalid_nonempty_string_list": field})
         missing_fields = sorted(
             field
             for field in ("jurisdiction", "current_as_of")
@@ -331,10 +468,30 @@ def validate_local_rules(
         status = card.get("source_status")
         if status not in local_statuses:
             failures.append({"location": location, "invalid_local_source_status": status})
-        validate_date_field(failures, location, "retrieved_at", card.get("retrieved_at"))
-        validate_date_field(failures, location, "current_as_of", card.get("current_as_of"))
+        values = card.get("values")
+        if not isinstance(values, dict):
+            failures.append({"location": location, "invalid_values_object": type(values).__name__})
+        else:
+            non_finite = sorted(
+                key
+                for key, value in values.items()
+                if type(value) in {int, float} and not is_finite_number(value)
+            )
+            if non_finite:
+                failures.append({"location": location, "non_finite_values": non_finite})
+            if status == "verified_final" and not any(
+                is_finite_number(value) and value > 0 for value in values.values()
+            ):
+                failures.append(
+                    {"location": location, "verified_final_without_positive_value": True}
+                )
+        validate_date_field(failures, location, "retrieved_at", card.get("retrieved_at"), as_of=as_of)
+        validate_date_field(failures, location, "current_as_of", card.get("current_as_of"), as_of=as_of)
+        validate_nullable_date_field(failures, location, "publication_date", card.get("publication_date"))
         validate_nullable_date_field(failures, location, "effective_date", card.get("effective_date"))
         validate_nullable_date_field(failures, location, "expiry_date", card.get("expiry_date"))
+        if status != "local_verify" and card.get("publication_date") is None:
+            failures.append({"location": location, "missing_publication_date": True})
 
         url = card.get("url")
         official_host = card.get("official_host")
@@ -354,6 +511,10 @@ def validate_local_rules(
             failures.append({"location": location, "missing_local_official_url": True})
 
     for city, details in city_data.get("cities", {}).items():
+        human_field_count += 1
+        display_name = details.get("display_name")
+        if not isinstance(display_name, str) or not display_name or re.search(r"[A-Za-z]{3,}", display_name):
+            failures.append({"location": f"city-rules cities.{city}", "non_chinese_human_field": "display_name"})
         rule = details.get("rule_checks", {}).get("economic_compensation_high_wage_cap")
         if not rule:
             continue
@@ -367,6 +528,7 @@ def validate_local_rules(
     return {
         "local_source_count": len(city_data.get("source_cards", {})),
         "city_count": len(city_data.get("cities", {})),
+        "local_human_field_count": human_field_count,
     }
 
 
@@ -438,6 +600,7 @@ def validate_case_prototypes(
     }
     allowed_fields = required_fields | {"applicability_notes"}
     seen_ids: set[str] = set()
+    human_field_count = 0
     for prototype in prototypes:
         prototype_id = prototype.get("id", "<missing-id>")
         location = f"case_prototypes.{prototype_id}"
@@ -450,6 +613,11 @@ def validate_case_prototypes(
         if prototype_id in seen_ids:
             failures.append({"location": location, "duplicate_id": prototype_id})
         seen_ids.add(prototype_id)
+        for field in ("title", "summary", "applicability_notes"):
+            value = prototype.get(field)
+            human_field_count += 1
+            if not isinstance(value, str) or not any("\u3400" <= char <= "\u9fff" for char in value):
+                failures.append({"location": location, "non_chinese_human_field": field})
         for field in ("issue_tags", "evidence_tags", "workflow_tags", "source_anchors", "source_ids"):
             values = prototype.get(field)
             if not isinstance(values, list) or not values or not all(
@@ -459,7 +627,10 @@ def validate_case_prototypes(
         missing_anchors = sorted(set(prototype.get("source_anchors", [])) - legal_anchors)
         if missing_anchors:
             failures.append({"location": location, "unknown_source_anchors": missing_anchors})
-    return {"production_case_prototype_count": len(prototypes)}
+    return {
+        "production_case_prototype_count": len(prototypes),
+        "production_case_prototype_human_field_count": human_field_count,
+    }
 
 
 def validate_anchor_coverage(
@@ -526,6 +697,22 @@ def validate(
     data = load_json(path)
     failures: list[dict[str, Any]] = []
     as_of = as_of or date.today()
+    invalid_official_hosts = sorted(
+        (
+            value
+            for value in data.get("official_host_allowlist", [])
+            if not isinstance(value, str)
+            or not (value == "gov.cn" or value.endswith(".gov.cn"))
+        ),
+        key=str,
+    )
+    if invalid_official_hosts:
+        failures.append(
+            {
+                "location": "source-currency official_host_allowlist",
+                "non_government_hosts": invalid_official_hosts,
+            }
+        )
     configured_max_age = data.get("currency_policy", {}).get(
         "max_review_age_days", DEFAULT_MAX_REVIEW_AGE_DAYS
     )
@@ -534,8 +721,8 @@ def validate(
         failures.append({"location": "source-currency currency_policy", "invalid_max_review_age_days": max_review_age_days})
         max_review_age_days = DEFAULT_MAX_REVIEW_AGE_DAYS
 
-    validate_date_field(failures, "source-currency", "audit_date", data.get("audit_date"))
-    validate_date_field(failures, "source-currency", "current_as_of", data.get("current_as_of"))
+    validate_date_field(failures, "source-currency", "audit_date", data.get("audit_date"), as_of=as_of)
+    validate_date_field(failures, "source-currency", "current_as_of", data.get("current_as_of"), as_of=as_of)
 
     legal_map_text = LEGAL_MAP.read_text(encoding="utf-8")
     legal_cards = legal_map_source_cards(legal_map_text)
@@ -548,9 +735,9 @@ def validate(
         "as_of": as_of.isoformat(),
         "max_review_age_days": max_review_age_days,
     }
-    summary.update(validate_national_sources(data, legal_cards, failures))
-    summary.update(validate_calculation_rules(data, failures))
-    summary.update(validate_local_rules(data, city_data, failures))
+    summary.update(validate_national_sources(data, legal_cards, failures, as_of=as_of))
+    summary.update(validate_calculation_rules(data, failures, as_of=as_of))
+    summary.update(validate_local_rules(data, city_data, failures, as_of=as_of))
     summary.update(
         validate_source_health(
             data,

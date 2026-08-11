@@ -149,6 +149,18 @@ def validate_bundle_case(raw_case: dict[str, Any], bundle: dict[str, Any]) -> li
         failures.append({"public_sharing_should_be_false": share_policy.get("public_sharing_allowed")})
     if share_policy.get("raw_evidence_allowed") is not False:
         failures.append({"raw_evidence_should_be_false": share_policy.get("raw_evidence_allowed")})
+    private_reason = str(
+        manifest.get("access_control", {}).get("private_files", {}).get("reason", "")
+    )
+    guidance = str(share_policy.get("guidance", ""))
+    expected_guidance = expected.get("share_guidance_contains")
+    if expected_guidance and expected_guidance not in guidance:
+        failures.append({"share_guidance": guidance})
+    if any(
+        not any("\u3400" <= char <= "\u9fff" for char in text)
+        for text in (private_reason, guidance)
+    ):
+        failures.append({"non_chinese_access_guidance": [private_reason, guidance]})
 
     missing_paths = missing_expected_items(artifact_paths, expected.get("artifact_paths_contain", []))
     if missing_paths:

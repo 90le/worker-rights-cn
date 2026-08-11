@@ -16,8 +16,8 @@
         "status": "needs_more_input",
         "missing_inputs": ["case.wage.average_monthly_wage"],
         "warnings": [
-          "Inferences are routing hints for the package generator, not final legal conclusions.",
-          "Local wage caps, limitation dates, document wording, and employer-controlled procedure records still need verification."
+          "推断结果仅用于案件材料生成器的流程分派，不是最终法律结论。",
+          "地方工资封顶、时效日期、文书措辞以及由用人单位掌握的程序材料仍需核验。"
         ]
       }
     },
@@ -47,10 +47,10 @@
           "wage_cap_applied": false
         },
         "warnings": [
-          "This is a baseline estimator, not a final legal opinion.",
-          "Verify local average wage, arbitration limitation, and evidence before making a demand.",
-          "previous_month_wage missing: substitute notice wage used average_monthly_wage as fallback.",
-          "unused annual leave uses a default extra-pay estimate; verify local practice."
+          "本结果仅为基础估算，不是最终法律意见。",
+          "提出金额主张前，请核验当地平均工资、仲裁时效和证据。",
+          "未提供解除前一个月工资，代通知金暂以月平均工资估算。",
+          "未休年休假金额采用默认补付倍数估算，请核验当地实务及实际已支付工资。"
         ]
       }
     },
@@ -165,7 +165,7 @@
         "schema_version": "0.1.0",
         "tool": "worker_rights.plan_ai_recall",
         "status": "planned",
-        "candidate_source_ids": ["LCL-2012#art41", "GZ-RSJ-LAYOFF-NORM-2021", "guangzhou", "guangzhou-hrss-economic-layoff-report-package", "LCL-2012#art46", "LCL-2012#art85", "GZ-RSJ-MIN-WAGE-2025", "LCL-2012#art87", "LCL-REG-2008#art19", "LCL-REG-2008#art22"],
+        "candidate_source_ids": ["LCL-2012#art41", "GZ-RSJ-LAYOFF-NORM-2021", "guangzhou-hrss-economic-layoff-report-package", "LCL-2012#art46", "guangzhou", "LCL-2012#art85", "LCL-2012#art87", "LCL-REG-2008#art19", "LCL-REG-2008#art22", "LCL-2012#art44"],
         "provider": "host_agent",
         "plugin_network_calls": "none"
       }
@@ -230,8 +230,8 @@
         "termination_maps": ["economic_layoff"],
         "source_anchors": ["LCL-2012#art35", "LCL-2012#art41", "LCL-2012#art42", "LCL-2012#art43", "LCL-2012#art46", "LCL-2012#art47", "LCL-REG-2008#art19"],
         "warnings": [
-          "This classification is a routing aid. Verify current law, local rules, documents, and evidence before final advice.",
-          "Do not let employer or worker document labels override the factual termination sequence."
+          "该分类仅用于辅助确定处理路径。形成最终意见前，请核验现行法律、本地规则、相关文件和证据。",
+          "应以实际解除经过为准，不要让用人单位或劳动者给文件使用的名称替代事实判断。"
         ]
       }
     },

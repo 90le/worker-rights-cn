@@ -36,6 +36,23 @@ OVERTIME_MULTIPLIERS = {
     "rest_day": Decimal("2"),
     "statutory_holiday": Decimal("3"),
 }
+REPORT_LABELS = {
+    "economic_compensation_n": "经济补偿（N）",
+    "n_plus_one": "经济补偿加代通知金（N+1）",
+    "unlawful_termination_2n": "疑似违法解除赔偿路径（2N）",
+    "workday": "工作日",
+    "rest_day": "休息日",
+    "statutory_holiday": "法定节假日",
+    "source_digest_available": "已有来源摘要",
+    "to_verify": "待核验",
+    "national": "全国",
+    "current_effective": "现行有效",
+    "current": "当前有效",
+    "review_due": "到期复核",
+    "expired": "已失效",
+    "not_yet_effective": "尚未生效",
+    "invalid": "状态无效",
+}
 STANDARD_DAILY_MINUTES = 8 * 60
 CENT = Decimal("0.01")
 PLUGIN_ROOT = Path(__file__).resolve().parents[3]
@@ -346,8 +363,8 @@ def build_import_evidence_directory(
             {
                 "evidence_id": "E-PAYROLL",
                 "status": "source_digest_available",
-                "proof_purpose": "monthly wage records and average-wage calculation",
-                "lawful_source": "worker-provided payroll export; original retained by worker",
+                "proof_purpose": "月度工资记录及月平均工资计算",
+                "lawful_source": "劳动者提供的工资记录导出文件；原件由劳动者自行留存",
                 "source_sha256": payroll["source_sha256"],
                 "linked_claims": ["economic_compensation_n"],
             }
@@ -358,32 +375,32 @@ def build_import_evidence_directory(
                 {
                     "evidence_id": "E-ATTENDANCE",
                     "status": "source_digest_available",
-                    "proof_purpose": "recorded work dates, time ranges, breaks, and day classifications",
-                    "lawful_source": "worker-provided attendance export; original retained by worker",
+                    "proof_purpose": "记录工作日期、时间区间、休息时长及日期类型",
+                    "lawful_source": "劳动者提供的考勤导出文件；原件由劳动者自行留存",
                     "source_sha256": attendance["source_sha256"],
                     "linked_claims": ["overtime_claim"],
                 },
                 {
                     "evidence_id": "E-ARRANGEMENT",
                     "status": "to_verify",
-                    "proof_purpose": "whether the employer arranged or knew about the claimed overtime",
-                    "lawful_source": "full-context work messages, schedules, emails, task records, or approvals",
+                    "proof_purpose": "用人单位是否安排或知悉所主张的加班",
+                    "lawful_source": "包含完整上下文的工作消息、排班、邮件、任务记录或审批记录",
                     "source_sha256": None,
                     "linked_claims": ["overtime_claim"],
                 },
                 {
                     "evidence_id": "E-SCHEDULE",
                     "status": "to_verify",
-                    "proof_purpose": "standard-hours classification and any special-hours approval",
-                    "lawful_source": "labor contract, published schedule, rules, and approval documents",
+                    "proof_purpose": "标准工时制认定及特殊工时审批情况",
+                    "lawful_source": "劳动合同、已公示的排班制度、规章制度及审批文件",
                     "source_sha256": None,
                     "linked_claims": ["overtime_claim"],
                 },
                 {
                     "evidence_id": "E-OVERTIME-WAGE-BASE",
                     "status": "to_verify",
-                    "proof_purpose": "the monthly wage base used for the overtime estimate",
-                    "lawful_source": "contract, payslips, payroll records, and applicable local wage rules",
+                    "proof_purpose": "加班费估算采用的月工资基数",
+                    "lawful_source": "劳动合同、工资单、工资发放记录及适用的地方工资规则",
                     "source_sha256": None,
                     "linked_claims": ["overtime_claim"],
                 },
@@ -410,17 +427,17 @@ def calculate_with_imports(
     if payroll:
         result["payroll_basis"] = payroll
         if supplied_average not in (None, ""):
-            result["warnings"].append("average_monthly_wage from input was replaced by the payroll CSV average.")
+            result["warnings"].append("已用工资 CSV 计算出的平均值替换输入的月平均工资。")
         if payroll["record_count"] < 12 or payroll["missing_months"]:
             result["warnings"].append(
-                "Payroll average uses available records only; verify the statutory wage-base period and missing months."
+                "工资平均值仅按现有记录计算；请核验法定工资基数期间及缺失月份。"
             )
     if overtime_basis:
         result["overtime_basis"] = overtime_basis
         if supplied_overtime not in (None, ""):
-            result["warnings"].append("overtime_claim from input was replaced by the attendance CSV calculation.")
+            result["warnings"].append("已用考勤 CSV 计算结果替换输入的加班费金额。")
         result["warnings"].append(
-            "Attendance rows are worker-provided records, not proof that the employer arranged overtime; verify originals, context, schedule type, wage base, and local rules."
+            "考勤行是劳动者提供的记录，单独不足以证明用人单位安排加班；请核验原始记录、完整上下文、工时制度、工资基数和地方规则。"
         )
     evidence_directory = build_import_evidence_directory(payroll, attendance)
     if evidence_directory:
@@ -518,17 +535,17 @@ def calculate(data: dict[str, Any]) -> dict[str, Any]:
     }
 
     warnings = [
-        "This is a baseline estimator, not a final legal opinion.",
-        "Verify local average wage, arbitration limitation, and evidence before making a demand.",
+        "本结果仅为基础估算，不是最终法律意见。",
+        "提出金额主张前，请核验当地平均工资、仲裁时效和证据。",
     ]
     if local_avg_wage is None:
-        warnings.append("local_average_monthly_wage missing: high-wage cap was not applied.")
+        warnings.append("未提供当地月平均工资，当前估算未适用高工资封顶规则。")
     if needs_substitute_notice and previous_month_wage is None:
-        warnings.append("previous_month_wage missing: substitute notice wage used average_monthly_wage as fallback.")
+        warnings.append("未提供解除前一个月工资，代通知金暂以月平均工资估算。")
     if unsigned_months_raw > 11:
-        warnings.append("unsigned_contract_months_owed capped at 11 months by default.")
+        warnings.append("未签书面劳动合同的双倍工资月数暂按最多 11 个月计算。")
     if unused_days:
-        warnings.append("unused annual leave uses a default extra-pay estimate; verify local practice.")
+        warnings.append("未休年休假金额采用默认补付倍数估算，请核验当地实务及实际已支付工资。")
 
     return {
         "inputs": {
@@ -638,14 +655,14 @@ def report_source_health(
 
 def render_html_report(result: dict[str, Any], source_as_of: date | None = None) -> str:
     money_rows = [
-        [name, f"{float(amount):,.2f}"]
+        [REPORT_LABELS.get(name, name), f"{float(amount):,.2f}"]
         for name, amount in result.get("claim_paths", {}).items()
     ]
     overtime = result.get("overtime_basis", {})
     overtime_rows = [
         [
             item["work_date"],
-            item["day_type"],
+            REPORT_LABELS.get(item["day_type"], item["day_type"]),
             f"{item['worked_hours']:.2f}",
             f"{item['overtime_hours']:.2f}",
             f"{item['multiplier']:.1f}",
@@ -656,7 +673,7 @@ def render_html_report(result: dict[str, Any], source_as_of: date | None = None)
     evidence_rows = [
         [
             item["evidence_id"],
-            item["status"],
+            REPORT_LABELS.get(item["status"], item["status"]),
             item["proof_purpose"],
             item["lawful_source"],
             item.get("source_sha256") or "—",
@@ -678,51 +695,51 @@ def render_html_report(result: dict[str, Any], source_as_of: date | None = None)
         source_rows.append(
             "<tr>"
             f"<td>{linked_anchor}</td>"
-            f"<td>{html.escape(str(source.get('title', 'source card required')))}</td>"
-            f"<td>{html.escape(str(source.get('jurisdiction', 'verify')))}</td>"
-            f"<td>{html.escape(str(source.get('effective_date', 'verify')))}</td>"
-            f"<td>{html.escape(str(source.get('expiry_date') or 'none recorded'))}</td>"
-            f"<td>{html.escape(str(source.get('retrieved_at', 'verify')))}</td>"
-            f"<td>{html.escape(str(source.get('current_as_of', 'verify')))}</td>"
-            f"<td>{html.escape(str(source.get('currency_status', 'verify')))}</td>"
-            f"<td>{html.escape(str(card['health']['status']))}</td>"
+            f"<td>{html.escape(str(source.get('title', '需补充来源卡')))}</td>"
+            f"<td>{html.escape(REPORT_LABELS.get(str(source.get('jurisdiction')), str(source.get('jurisdiction', '待核验'))))}</td>"
+            f"<td>{html.escape(str(source.get('effective_date', '待核验')))}</td>"
+            f"<td>{html.escape(str(source.get('expiry_date') or '未记录'))}</td>"
+            f"<td>{html.escape(str(source.get('retrieved_at', '待核验')))}</td>"
+            f"<td>{html.escape(str(source.get('current_as_of', '待核验')))}</td>"
+            f"<td>{html.escape(REPORT_LABELS.get(str(source.get('currency_status')), str(source.get('currency_status', '待核验'))))}</td>"
+            f"<td>{html.escape(REPORT_LABELS.get(str(card['health']['status']), str(card['health']['status'])))}</td>"
             "</tr>"
         )
     sources = (
-        '<div class="table-wrap"><table><thead><tr><th>Anchor</th><th>Official source</th><th>Jurisdiction</th><th>Effective</th><th>Expiry</th><th>Retrieved</th><th>Reviewed</th><th>Card status</th><th>Health</th></tr></thead>'
+        '<div class="table-wrap"><table><thead><tr><th>锚点</th><th>官方来源</th><th>适用层级</th><th>生效日期</th><th>失效日期</th><th>获取日期</th><th>复核日期</th><th>来源卡状态</th><th>健康状态</th></tr></thead>'
         f"<tbody>{''.join(source_rows)}</tbody></table></div>"
     )
     source_notice = ""
     if source_health["degraded_source_ids"]:
         source_ids = ", ".join(source_health["degraded_source_ids"])
         source_notice = (
-            '<div class="notice warning"><strong>Source review required / 来源需复核。</strong> '
-            f"As of {source_health['as_of']}, these cards are expired, not yet effective, invalid, or beyond the review-age limit: "
-            f"{html.escape(source_ids)}. Recheck the official links before relying on legal-source status.</div>"
+            '<div class="notice warning"><strong>来源需复核。</strong> '
+            f"截至 {source_health['as_of']}，以下来源卡已失效、尚未生效、状态无效或超过复核期限："
+            f"{html.escape(source_ids)}。依赖其法律来源状态前，请重新核验官方链接。</div>"
         )
     warnings = "".join(f"<li>{html.escape(warning)}</li>" for warning in result.get("warnings", []))
     overtime_section = ""
     if overtime_rows:
         overtime_section = f"""
-<section><h2>Overtime detail / 加班明细</h2>
-<p>Monthly wage base: {overtime['overtime_monthly_wage_base']:,.2f}; hourly base: {overtime['hourly_wage_base']:,.4f}; estimated overtime total: <strong>{overtime['overtime_pay_total']:,.2f}</strong>.</p>
-{html_table(['Work date', 'Day type', 'Worked hours', 'Overtime hours', 'Multiplier', 'Estimate'], overtime_rows)}
+<section><h2>加班明细</h2>
+<p>月工资基数：{overtime['overtime_monthly_wage_base']:,.2f}；小时工资基数：{overtime['hourly_wage_base']:,.4f}；加班费估算合计：<strong>{overtime['overtime_pay_total']:,.2f}</strong>。</p>
+{html_table(['工作日期', '日期类型', '工作小时', '加班小时', '倍数', '估算金额'], overtime_rows)}
 </section>"""
     return f"""<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Worker-side calculation report</title>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>劳动者测算报告</title>
 <style>
 :root{{--ink:#132238;--muted:#5c6b7a;--line:#dbe3ea;--paper:#fff;--accent:#146c5a;--wash:#f3f8f6}}*{{box-sizing:border-box}}body{{margin:0;background:#edf2f5;color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}}main{{max-width:1080px;margin:32px auto;padding:40px;background:var(--paper);box-shadow:0 12px 40px #17324d1a}}h1{{margin:.15em 0;font-size:2.2rem}}h2{{margin-top:1.8em;border-bottom:2px solid var(--accent);padding-bottom:.35em;font-size:1.25rem}}.eyebrow{{margin:0;color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase}}.notice{{margin:24px 0;padding:16px 18px;border-left:4px solid var(--accent);background:var(--wash)}}.warning{{border-color:#b45309;background:#fff7ed}}.table-wrap{{overflow-x:auto}}table{{width:100%;border-collapse:collapse;font-size:.9rem}}th,td{{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}}th{{background:#f5f7f9}}a{{color:#075e9b}}code{{font-size:.85em;word-break:break-all}}footer{{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem}}@media(max-width:700px){{main{{margin:0;padding:24px 16px;box-shadow:none}}h1{{font-size:1.7rem}}}}
 </style></head><body><main>
-<p class="eyebrow">Worker Rights CN · deterministic export</p><h1>Worker-side calculation report<br><small>劳动者测算报告</small></h1>
-<div class="notice"><strong>Review draft / 复核草稿。</strong> Amounts are estimates. Check facts, evidence, local rules, limitation periods, and unnecessary personal data before sharing or filing.</div>
+<p class="eyebrow">劳动权益测算 · 确定性导出</p><h1>劳动者测算报告</h1>
+<div class="notice"><strong>复核草稿。</strong> 金额均为估算值。分享或提交前，请核验事实、证据、地方规则和时效期限，并移除无关个人信息。</div>
 {source_notice}
-<section><h2>Claim paths / 金额路径</h2>{html_table(['Path', 'Estimate'], money_rows)}</section>
+<section><h2>金额路径</h2>{html_table(['主张路径', '估算金额'], money_rows)}</section>
 {overtime_section}
-<section><h2>Evidence directory / 证据目录</h2>{html_table(['ID', 'Status', 'Proof purpose', 'Lawful source', 'Source SHA-256'], evidence_rows)}</section>
-<section><h2>Official source cards / 官方来源卡</h2><p>Source health assessed as of {source_health['as_of']}; review limit {source_health['max_review_age_days']} days.</p>{sources}</section>
-<section><h2>Checks and uncertainties / 核验事项</h2><ul>{warnings}</ul></section>
-<footer>This static HTML excludes source file paths, raw payroll rows, raw attendance timestamps, names, IDs, chats, and attachments. Keep originals separately and review the digest-only evidence links before sharing.</footer>
+<section><h2>证据目录</h2>{html_table(['编号', '状态', '证明目的', '合法来源', '来源 SHA-256'], evidence_rows)}</section>
+<section><h2>官方来源卡</h2><p>来源健康状态评估日期：{source_health['as_of']}；复核期限：{source_health['max_review_age_days']} 天。</p>{sources}</section>
+<section><h2>核验事项</h2><ul>{warnings}</ul></section>
+<footer>本静态 HTML 不含来源文件路径、原始工资记录行、原始考勤时间戳、姓名、证件号码、聊天内容或附件。原件请单独保管；分享前请复核仅含摘要的证据关联信息。</footer>
 </main></body></html>
 """
 

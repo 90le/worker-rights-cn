@@ -117,6 +117,13 @@ def validate_claude_adapter(failures: list[dict[str, Any]]) -> None:
     )
     require(blocked.get("continue") is False, {"blocked_claude_adapter": blocked}, failures)
     require(blocked.get("decision") == "block", {"blocked_claude_adapter": blocked}, failures)
+    blocked_reason = str(blocked.get("stopReason", ""))
+    require(
+        bool(re.search(r"[\u3400-\u9fff]", blocked_reason))
+        and "fabricated_or_tampered_evidence" not in blocked_reason,
+        {"blocked_claude_adapter_reason": blocked_reason},
+        failures,
+    )
 
     warned = run_python_adapter(
         {
@@ -131,6 +138,13 @@ def validate_claude_adapter(failures: list[dict[str, Any]]) -> None:
     require(
         warned.get("hookSpecificOutput", {}).get("additionalContext"),
         {"warned_claude_adapter": warned},
+        failures,
+    )
+    warned_context = str(warned.get("hookSpecificOutput", {}).get("additionalContext", ""))
+    require(
+        bool(re.search(r"[\u3400-\u9fff]", warned_context))
+        and "source_currency_or_local_rule_reminder" not in warned_context,
+        {"warned_claude_adapter_context": warned_context},
         failures,
     )
 

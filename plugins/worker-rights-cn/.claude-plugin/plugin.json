@@ -1,6 +1,6 @@
 {
   "name": "worker-rights-cn",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "China worker-side labor-rights skills, MCP tools, hooks, SQLite/FTS source search, audit chain, evidence planning, compensation calculation, and bundle export.",
   "author": {
     "name": "丘彬彬"

@@ -272,6 +272,16 @@ def validate_case(
     failures.extend(validate_required_fields(case_id, package, schema, required_sections))
     failures.extend(validate_quality_gates(case_id, package))
 
+    if case.get("generated_from_e2e_case_id"):
+        non_chinese_formulas = [
+            item.get("formula")
+            for item in section_items(package.get("money_summary"))
+            if not isinstance(item.get("formula"), str)
+            or not any("\u4e00" <= char <= "\u9fff" for char in item["formula"])
+        ]
+        if non_chinese_formulas:
+            failures.append({"case": case_id, "non_chinese_money_formulas": non_chinese_formulas})
+
     package_anchors = collect_package_anchors(package)
     missing_package_anchors = sorted(package_anchors - legal_anchors)
     if missing_package_anchors:

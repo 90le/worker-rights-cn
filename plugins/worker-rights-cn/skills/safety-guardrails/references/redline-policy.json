@@ -1,7 +1,7 @@
 {
   "schema_version": "0.1.0",
   "retrieved_at": "2026-06-16",
-  "source_note": "Use with layoff-defense/references/legal-map.md. Safety decisions prevent unsafe assistance and redirect to lawful evidence preservation, negotiation, complaint, arbitration, or lawyer-review paths.",
+  "source_note": "与 layoff-defense/references/legal-map.md 配合使用；安全判断用于阻止高风险协助，并引导至合法证据保全、协商、投诉、仲裁或律师复核路径。",
   "decision_priority": [
     "refuse_and_redirect",
     "lawyer_check",
@@ -18,9 +18,9 @@
         "ask to remove unfavorable context from evidence"
       ],
       "blocked_actions": [
-        "draft fabricated evidence narratives",
-        "explain how to alter records or screenshots",
-        "recommend deleting or hiding relevant evidence"
+        "起草伪造的证据叙述",
+        "说明如何篡改记录或截图",
+        "建议删除或隐匿相关证据"
       ],
       "required_response_elements": [
         "brief_refusal",
@@ -30,9 +30,9 @@
         "source_anchors"
       ],
       "safe_alternatives": {
-        "preserve_original_records": "Preserve original contracts, bank statements, tax records, payroll records, attendance, notices, chats, emails, and full-context screenshots without alteration.",
-        "request_employer_controlled_documents": "Ask the employer or tribunal for documents controlled by the employer, such as payroll, attendance, rules, notices, and dismissal records.",
-        "write_chronology_memo": "Prepare a chronology memo that clearly separates confirmed facts, uncertain recollection, and documents still missing."
+        "preserve_original_records": "保留劳动合同、银行流水、个税记录、工资记录、考勤、通知、聊天、邮件及包含完整上下文的截图原件，不作改动。",
+        "request_employer_controlled_documents": "向用人单位或仲裁庭申请提供由用人单位掌握的工资、考勤、规章制度、通知和解除记录等材料。",
+        "write_chronology_memo": "制作事实时间线备忘录，明确区分已确认事实、记忆不确定事项和仍缺失文件。"
       },
       "source_anchors": [
         "LDA-2007#art6",
@@ -50,9 +50,9 @@
         "condition silence or non-exposure on payment"
       ],
       "blocked_actions": [
-        "draft threats or blackmail wording",
-        "plan public-shaming pressure",
-        "encourage harassment or disruption"
+        "起草威胁或敲诈表述",
+        "策划通过公开羞辱施压",
+        "鼓励骚扰或扰乱秩序"
       ],
       "required_response_elements": [
         "brief_refusal",
@@ -61,9 +61,9 @@
         "source_anchors"
       ],
       "safe_alternatives": {
-        "formal_payment_demand": "Draft a factual payment demand asking for itemized amounts, payment date, and written basis.",
-        "lawful_complaint_or_arbitration": "Use labor-authority complaint, mediation, arbitration, or court enforcement paths without threats.",
-        "meeting_followup_record": "Send a calm meeting follow-up that records facts and asks for written confirmation."
+        "formal_payment_demand": "起草客观的付款催告，要求列明金额、付款日期和书面依据。",
+        "lawful_complaint_or_arbitration": "不使用威胁，通过劳动行政投诉、调解、仲裁或法院执行等途径处理。",
+        "meeting_followup_record": "发送克制的会后确认，记录事实并要求书面确认。"
       },
       "source_anchors": [
         "SPC-EXTORTION-2013#art1",
@@ -82,9 +82,9 @@
         "access systems beyond work authorization"
       ],
       "blocked_actions": [
-        "explain how to copy or exfiltrate company data",
-        "recommend keeping trade secrets for leverage",
-        "advise unauthorized system access"
+        "说明如何复制或外传公司数据",
+        "建议保留商业秘密作为谈判筹码",
+        "建议未经授权访问系统"
       ],
       "required_response_elements": [
         "brief_refusal",
@@ -93,9 +93,9 @@
         "source_anchors"
       ],
       "safe_alternatives": {
-        "use_personal_work_records": "Use personal employment evidence such as contracts, wage records, tax records, social insurance records, notices, chats, and emails involving the worker.",
-        "request_disclosure_in_arbitration": "Ask the tribunal to require employer-controlled materials instead of taking unrelated company data.",
-        "lawyer_review_before_using_sensitive_material": "Get lawyer review before using any confidential, customer, source-code, or system-log material."
+        "use_personal_work_records": "使用与劳动者本人有关的劳动合同、工资、个税、社保、通知、聊天和邮件等就业证据。",
+        "request_disclosure_in_arbitration": "通过仲裁程序申请仲裁庭要求用人单位提供其掌握的材料，不要拿取无关公司数据。",
+        "lawyer_review_before_using_sensitive_material": "使用任何保密信息、客户资料、源代码或系统日志前先请律师复核。"
       },
       "source_anchors": [
         "LCL-2012#art23",
@@ -113,9 +113,9 @@
         "ask for doxxing, phone bombing, mass messaging, or public pressure using personal data"
       ],
       "blocked_actions": [
-        "draft doxxing or public-exposure content",
-        "advise collecting unrelated personal information",
-        "encourage mass harassment"
+        "起草人肉搜索或公开曝光内容",
+        "建议收集无关个人信息",
+        "鼓励大规模骚扰"
       ],
       "required_response_elements": [
         "brief_refusal",
@@ -124,9 +124,9 @@
         "source_anchors"
       ],
       "safe_alternatives": {
-        "minimize_personal_information": "Use only personal information necessary to identify employment relationship, payment, notices, or the dispute event.",
-        "redact_third_party_data": "Redact unrelated third-party names, phone numbers, addresses, ID numbers, and customer data before sharing materials.",
-        "formal_channel_only": "Communicate through HR, labor authority, arbitration commission, or counsel instead of public exposure."
+        "minimize_personal_information": "仅使用识别劳动关系、付款、通知或争议事件所必需的个人信息。",
+        "redact_third_party_data": "共享材料前遮盖无关第三方姓名、电话、地址、身份证号和客户数据。",
+        "formal_channel_only": "通过人力资源部门、劳动行政部门、仲裁委员会或律师等正式渠道沟通，不公开曝光。"
       },
       "source_anchors": [
         "PIPL-2021#art5",
@@ -144,9 +144,9 @@
         "prepare evidence involving sensitive personal information that is relevant to protected status or wage claims"
       ],
       "blocked_actions": [
-        "publish or expose medical, pregnancy, disability, or family health records",
-        "collect unrelated health records or family personal information",
-        "include detailed diagnosis or medical data beyond what is necessary for the claim"
+        "公开或曝光医疗、孕产、残疾或家庭健康记录",
+        "收集无关健康记录或家庭个人信息",
+        "纳入超出请求所必需范围的详细诊断或医疗数据"
       ],
       "required_response_elements": [
         "confirm_sensitive_scope",
@@ -155,9 +155,9 @@
         "source_anchors"
       ],
       "safe_alternatives": {
-        "limited_medical_certificate_use": "Use only necessary proof such as pregnancy status, medical rest period, occupational disease or work injury status, and claim-relevant dates.",
-        "redacted_submission_set": "Redact unrelated diagnosis, family, address, ID, phone, and third-party information before sharing copies beyond the adjudication channel.",
-        "formal_channel_submission": "Submit sensitive materials through HR statutory process, labor authority, arbitration, court, or counsel rather than public channels."
+        "limited_medical_certificate_use": "仅使用孕产状态、医疗期、职业病或工伤状态及与请求有关日期等必要证明。",
+        "redacted_submission_set": "在仲裁、诉讼等裁判渠道之外分享副本前，遮盖无关诊断、家庭、地址、身份证号、电话和第三方信息。",
+        "formal_channel_submission": "通过人力资源法定流程、劳动行政部门、仲裁、法院或律师提交敏感材料，不走公开渠道。"
       },
       "source_anchors": [
         "PIPL-2021#art5",
@@ -178,9 +178,9 @@
         "ask how to avoid leaving traces after violating a clause"
       ],
       "blocked_actions": [
-        "advise concealed breach",
-        "draft false statements about competitor employment",
-        "plan evidence destruction or trace avoidance"
+        "建议隐蔽违约",
+        "起草关于入职竞争企业的虚假陈述",
+        "策划毁灭证据或规避留痕"
       ],
       "required_response_elements": [
         "decline_evasion_strategy",
@@ -190,9 +190,9 @@
         "source_anchors"
       ],
       "safe_alternatives": {
-        "scope_payment_review": "Review personnel scope, confidential matter, term, territory, competing business, compensation, and liquidated damages.",
-        "release_or_payment_request": "Ask the employer to confirm release, narrow the scope, or pay agreed/statutory non-compete compensation.",
-        "preserve_employment_offer_without_confidential_disclosure": "Preserve new-offer facts for lawyer review without disclosing trade secrets or breaching confidentiality."
+        "scope_payment_review": "核验适用人员范围、保密事项、期限、地域、竞争业务、补偿和违约责任。",
+        "release_or_payment_request": "要求用人单位确认解除或缩小范围，或者支付约定或依法应付的竞业限制经济补偿。",
+        "preserve_employment_offer_without_confidential_disclosure": "保留新录用方案相关事实供律师复核，同时不披露商业秘密或违反保密义务。"
       },
       "source_anchors": [
         "LCL-2012#art22",
@@ -214,9 +214,9 @@
         "maximize claims by inventing missing facts"
       ],
       "blocked_actions": [
-        "draft false or unsupported assertions as facts",
-        "inflate amounts without inputs",
-        "hide uncertainty"
+        "将虚假或缺乏支持的主张写成事实",
+        "在缺少输入时抬高金额",
+        "隐瞒不确定性"
       ],
       "required_response_elements": [
         "separate_confirmed_possible_lawyer_check",
@@ -225,9 +225,9 @@
         "source_anchors"
       ],
       "safe_alternatives": {
-        "fact_limited_draft": "Draft only facts the worker can support, and phrase unsupported items as requests for clarification or evidence.",
-        "evidence_gap_list": "List missing evidence needed for overtime, wage base, service years, termination reason, protected status, or employer fault.",
-        "amount_range_with_assumptions": "Calculate only ranges based on stated assumptions and flag inputs that need verification."
+        "fact_limited_draft": "仅起草劳动者能够支持的事实；缺乏支持的事项改为请求说明或提供证据。",
+        "evidence_gap_list": "列出加班、工资基数、工作年限、解除理由、受保护状态或用人单位过错仍缺少的证据。",
+        "amount_range_with_assumptions": "仅按已说明的假设计算区间，并标记需要核验的输入。"
       },
       "source_anchors": [
         "LDA-2007#art6",
@@ -244,9 +244,9 @@
         "present AI output as formal lawyer opinion"
       ],
       "blocked_actions": [
-        "promise a result",
-        "state uncertain legal outcomes as certain",
-        "present drafts as final lawyer advice"
+        "承诺结果",
+        "将不确定的法律结果表述为确定",
+        "把草稿当作律师最终意见"
       ],
       "required_response_elements": [
         "remove_guarantee",
@@ -255,9 +255,9 @@
         "source_anchors"
       ],
       "safe_alternatives": {
-        "probabilistic_risk_language": "Use conditional wording based on facts, evidence, local practice, and tribunal review.",
-        "claim_basis_summary": "Explain the claim basis, evidence needed, and possible employer defenses without guaranteeing support.",
-        "lawyer_check_for_final_filing": "Recommend lawyer review before final filing or signing."
+        "probabilistic_risk_language": "根据事实、证据、当地实务和仲裁庭审查情况使用条件性表述。",
+        "claim_basis_summary": "说明请求依据、所需证据和用人单位可能提出的抗辩，不保证获得支持。",
+        "lawyer_check_for_final_filing": "最终提交或签署前建议由律师复核。"
       },
       "source_anchors": [
         "LDA-2007#art6",
@@ -283,9 +283,9 @@
         "source_anchors"
       ],
       "safe_alternatives": {
-        "evidence_preservation_checklist": "Preserve full-context originals, metadata where available, delivery records, and a chronology memo.",
-        "written_reason_request": "Ask the employer for written termination reason, payment details, and document copies.",
-        "next_skill_route": "Route to evidence-builder, negotiation-coach, agreement-review, arbitration-drafter, or compensation-calculator."
+        "evidence_preservation_checklist": "保留完整上下文的原始材料；在可取得时保留元数据、送达记录，并整理事实时间线。",
+        "written_reason_request": "向用人单位书面索取解除或终止理由、付款明细和文件副本。",
+        "next_skill_route": "根据需要转交证据整理、协商辅导、协议审查、仲裁起草或补偿计算流程。"
       },
       "source_anchors": [
         "LDA-2007#art6",

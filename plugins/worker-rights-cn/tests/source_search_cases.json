@@ -121,6 +121,28 @@
       "SZH-CITY-CAP-SOURCE-PENDING",
       "suzhou"
     ],
+    "expected_top_id": "suzhou",
+    "expected_result_status": "local_verify",
+    "expected_query_expansion_enabled": true,
+    "expected_expansion_terms": [
+      "economic compensation",
+      "LCL-2012#art47"
+    ]
+  },
+  {
+    "id": "cn-suzhou-embedded-alias-ranking",
+    "query": "在苏州如何计算经济补偿高工资封顶",
+    "include": [
+      "source_cards",
+      "city_rules"
+    ],
+    "status": "local_verify",
+    "limit": 10,
+    "expected_ids": [
+      "SZH-CITY-CAP-SOURCE-PENDING",
+      "suzhou"
+    ],
+    "expected_top_id": "suzhou",
     "expected_result_status": "local_verify",
     "expected_query_expansion_enabled": true,
     "expected_expansion_terms": [

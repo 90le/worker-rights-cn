@@ -2,7 +2,7 @@
   "schema_version": "0.2.0",
   "audit_date": "2026-06-16",
   "current_as_of": "2026-06-16",
-  "purpose": "Machine-readable source audit for legal and official source cards used by worker-rights-cn. It records source identity, jurisdiction, official URL, effective/expiry dates, retrieval/review dates, and deterministic freshness health; article-level anchors remain indexed in layoff-defense/references/legal-map.md.",
+  "purpose": "面向本项目法律及官方来源卡的机器可读审计记录，保存来源身份、适用地域、官方网址、生效或失效日期、抓取或复核日期及确定性时效健康状态；条文级锚点继续由 layoff-defense/references/legal-map.md 索引。",
   "status_values": [
     "current_effective",
     "current_reference",
@@ -41,19 +41,19 @@
     "zhejiang.chinatax.gov.cn"
   ],
   "currency_policy": {
-    "national_law_rule": "A national law, administrative regulation, department rule, or judicial interpretation may be cited as current only when it has an official source card, current_effective status, current source health on the assessment date, and no deprecated_do_not_use flag.",
-    "local_rule_rule": "Local wage, social-insurance, housing-fund, and filing-practice sources must keep their local source_status. Candidate/reference sources cannot be used as final economic-compensation wage caps unless the city rule is later marked verified_final for that use.",
-    "output_rule": "User-facing legal outputs must cite SOURCE-ID#artN anchors, expose source health, degrade expired or review-due sources, and avoid saying a local amount is final when the source is candidate_verify, verified_candidate, verified_reference_only, verified_guardrail, or local_verify.",
-    "reaudit_rule": "Re-run official source search before changing any source card, before adding a new jurisdiction, and at least once per calendar year.",
+    "national_law_rule": "国家法律、行政法规、部门规章或司法解释，只有在具备官方来源卡、状态为 current_effective、评估日来源健康状态为当前，且未标记 deprecated_do_not_use 时，才可作为现行依据引用。",
+    "local_rule_rule": "地方工资、社会保险、住房公积金及受理实务来源必须保留各自的 source_status；候选或参考来源不得作为经济补偿高工资封顶的最终依据，除非相应城市规则后来将该用途标记为 verified_final。",
+    "output_rule": "面向用户的法律输出应引用 SOURCE-ID#artN 锚点并展示来源健康状态；来源失效或超过复核期限时应降级提示；当地方来源状态为 candidate_verify、verified_candidate、verified_reference_only、verified_guardrail 或 local_verify 时，不得把相应数值表述为最终口径。",
+    "reaudit_rule": "变更任何来源卡、增加新地域之前，以及每个自然年至少一次，应重新检索官方来源。",
     "max_review_age_days": 366,
-    "expiry_rule": "expiry_date is the explicit final effective date when one is published; null means no fixed expiry is recorded and never replaces periodic review. After expiry or the review-age limit, user-facing output must degrade to a review warning."
+    "expiry_rule": "字段 expiry_date 表示已公布的最终有效日期；null 表示未记录固定失效日期，但不能替代定期复核。来源失效或超过复核期限后，面向用户的输出应降级为复核提示。"
   },
   "deprecated_url_patterns": [
     {
       "url": "https://www.gov.cn/zhengce/2008-09/28/content_2603139.htm",
       "replacement_url": "https://www.moj.gov.cn/pub/sfbgw/flfggz/flfggzbmgz/200902/t20090209_144625.html",
       "audited_at": "2026-06-16",
-      "reason": "Returned 404 during the 2026 audit; replaced by the official Ministry of Justice page for 企业职工带薪年休假实施办法."
+      "reason": "本链接在2026年审计时返回404，已替换为司法部发布的《企业职工带薪年休假实施办法》官方页面。"
     }
   ],
   "national_sources": {
@@ -71,7 +71,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Current project source card uses the NPC legal database plus an official tax-system text mirror for article reading. The law first took effect on 2008-01-01; the recorded current text includes the amendment effective 2013-07-01.",
+      "notes": "当前项目来源卡使用国家法律法规数据库，并以税务系统官方文本镜像辅助逐条阅读。本法首次施行日期为2008年1月1日；所记录现行文本包含自2013年7月1日起施行的修正。",
       "expiry_date": null
     },
     "LABOR-LAW-2018": {
@@ -87,7 +87,7 @@
       "retrieved_at": "2026-08-11",
       "current_as_of": "2026-08-11",
       "currency_status": "current_effective",
-      "notes": "National Laws and Regulations Database marks the current amended Labor Law effective; article 44 supplies the 150%/200%/300% overtime rates. The law first took effect on 1995-01-01; the recorded current text includes the amendment effective 2018-12-29."
+      "notes": "国家法律法规数据库标示现行修正版《劳动法》有效；第44条规定延长工作时间、休息日和法定休假日工作的150%、200%、300%工资支付标准。本法首次施行日期为1995年1月1日；所记录现行文本包含自2018年12月29日起施行的修正。"
     },
     "WORKTIME-REG-1995": {
       "title": "国务院关于职工工作时间的规定",
@@ -102,7 +102,7 @@
       "retrieved_at": "2026-08-11",
       "current_as_of": "2026-08-11",
       "currency_status": "current_effective",
-      "notes": "Ministry of Justice administrative-regulation database; article 3 supplies the standard eight-hour day and forty-hour week."
+      "notes": "司法部行政法规库来源；第3条规定每日工作8小时、每周工作40小时的标准工时。"
     },
     "MHRSS-WAGE-CONVERSION-2025": {
       "title": "人力资源社会保障部关于职工全年月平均工作时间和工资折算问题的通知",
@@ -117,7 +117,7 @@
       "retrieved_at": "2026-08-11",
       "current_as_of": "2026-08-11",
       "currency_status": "current_effective",
-      "notes": "Human Resources and Social Security Ministry Document No. 2 [2025]; section 2 keeps 21.75 monthly paid days and supersedes the 2008 conversion notice."
+      "notes": "人力资源社会保障部2025年第2号文件；第二部分继续采用月计薪天数21.75天，并取代2008年工资折算通知。"
     },
     "LCL-REG-2008": {
       "title": "中华人民共和国劳动合同法实施条例",
@@ -131,7 +131,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Ministry of Justice administrative-regulation database source.",
+      "notes": "司法部行政法规库来源。",
       "expiry_date": null
     },
     "PAID-LEAVE-REG-2007": {
@@ -146,7 +146,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Replaces the older local HRSS mirror with the Ministry of Justice national administrative-regulation database entry.",
+      "notes": "以司法部国家行政法规库条目替换原先的地方人力资源社会保障部门镜像。",
       "expiry_date": null
     },
     "PAID-LEAVE-MEASURES-2008": {
@@ -161,7 +161,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Official Ministry of Justice publication of the ministry rule text; replaced a State Council portal URL that returned 404 during the 2026 audit.",
+      "notes": "司法部发布的部门规章官方文本；2026年审计时，原国务院门户链接返回404，已予替换。",
       "expiry_date": null
     },
     "LDA-2007": {
@@ -178,7 +178,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Court Gazette source plus official government repost verification.",
+      "notes": "法院公报来源，并以政府官方转载文本复核。",
       "expiry_date": null
     },
     "SPC-LDI-1-2020": {
@@ -193,7 +193,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Official Supreme People's Court publication.",
+      "notes": "最高人民法院官方发布。",
       "expiry_date": null
     },
     "SPC-LDI-2-2025": {
@@ -208,7 +208,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Official Supreme People's Court publication; effective before the 2026 audit date.",
+      "notes": "最高人民法院官方发布；在2026年审计日期前已施行。",
       "expiry_date": null
     },
     "PIPL-2021": {
@@ -223,7 +223,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Official Cyberspace Administration publication of the NPC law text.",
+      "notes": "国家互联网信息办公室官方发布的全国人大法律文本。",
       "expiry_date": null
     },
     "WRPL-2022": {
@@ -238,7 +238,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Official Supreme People's Procuratorate publication of the amended law text.",
+      "notes": "最高人民检察院官方发布的修订后法律文本。",
       "expiry_date": null
     },
     "FEP-2012": {
@@ -253,7 +253,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Official National Health Commission publication of State Council Order No. 619 text.",
+      "notes": "国家卫生健康委员会官方发布的国务院令第619号文本。",
       "expiry_date": null
     },
     "SIL-2018": {
@@ -268,7 +268,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Official government repost of the amended Social Insurance Law text. The law first took effect on 2011-07-01; the recorded current text includes the amendment effective 2018-12-29.",
+      "notes": "修订后《社会保险法》的政府官方转载文本。本法首次施行日期为2011年7月1日；所记录现行文本包含自2018年12月29日起施行的修正。",
       "expiry_date": null
     },
     "CPL-2023": {
@@ -285,7 +285,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Court Gazette full-text entry plus Supreme People's Court IP Tribunal verification. The recorded current text is the 2023 amendment effective 2024-01-01.",
+      "notes": "法院公报全文条目，并经最高人民法院知识产权法庭页面复核。所记录现行文本为2023年修正版，自2024年1月1日起施行。",
       "expiry_date": null
     },
     "SPC-EXTORTION-2013": {
@@ -300,7 +300,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Official Supreme People's Procuratorate publication of the joint SPC/SPP interpretation.",
+      "notes": "最高人民检察院官方发布的最高人民法院、最高人民检察院联合司法解释。",
       "expiry_date": null
     },
     "SPC-IP-CRIM-2025": {
@@ -315,7 +315,7 @@
       "retrieved_at": "2026-06-16",
       "current_as_of": "2026-06-16",
       "currency_status": "current_effective",
-      "notes": "Official Supreme People's Court publication.",
+      "notes": "最高人民法院官方发布。",
       "expiry_date": null
     }
   },
@@ -328,23 +328,23 @@
       "verified_guardrail",
       "local_verify"
     ],
-    "final_amount_rule": "Only verified_final may be used for final local numeric amounts. Current city data intentionally avoids verified_final for economic-compensation high-wage caps.",
+    "final_amount_rule": "只有状态为 verified_final 的地方来源可用于最终地方数值。当前城市数据有意未将任何经济补偿高工资封顶来源标记为 verified_final。",
     "current_verified_local_scopes": [
-      "Guangzhou GZ-RSJ-LAYOFF-NORM-2021 is verified_candidate for economic-layoff local procedure guidance, written HRSS report package checks, HRSS feedback response, final publication, and wage/social-insurance clearance prompts.",
-      "Guangzhou wage, housing-fund, and Guangdong pension-base figures remain reference/candidate data and cannot be auto-applied as final LCL art.47 high-wage cap amounts.",
-      "Beijing BJ-RSJ-MIN-WAGE-2025, Shanghai SH-RSJ-MIN-WAGE-2025, Shenzhen SZ-HRSS-MIN-WAGE-2025, and Guangzhou GZ-RSJ-MIN-WAGE-2025 are verified_final only for their stated current minimum-wage and wage-gap screening uses; they remain blocked from economic-compensation high-wage cap use."
+      "广州来源 GZ-RSJ-LAYOFF-NORM-2021 的状态为 verified_candidate，可用于经济性裁员地方程序指引、向人力资源社会保障部门提交书面报告材料的核查、部门反馈回应、最终公布以及工资和社会保险结清提示。",
+      "广州工资、住房公积金及广东养老保险缴费基数数值仍属参考或候选数据，不得自动作为《劳动合同法》第47条经济补偿高工资封顶的最终数值。",
+      "北京 BJ-RSJ-MIN-WAGE-2025、上海 SH-RSJ-MIN-WAGE-2025、深圳 SZ-HRSS-MIN-WAGE-2025 和广州 GZ-RSJ-MIN-WAGE-2025 仅在各自载明的现行最低工资和工资差额筛查用途上标记为 verified_final；用于经济补偿高工资封顶时仍被禁止。"
     ],
     "current_known_gaps": [
-      "Beijing economic-compensation high-wage cap source remains local_verify.",
-      "Shenzhen economic-compensation high-wage cap source remains local_verify and requires HRSS confirmation.",
-      "Guangzhou wage figures are candidate/reference data and cannot be auto-applied as final LCL art.47 cap.",
-      "Hangzhou city-level economic-compensation wage-cap source is pending."
+      "北京经济补偿高工资封顶来源仍为 local_verify。",
+      "深圳经济补偿高工资封顶来源仍为 local_verify，并需人力资源社会保障部门确认。",
+      "广州工资数值属于候选或参考数据，不得自动作为《劳动合同法》第47条封顶口径的最终依据。",
+      "杭州市级经济补偿高工资封顶来源仍待补充。"
     ]
   },
   "known_caveats": [
-    "This audit does not replace lawyer review or future official source search.",
-    "Official reposts are used only where the primary law database page is unavailable, slow, or not suitable for article-level reading.",
-    "Local social-insurance, housing-fund, and statistical wage bases are not automatically the economic-compensation high-wage cap.",
-    "If any law is amended after 2026-06-16, this file must be re-audited before user-facing legal advice."
+    "本审计不能替代律师复核或后续官方来源检索。",
+    "仅在主要法律数据库页面不可用、响应缓慢或不适合逐条阅读时使用官方转载文本。",
+    "地方社会保险、住房公积金和统计工资基数不会自动成为经济补偿高工资封顶口径。",
+    "若任何法律在2026年6月16日后修订，应先重新审计本文件，再用于面向用户的法律分析。"
   ]
 }

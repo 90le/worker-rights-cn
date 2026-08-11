@@ -17,6 +17,7 @@ PLUGIN_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PLUGIN_ROOT / "scripts"))
 import intake_session  # noqa: E402
 import render_session_documents as document_renderer  # noqa: E402
+from worker_rights_cn.storage import redact_personal_value  # noqa: E402
 
 
 BUNDLE_SCHEMA_VERSION = "0.1.0"
@@ -141,6 +142,7 @@ def artifact_manifest_item(item: dict[str, Any]) -> dict[str, Any]:
 
 def build_artifacts(state: dict[str, Any], rendered: dict[str, Any]) -> list[dict[str, Any]]:
     workbench = state["product_output"]["workbench"]
+    share_packet = redact_personal_value(workbench["share_packet"])
     artifacts = [
         artifact(
             "session_state_json",
@@ -196,7 +198,7 @@ def build_artifacts(state: dict[str, Any], rendered: dict[str, Any]) -> list[dic
         artifact(
             "redacted_share_packet_json",
             "share/redacted_share_packet.json",
-            dump_json(workbench["share_packet"]),
+            dump_json(share_packet),
             "json",
             "share_packet",
         )
@@ -241,15 +243,21 @@ def build_access_control(
     generated_at: str,
 ) -> dict[str, Any]:
     status, missing = share_access_status(state, rendered, confirmation_flow)
+    guidance = {
+        "enabled": "分享前再次检查脱敏内容；仅向律师、可信复核人或经劳动者授权的协助者发送受限复核链接，不要附带原始证据。",
+        "disabled_pending_confirmations": "先完成缺失的分享确认并复核脱敏内容；确认完成前不要发送链接或原始证据。",
+        "disabled_pending_required_facts": "先补齐必需事实并重新生成脱敏分享包；完成确认前不要发送链接或原始证据。",
+    }[status]
     return {
         "private_files": {
             "access_level": "owner_only",
-            "reason": "Contains raw intake facts, employer names, worker aliases, or review drafts.",
+            "reason": "包含原始案情、用人单位名称、劳动者别名或待复核草稿。",
             "requires_confirmation_ids": confirmation_flow["required_ids"],
         },
         "share_packet": {
             "document_id": "redacted_share_packet",
             "status": status,
+            "guidance": guidance,
             "access_level": "restricted_review_link",
             "share_token_hash": share_token_hash(bundle_id, generated_at),
             "raw_token_stored": False,

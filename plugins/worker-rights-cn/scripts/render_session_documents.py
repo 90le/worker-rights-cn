@@ -15,17 +15,111 @@ PLUGIN_ROOT = Path(__file__).resolve().parents[1]
 
 sys.path.insert(0, str(PLUGIN_ROOT / "scripts"))
 import intake_session  # noqa: E402
+from worker_rights_cn.storage import redact_personal_text, redact_personal_value  # noqa: E402
 
 
 DOCUMENT_SCHEMA_VERSION = "0.1.0"
-REDACTED_PLACEHOLDER = "[REDACTED]"
+REDACTED_PLACEHOLDER = "[已脱敏]"
 
 CONFIRMATION_LIBRARY = {
-    "not_legal_opinion": "I understand this is a working file and draft aid, not a final legal opinion.",
-    "verify_local_rules": "I will verify local rules, wage cap candidates, filing forms, and commission jurisdiction before final use.",
-    "lawyer_check_before_signing_or_filing": "I will review lawyer-check items before signing, sending, or filing.",
-    "redaction_review": "I confirm the share packet excludes real names, employer names, raw chats, payroll files, IDs, and unrelated personal data.",
-    "lawful_evidence_only": "I will use only lawful, worker-accessible, official, or tribunal-produced records.",
+    "not_legal_opinion": "我理解这只是工作材料和草稿参考，并非最终法律意见。",
+    "verify_local_rules": "我会在最终使用前核验当地规则、拟采用的经济补偿月工资上限、提交表格以及仲裁委员会管辖。",
+    "lawyer_check_before_signing_or_filing": "我会在签署、发送或提交前审阅标记为“建议律师核验”的事项。",
+    "redaction_review": "我确认共享材料不包含真实姓名、用人单位名称、聊天原文、工资记录、身份证件或无关个人信息。",
+    "lawful_evidence_only": "我只会使用本人可合法取得的材料、公开材料、官方材料，以及仲裁或诉讼机构形成的材料。",
+}
+
+CITY_DISPLAY_LABELS = {
+    str(alias).casefold(): city["display_name"]
+    for city_id, city in json.loads(intake_session.assembler.CITY_RULES.read_text(encoding="utf-8"))["cities"].items()
+    for alias in [city_id, *city.get("aliases", [])]
+}
+
+DISPLAY_LABELS = {
+    **intake_session.SECTION_TITLES,
+    "employment": "劳动关系",
+    "dispute": "争议事项",
+    "case_facts": "案件事实",
+    "ready": "已就绪",
+    "needs_more_input": "待补充信息",
+    "waiting_for_input": "待补充信息",
+    "draft_pending_required_facts": "待补充必要事实的草稿",
+    "pre_signing_72h": "签署前 72 小时",
+    "arbitration_ready": "仲裁准备",
+    "full_case_package": "完整案件材料包",
+    "case_package_ready": "案件材料包已就绪",
+    "intake_follow_up": "补充案件信息",
+    "answer_follow_up": "补充回答",
+    "review": "复核",
+    "local_form_check": "当地表格核验",
+    "export": "导出",
+    "P0_core_fact": "P0·核心事实",
+    "P0_before_final_use": "P0·最终使用前",
+    "P0_before_signing": "P0·签署前",
+    "P1_before_filing": "P1·提交前",
+    "P2_after_review": "P2·复核后",
+    "P3_editable": "P3·可编辑",
+    "P0_immediate": "P0·立即处理",
+    "P1_core": "P1·核心证据",
+    "P2_supporting": "P2·辅助证据",
+    "P3_local_verify": "P3·当地核验",
+    "employed": "在职",
+    "notice_given": "已收到解除或终止通知",
+    "left": "已离职",
+    "terminated": "已解除或终止",
+    "unknown": "待确认",
+    "facts_frozen": "事实已固定",
+    "chronology_ready": "时间线已整理",
+    "estimated_pending_record_check": "估算值待材料核验",
+    "lawful_source_required": "仅使用合法来源",
+    "before_sending_review_required": "发送前需要复核",
+    "required_before_filing": "提交前需要核验",
+    "lawful_evidence_preservation": "合法证据保全",
+    "low": "低",
+    "medium": "中等",
+    "high": "高",
+    "critical": "高风险",
+    "standard": "标准脱敏",
+    "mutual_termination": "协商解除",
+    "employee_resignation": "劳动者辞职",
+    "constructive_dismissal": "劳动者因用人单位法定情形解除",
+    "fault_dismissal": "过失性解除",
+    "non_fault_dismissal": "非过失性解除",
+    "economic_layoff": "经济性裁员",
+    "contract_expiry": "劳动合同期满",
+    "unclear_or_mixed": "情形不明或混合",
+    "separation_offer_counter": "协商解除方案回应",
+    "forced_resignation_response": "被迫辞职情形回应",
+    "economic_layoff_report_request": "要求提供经济性裁员程序材料",
+    "unpaid_wage_demand": "欠付工资催告",
+    "termination_reason_request": "要求说明解除或终止理由",
+    "separation_agreement": "解除或终止协议",
+    "resignation_form": "辞职表",
+    "non_compete_agreement": "竞业限制协议",
+    "termination_notice_or_certificate": "解除或终止通知、证明",
+    "economic_compensation": "经济补偿",
+    "economic_compensation_n": "经济补偿（N）",
+    "substitute_notice_wage": "代通知金",
+    "unpaid_wages": "欠付工资",
+    "unsigned_contract_double_wage": "未签书面劳动合同二倍工资差额",
+    "unlawful_termination_compensation": "违法解除或终止赔偿金",
+    "proceed_with_caution": "谨慎继续",
+    "rewrite_with_limits": "限定表述后重写",
+    "review_draft_not_final": "复核草稿（非最终稿）",
+    "blocked_until_pre_filing_checks_complete": "完成提交前检查前暂不提交",
+    "local_arbitration_form_not_verified": "尚未核验当地仲裁表格",
+    "commission_jurisdiction_not_confirmed": "尚未确认仲裁委员会管辖",
+    "respondent_identity_or_service_address_not_confirmed": "尚未确认被申请人身份或送达地址",
+    "evidence_directory_not_matched_to_attachments": "证据目录尚未与附件逐项对应",
+    "lawyer_or_local_professional_review_not_completed": "尚未完成律师或当地专业人士复核",
+    "available": "已有",
+    "missing": "缺失",
+    "employer_controlled": "用人单位掌握",
+    "third_party": "第三方来源",
+    "create_now": "立即整理",
+    "to_request": "待申请调取",
+    "estimated_from_intake_pending_record_check": "根据已填信息估算，待材料核验",
+    **CITY_DISPLAY_LABELS,
 }
 
 
@@ -33,17 +127,22 @@ def plain(value: Any) -> str:
     if value is None:
         return ""
     if isinstance(value, bool):
-        return "yes" if value else "no"
+        return "是" if value else "否"
     if isinstance(value, (int, float)):
         return str(value)
     if isinstance(value, list):
-        return ", ".join(plain(item) for item in value)
+        return "、".join(plain(item) for item in value)
     if isinstance(value, dict):
         return json.dumps(value, ensure_ascii=False, sort_keys=True)
+    if isinstance(value, str):
+        for separator in ("、", " / "):
+            if separator in value:
+                return separator.join(plain(part) for part in value.split(separator))
+        return DISPLAY_LABELS.get(value, DISPLAY_LABELS.get(value.casefold(), value))
     return str(value)
 
 
-def bullet_lines(items: list[Any], empty_text: str = "None") -> list[str]:
+def bullet_lines(items: list[Any], empty_text: str = "无") -> list[str]:
     if not items:
         return [f"- {empty_text}"]
     return [f"- {plain(item)}" for item in items]
@@ -51,7 +150,7 @@ def bullet_lines(items: list[Any], empty_text: str = "None") -> list[str]:
 
 def markdown_table(headers: list[str], rows: list[list[Any]]) -> list[str]:
     if not rows:
-        return ["No rows."]
+        return ["暂无内容。"]
     header = "| " + " | ".join(headers) + " |"
     separator = "| " + " | ".join("---" for _ in headers) + " |"
     body = ["| " + " | ".join(plain(cell) for cell in row) + " |" for row in rows]
@@ -84,7 +183,7 @@ def redact_text(text: str, values: list[str]) -> str:
         if not value:
             continue
         redacted = re.sub(re.escape(value), REDACTED_PLACEHOLDER, redacted)
-    return redacted
+    return redact_personal_text(redacted)
 
 
 def confirmation_ids_for_state(state: dict[str, Any], redacted: bool) -> list[str]:
@@ -105,39 +204,39 @@ def render_workbench_preview(state: dict[str, Any]) -> str:
     workbench = product["workbench"]
     session = workbench["session"]
     lines = [
-        "# Case Workbench Preview",
+        "# 案件工作台预览",
         "",
-        f"- Session: {session['session_id']}",
-        f"- Status: {session['status']}",
-        f"- Export profile: {session['export_profile']}",
-        f"- Screen: {product['screen']}",
+        f"- 会话编号：{session['session_id']}",
+        f"- 状态：{plain(session['status'])}",
+        f"- 导出方案：{plain(session['export_profile'])}",
+        f"- 当前页面：{plain(product['screen'])}",
         "",
-        "## Editable Fields",
+        "## 可编辑字段",
     ]
     field_rows = [
         [
             field["group"],
             field["path"],
             field.get("value", ""),
-            "yes" if field.get("missing") else "no",
+            "是" if field.get("missing") else "否",
             field.get("priority", ""),
         ]
         for field in workbench.get("editable_fields", [])
         if field.get("missing") or field.get("required")
     ][:20]
-    lines.extend(markdown_table(["Group", "Path", "Value", "Missing", "Priority"], field_rows))
-    lines.extend(["", "## Section Status"])
+    lines.extend(markdown_table(["分组", "字段路径", "当前值", "是否缺失", "优先级"], field_rows))
+    lines.extend(["", "## 板块状态"])
     section_rows = [
         [
             section["title"],
             section["status"],
             section["headline"],
-            ", ".join(section.get("badges", [])),
+            section.get("badges", []),
         ]
         for section in workbench.get("section_summaries", [])
     ]
-    lines.extend(markdown_table(["Section", "Status", "Headline", "Badges"], section_rows))
-    lines.extend(["", "## Action Queue"])
+    lines.extend(markdown_table(["板块", "状态", "摘要", "标记"], section_rows))
+    lines.extend(["", "## 后续行动"])
     action_rows = [
         [
             action.get("priority", ""),
@@ -147,7 +246,7 @@ def render_workbench_preview(state: dict[str, Any]) -> str:
         ]
         for action in workbench.get("action_queue", [])
     ]
-    lines.extend(markdown_table(["Priority", "Kind", "Label", "Path"], action_rows))
+    lines.extend(markdown_table(["优先级", "类型", "行动", "字段路径"], action_rows))
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -157,23 +256,23 @@ def render_case_package_review(state: dict[str, Any]) -> str:
         return ""
     package = package_case["package"]
     lines = [
-        "# Case Package Review Draft",
+        "# 案件材料包复核稿",
         "",
-        f"- Package ID: {package_case['id']}",
-        f"- Export profile: {package_case['export_profile']}",
-        "- Use: working file for review, negotiation, lawyer consultation, or filing preparation.",
+        f"- 材料包编号：{package_case['id']}",
+        f"- 导出方案：{plain(package_case['export_profile'])}",
+        "- 用途：用于复核、协商、律师咨询或提交材料准备的工作文件。",
         "",
     ]
 
     snapshot = package.get("case_snapshot", {})
     lines.extend(
         [
-            "## Case Snapshot",
-            f"- City: {snapshot.get('city', '')}",
-            f"- Current status: {snapshot.get('current_status', '')}",
-            f"- Worker goal: {snapshot.get('worker_goal', '')}",
+            "## 案件概况",
+            f"- 所在城市：{plain(snapshot.get('city', ''))}",
+            f"- 当前状态：{plain(snapshot.get('current_status', ''))}",
+            f"- 劳动者目标：{snapshot.get('worker_goal', '')}",
             "",
-            "### Open Questions",
+            "### 待确认问题",
             *bullet_lines(snapshot.get("open_questions", [])),
             "",
         ]
@@ -183,12 +282,12 @@ def render_case_package_review(state: dict[str, Any]) -> str:
     if assessment:
         lines.extend(
             [
-                "## Termination Assessment",
-                f"- Primary maps: {plain(assessment.get('primary_termination_maps', []))}",
-                f"- Alternative maps: {plain(assessment.get('alternative_termination_maps', []))}",
-                f"- Classification confidence: {assessment.get('classification_confidence', '')}",
+                "## 解除劳动关系分析",
+                f"- 主要情形映射：{plain(assessment.get('primary_termination_maps', []))}",
+                f"- 备选情形映射：{plain(assessment.get('alternative_termination_maps', []))}",
+                f"- 分类置信度：{plain(assessment.get('classification_confidence', ''))}",
                 "",
-                "### Missing Facts",
+                "### 缺失事实",
                 *bullet_lines(assessment.get("missing_facts", [])),
                 "",
             ]
@@ -204,30 +303,38 @@ def render_case_package_review(state: dict[str, Any]) -> str:
             ]
             for item in package["money_summary"]
         ]
-        lines.extend(["## Money Summary", *markdown_table(["Claim", "Amount", "Status", "Formula"], rows), ""])
+        lines.extend(["## 金额汇总", *markdown_table(["请求项目", "金额", "状态", "计算式"], rows), ""])
 
     if package.get("evidence_directory"):
         rows = [
             [
                 item.get("priority"),
+                item.get("evidence_name"),
                 item.get("evidence_id"),
                 item.get("status"),
                 item.get("lawful_source"),
             ]
             for item in package["evidence_directory"][:12]
         ]
-        lines.extend(["## Evidence Directory", *markdown_table(["Priority", "ID", "Status", "Lawful Source"], rows), ""])
+        lines.extend(
+            ["## 证据目录", *markdown_table(["优先级", "证据名称", "证据编号", "状态", "合法来源"], rows), ""]
+        )
 
     if package.get("negotiation_plan"):
         plan = package["negotiation_plan"]
         lines.extend(
             [
-                "## Negotiation Plan",
-                f"- Scenario: {plan.get('scenario_id', '')}",
-                f"- Settlement floor: {plan.get('settlement_floor', '')}",
+                "## 协商方案",
+                f"- 情景：{plain(plan.get('scenario_id', ''))}",
+                f"- 和解底线：{plan.get('settlement_floor', '')}",
+                f"- 协商目标：{plan.get('ask_range_or_counteroffer', '')}",
+                f"- 下次跟进：{plain(plan.get('deadline_or_next_touch') or '待确认')}",
                 "",
-                "### Forbidden Phrases",
+                "### 避免使用的表述",
                 *bullet_lines(plan.get("forbidden_phrases", [])),
+                "",
+                "### 转入仲裁准备的触发条件",
+                *bullet_lines(plan.get("switch_to_arbitration_triggers", [])),
                 "",
             ]
         )
@@ -235,26 +342,38 @@ def render_case_package_review(state: dict[str, Any]) -> str:
     if package.get("arbitration_draft_pack"):
         draft = package["arbitration_draft_pack"]
         claim_rows = [
-            [claim.get("claim_type"), claim.get("amount"), claim.get("formula")]
+            [
+                claim.get("claim_name") or claim.get("claim_type"),
+                claim.get("amount"),
+                claim.get("formula_text") or claim.get("formula"),
+            ]
             for claim in draft.get("claim_requests", [])
+        ]
+        claim_notes = [
+            f"{claim.get('claim_name') or plain(claim.get('claim_type'))}：{claim.get('draft_note')}"
+            for claim in draft.get("claim_requests", [])
+            if claim.get("draft_note")
         ]
         lines.extend(
             [
-                "## Arbitration Draft Pack",
-                f"- Draft status: {draft.get('draft_status', '')}",
-                f"- Filing gate: {draft.get('filing_gate_status', '')}",
-                f"- Not final filing document: {draft.get('not_final_filing_document', '')}",
-                f"- Lawyer review required: {draft.get('lawyer_review_required', '')}",
-                f"- Candidate commission: {draft.get('candidate_commission', '')}",
-                f"- Local form check: {draft.get('local_form_check', '')}",
+                "## 仲裁申请草稿包",
+                f"- 草稿状态：{plain(draft.get('draft_status', ''))}",
+                f"- 提交门槛：{plain(draft.get('filing_gate_status', ''))}",
+                f"- 非最终提交文件：{plain(draft.get('not_final_filing_document', ''))}",
+                f"- 需要律师复核：{plain(draft.get('lawyer_review_required', ''))}",
+                f"- 候选仲裁委员会：{draft.get('candidate_commission', '')}",
+                f"- 当地表格核验：{plain(draft.get('local_form_check', ''))}",
                 "",
-                "### Pre-filing Checks",
+                "### 提交前检查",
                 *bullet_lines(draft.get("pre_filing_checks", [])),
                 "",
-                "### Filing Blockers",
+                "### 提交阻碍",
                 *bullet_lines(draft.get("filing_blockers", [])),
                 "",
-                *markdown_table(["Claim", "Amount", "Formula"], claim_rows),
+                *markdown_table(["请求名称", "金额", "计算说明"], claim_rows),
+                "",
+                "### 请求起草提示",
+                *bullet_lines(claim_notes),
                 "",
             ]
         )
@@ -263,13 +382,13 @@ def render_case_package_review(state: dict[str, Any]) -> str:
     if notes:
         lines.extend(
             [
-                "## Safety And Review Notes",
-                f"- Safety decision: {notes.get('safety_decision', '')}",
+                "## 风险与复核提示",
+                f"- 安全判断：{plain(notes.get('safety_decision', ''))}",
                 "",
-                "### Local Verify Items",
+                "### 当地规则核验事项",
                 *bullet_lines(notes.get("local_verify_items", [])),
                 "",
-                "### Lawyer Check Items",
+                "### 建议律师核验事项",
                 *bullet_lines(notes.get("lawyer_check_items", [])),
                 "",
             ]
@@ -280,31 +399,31 @@ def render_case_package_review(state: dict[str, Any]) -> str:
 
 def render_redacted_share_packet(state: dict[str, Any]) -> str:
     workbench = state["product_output"]["workbench"]
-    packet = workbench["share_packet"]
+    packet = redact_personal_value(workbench["share_packet"])
     safe_summary = packet.get("safe_summary", {})
     lines = [
-        "# Redacted Share Packet",
+        "# 脱敏共享材料",
         "",
-        f"- Packet ID: {packet.get('packet_id', '')}",
-        f"- Status: {packet.get('status', '')}",
-        f"- Redaction level: {packet.get('redaction_level', '')}",
+        f"- 材料编号：{packet.get('packet_id', '')}",
+        f"- 状态：{plain(packet.get('status', ''))}",
+        f"- 脱敏级别：{plain(packet.get('redaction_level', ''))}",
         "",
-        "## Safe Summary",
-        f"- City: {safe_summary.get('city', '')}",
-        f"- Current status: {safe_summary.get('current_status', '')}",
-        f"- Export profile: {safe_summary.get('export_profile', '')}",
-        f"- Termination maps: {plain(safe_summary.get('termination_maps', []))}",
-        f"- Arbitration claim types: {plain(safe_summary.get('arbitration_claim_types', []))}",
-        f"- Money item count: {safe_summary.get('money_item_count', 0)}",
-        f"- Evidence count: {safe_summary.get('evidence_count', 0)}",
+        "## 安全摘要",
+        f"- 所在城市：{plain(safe_summary.get('city', ''))}",
+        f"- 当前状态：{plain(safe_summary.get('current_status', ''))}",
+        f"- 导出方案：{plain(safe_summary.get('export_profile', ''))}",
+        f"- 解除情形映射：{plain(safe_summary.get('termination_maps', []))}",
+        f"- 仲裁请求类型：{plain(safe_summary.get('arbitration_claim_types', []))}",
+        f"- 金额项目数：{safe_summary.get('money_item_count', 0)}",
+        f"- 证据数：{safe_summary.get('evidence_count', 0)}",
         "",
-        "## Included Sections",
-        *bullet_lines(packet.get("included_sections", []), empty_text="No package sections yet"),
+        "## 包含板块",
+        *bullet_lines(packet.get("included_sections", []), empty_text="暂无材料包板块"),
         "",
-        "## Redacted Paths",
+        "## 脱敏字段路径",
         *bullet_lines(packet.get("redacted_paths", [])),
         "",
-        "## Sharing Limits",
+        "## 分享限制",
         *bullet_lines(packet.get("sharing_limits", [])),
     ]
     return redact_text("\n".join(lines).rstrip() + "\n", redaction_values(state))
@@ -314,7 +433,7 @@ def render_documents(state: dict[str, Any]) -> dict[str, Any]:
     documents = [
         {
             "id": "workbench_preview",
-            "title": "Case Workbench Preview",
+            "title": "案件工作台预览",
             "format": "markdown",
             "status": "ready",
             "content": render_workbench_preview(state),
@@ -322,7 +441,7 @@ def render_documents(state: dict[str, Any]) -> dict[str, Any]:
         },
         {
             "id": "redacted_share_packet",
-            "title": "Redacted Share Packet",
+            "title": "脱敏共享材料",
             "format": "markdown",
             "status": "ready" if state["status"] == "ready" else "draft_pending_required_facts",
             "content": render_redacted_share_packet(state),
@@ -334,7 +453,7 @@ def render_documents(state: dict[str, Any]) -> dict[str, Any]:
             1,
             {
                 "id": "case_package_review",
-                "title": "Case Package Review Draft",
+                "title": "案件材料包复核稿",
                 "format": "markdown",
                 "status": "ready",
                 "content": render_case_package_review(state),

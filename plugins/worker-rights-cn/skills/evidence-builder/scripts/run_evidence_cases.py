@@ -75,6 +75,19 @@ def validate(matrix_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
     legal_anchors = collect_legal_anchors(legal_map_path)
 
     matrix_anchor_failures = sorted(all_matrix_anchors(matrix) - legal_anchors)
+    matrix_items = [
+        *(item for bundle in matrix["common_bundles"].values() for item in bundle["items"]),
+        *(item for map_data in matrix["termination_maps"].values() for item in map_data["items"]),
+    ]
+    missing_item_labels = [item["id"] for item in matrix_items if not item.get("label")]
+    human_fields = [
+        *matrix["priority_levels"].values(),
+        *matrix["global_safety_rules"],
+        *(item.get(field, "") for item in matrix_items for field in ("label", "proves", "lawful_source", "collection_note")),
+    ]
+    non_chinese_human_fields = [
+        value for value in human_fields if value and not re.search(r"[\u3400-\u9fff]", value)
+    ]
     failures: list[dict[str, Any]] = []
     results: list[dict[str, Any]] = []
 
@@ -117,6 +130,10 @@ def validate(matrix_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
 
     if matrix_anchor_failures:
         failures.append({"matrix_anchor_failures": matrix_anchor_failures})
+    if missing_item_labels:
+        failures.append({"missing_item_labels": missing_item_labels})
+    if non_chinese_human_fields:
+        failures.append({"non_chinese_human_fields": non_chinese_human_fields})
 
     return {
         "matrix_path": str(matrix_path),
@@ -126,6 +143,10 @@ def validate(matrix_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
         "passed": len(cases) - sum(1 for item in failures if "case" in item),
         "failed": len(failures),
         "matrix_anchor_failures": matrix_anchor_failures,
+        "item_count": len(matrix_items),
+        "human_field_count": len(human_fields),
+        "missing_item_labels": missing_item_labels,
+        "non_chinese_human_fields": non_chinese_human_fields,
         "results": results,
         "failures": failures,
     }

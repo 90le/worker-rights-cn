@@ -1,7 +1,7 @@
 {
   "schema_version": "0.1.0",
   "retrieved_at": "2026-06-16",
-  "source_note": "Use with layoff-defense/references/legal-map.md. Verify local arbitration commission forms before filing.",
+  "source_note": "与 layoff-defense/references/legal-map.md 配合使用；提交前应核验当地仲裁委员会表格和受理渠道。",
   "core_source_anchors": [
     "LDA-2007#art2",
     "LDA-2007#art5",
@@ -164,12 +164,13 @@
         "LCL-REG-2008#art27"
       ],
       "amount_rule": "average_monthly_wage_for_n * service_period_n",
+      "amount_rule_text": "经济补偿月工资基数 × 按工作年限折算的经济补偿月数（N）",
       "evidence_needed": [
         "labor_contract_and_renewals",
         "twelve_month_wage_basis",
         "termination_characterization"
       ],
-      "draft_note": "State years of service, monthly wage base, N months, and why economic compensation is triggered."
+      "draft_note": "写明工作年限、月工资基数、N 的折算月数，以及触发经济补偿的事实和依据。"
     },
     "unlawful_termination_compensation": {
       "label": "违法解除/终止赔偿金",
@@ -182,6 +183,7 @@
         "SPC-LDI-1-2020#art44"
       ],
       "amount_rule": "economic_compensation_n * 2",
+      "amount_rule_text": "经济补偿金额（N）× 2",
       "evidence_needed": [
         "termination_notice_exact_reason",
         "layoff_threshold_and_plan",
@@ -193,7 +195,7 @@
         "misconduct_investigation_and_proportionality",
         "twelve_month_wage_basis"
       ],
-      "draft_note": "Use when termination legality is disputed and worker claims 2N rather than only N; for economic layoffs, bind the threshold, explanation/opinion/reporting, priority-retention, local report-package gaps, and six-month rehire or replacement facts instead of relying on fault-dismissal evidence."
+      "draft_note": "解除合法性存在争议且劳动者主张赔偿金而非仅主张经济补偿时使用；经济性裁员案件应围绕人数门槛、说明、听取意见和报告程序、优先留用、地方报告材料缺口及 6 个月内再次招用或岗位替代事实展开，不要套用过失性解除证据。"
     },
     "substitute_notice_wage": {
       "label": "代通知金",
@@ -202,11 +204,12 @@
         "LCL-REG-2008#art20"
       ],
       "amount_rule": "previous_month_wage",
+      "amount_rule_text": "解除劳动合同前一个月工资",
       "evidence_needed": [
         "article40_ground_evidence",
         "notice_or_substitute_wage_evidence"
       ],
-      "draft_note": "Only use for eligible non-fault dismissal without 30-day advance notice."
+      "draft_note": "仅在符合《劳动合同法》第四十条适用条件且未提前 30 日书面通知时核验使用。"
     },
     "unpaid_wages": {
       "label": "拖欠工资",
@@ -216,12 +219,13 @@
         "LDA-2007#art2"
       ],
       "amount_rule": "sum_of_unpaid_wages",
+      "amount_rule_text": "各欠付工资期间的未付金额合计",
       "evidence_needed": [
         "payroll_tax_social_insurance_records",
         "work_access_and_attendance_records",
         "unpaid_wage_or_social_insurance_gap"
       ],
-      "draft_note": "List wage months, due dates, paid amounts, and unpaid balance."
+      "draft_note": "逐月列明工资期间、到期日、已付金额和欠付余额。"
     },
     "unused_annual_leave": {
       "label": "未休年休假工资差额",
@@ -233,11 +237,12 @@
         "LDA-2007#art6"
       ],
       "amount_rule": "unused_leave_days * daily_wage * statutory_multiplier_delta",
+      "amount_rule_text": "未休年休假天数 × 日工资 × 法定补付倍数差额",
       "evidence_needed": [
         "attendance_and_leave_records",
         "twelve_month_wage_basis"
       ],
-      "draft_note": "Local annual leave rules must be verified before final filing."
+      "draft_note": "最终提交前核验当地年休假规则和实际已支付工资。"
     },
     "unsigned_contract_double_wage": {
       "label": "未签劳动合同二倍工资差额",
@@ -250,6 +255,7 @@
         "SPC-LDI-1-2020#art44"
       ],
       "amount_rule": "monthly_wage * eligible_unsigned_contract_months",
+      "amount_rule_text": "月工资 × 符合条件的未签书面劳动合同月份数",
       "evidence_needed": [
         "labor_contract_and_renewals",
         "payroll_tax_social_insurance_records",
@@ -260,7 +266,7 @@
         "employer_has_delivery_or_renewal_request_evidence",
         "claim_is_outside_arbitration_limitation"
       ],
-      "draft_note": "Check whether the claim is within limitation and whether employer can prove worker refused to sign."
+      "draft_note": "核验仲裁时效，并核对用人单位能否证明其曾要求签订而劳动者拒绝。"
     },
     "non_compete_compensation": {
       "label": "竞业限制经济补偿",
@@ -271,12 +277,13 @@
         "SPC-LDI-1-2020#art38"
       ],
       "amount_rule": "agreed_amount_or_30_percent_average_wage_floor_checked * performance_months",
+      "amount_rule_text": "约定月补偿金额；未约定时核验离职前 12 个月平均工资 30% 且不低于当地最低工资的口径，再乘实际履行月数",
       "evidence_needed": [
         "non_compete_agreement",
         "compensation_payment_records",
         "performance_of_non_compete"
       ],
-      "draft_note": "Verify agreement, worker performance, unpaid months, local minimum wage floor, and解除 if three months unpaid."
+      "draft_note": "核验竞业限制协议、劳动者履行情况、未付补偿月份、当地最低工资标准，以及连续 3 个月未支付补偿时是否具备解除条件。"
     },
     "non_compete_scope_invalid_or_limited": {
       "label": "竞业限制不适用、范围过宽或违约金不应支持",
@@ -289,13 +296,14 @@
         "SPC-LDI-2-2025#art15"
       ],
       "amount_rule": "defense_or_zero_penalty_unless_effective_scope_and_loss_are_proven",
+      "amount_rule_text": "抗辩或金额为 0；需结合协议效力、适用范围、实际违约及损失证据核验",
       "evidence_needed": [
         "non_compete_agreement",
         "role_and_secret_access_evidence",
         "new_role_and_competition_scope",
         "compensation_payment_records"
       ],
-      "draft_note": "Use when the worker disputes personnel scope, protected secret/IP basis, competing business scope, territory, term, or liquidated damages."
+      "draft_note": "劳动者对适用人员范围、受保护的商业秘密或知识产权依据、竞争业务范围、地域、期限或违约责任有争议时使用。"
     },
     "pregnancy_wage_difference": {
       "label": "孕期变相调岗降薪工资差额",
@@ -308,13 +316,14 @@
         "LDA-2007#art6"
       ],
       "amount_rule": "(original_monthly_wage - reduced_monthly_wage) * affected_months",
+      "amount_rule_text": "（原月工资－降薪后月工资）× 受影响月数",
       "evidence_needed": [
         "labor_contract_and_renewals",
         "salary_cut_transfer_objection",
         "pregnancy_or_medical_status_proof",
         "payroll_tax_social_insurance_records"
       ],
-      "draft_note": "Use necessary and redacted sensitive proof; verify whether medical proof supported any workload adjustment."
+      "draft_note": "仅使用必要且已脱敏的敏感证明；核验医疗证明是否支持相应的工作量调整。"
     }
   },
   "draft_application_outline": [
@@ -330,10 +339,10 @@
     "日期"
   ],
   "global_safety_rules": [
-    "Do not include facts that are only assumptions as proven facts.",
-    "Do not inflate amounts without formula and evidence.",
-    "Do not list illegally obtained company data as evidence.",
-    "If respondent identity, limitation, jurisdiction, or signed waiver is uncertain, mark lawyer_check.",
-    "Local arbitration commission templates and filing channel must be verified before filing."
+    "不要将仅属推测的内容写成已经证实的事实。",
+    "没有计算式和证据支持时，不要抬高请求金额。",
+    "不要把违法取得的公司数据列为证据。",
+    "被申请人身份、仲裁时效、管辖或已签署的权利放弃条款存在不确定时，标记律师复核。",
+    "提交前应核验当地仲裁委员会使用的表格和受理渠道。"
   ]
 }

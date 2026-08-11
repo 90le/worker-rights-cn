@@ -33,22 +33,108 @@ WINDOWS_RESERVED_NAMES = frozenset(
 )
 WINDOWS_FORBIDDEN_PATH_CHARS = frozenset('<>:"|?*')
 PRIVATE_ARTIFACT_BODY_FIELDS = frozenset({"content", "body", "data", "text"})
-PERSON_NAME_FIELDS = frozenset({"name", "worker_name", "employee_name", "contact_name", "姓名", "联系人"})
+PERSON_NAME_FIELDS = frozenset({
+    "name", "worker_name", "worker_name_or_alias", "worker_alias", "employee_name",
+    "employee_alias", "applicant_name", "applicant_alias", "contact_name",
+    "姓名", "联系人", "劳动者姓名或别名", "劳动者别名",
+})
 PHONE_FIELDS = frozenset({"phone", "mobile", "telephone", "手机号", "手机", "电话"})
-IDENTITY_FIELDS = frozenset({"id_number", "identity_number", "national_id", "身份证", "身份证号"})
+IDENTITY_FIELDS = frozenset({
+    "id_number", "identity_number", "national_id", "passport", "passport_number",
+    "passport_no", "employee_id", "worker_id", "staff_id", "employee_number",
+    "personnel_number", "身份证", "身份证号", "护照", "护照号", "工号",
+    "员工编号", "职工编号",
+})
 EMAIL_FIELDS = frozenset({"email", "email_address", "邮箱"})
+ACCOUNT_FIELDS = frozenset(
+    {"wechat", "wechat_id", "wechat_account", "qq", "qq_number", "微信", "微信号", "qq号"}
+)
 BANK_FIELDS = frozenset({"bank_card", "bank_account", "card_number", "银行卡", "银行卡号", "银行账号"})
+PRIVATE_PERSONAL_FIELDS = frozenset({
+    "address", "home_address", "postal_address", "地址", "住址", "家庭住址",
+    "birth_date", "date_of_birth", "birthday", "dob", "出生日期", "出生年月", "生日",
+    "health", "health_notes", "medical", "medical_notes", "健康", "健康情况", "健康信息",
+    "病历", "医疗信息", "pregnancy", "maternity", "孕期", "生育情况",
+    "family", "family_notes", "家庭信息", "家属信息",
+})
+PERSONAL_IDENTIFIER_FIELDS = (
+    PHONE_FIELDS | IDENTITY_FIELDS | EMAIL_FIELDS | ACCOUNT_FIELDS | BANK_FIELDS
+)
 INTERNAL_EXPORT_FIELDS = frozenset({
     "audit", "signature", "secret", "api_secret", "api_key", "private_key", "token",
+    "access_token", "refresh_token", "auth_token", "bearer_token", "authorization",
+    "password", "密码", "client_secret", "signing_key",
     "case_sha256", "artifact_sha256s", "sha256",
 })
-PHONE_VALUE = re.compile(r"(?<!\d)(1[3-9]\d{9})(?!\d)")
-IDENTITY_VALUE = re.compile(r"(?<!\d)(\d{6})(\d{8})(\d{3}[\dXx])(?!\d)")
-BANK_VALUE = re.compile(r"(?<!\d)(\d{6})(\d{6,9})(\d{4})(?!\d)")
+HIGH_RISK_EXPORT_FIELDS = frozenset(
+    {
+        "third_party", "third_parties", "customer", "customers", "customer_list",
+        "customer_data", "customer_records", "client", "clients", "client_list",
+        "client_data", "client_records", "trade_secret", "trade_secrets", "source_code",
+    }
+)
+HIGH_RISK_TEXT_MARKERS = (
+    "客户名单", "客户资料", "商业秘密", "源代码", "source code",
+    "customer list", "customer data", "client list", "client data", "trade secret",
+)
+CREDENTIAL_VALUE = re.compile(
+    r"(?i)(?:(?:api[ _-]*(?:key|secret)|private[ _-]*key|access[ _-]*token|"
+    r"refresh[ _-]*token|auth[ _-]*token|bearer[ _-]*token|client[ _-]*secret|"
+    r"signing[ _-]*key|authorization|password|密码)"
+    r"\s*[:=：]\s*(?:bearer\s+)?|bearer\s+)[^\s，。；;,\n]{4,}"
+)
+PHONE_VALUE = re.compile(
+    r"(?<!\d)((?:(?:\+?86|0086)[- \u00a0\uff0d]?)?)(1[3-9]\d)([- \u00a0\uff0d]?)(\d{4})([- \u00a0\uff0d]?)(\d{4})(?!\d)"
+)
+LANDLINE_VALUE = re.compile(
+    r"(?<!\d)(?<!\d[- \u00a0\uff0d])((?:(?:\+?86|0086)[- \u00a0\uff0d]?)?)"
+    r"(\(?0?\d{2,3}\)?)([- \u00a0\uff0d]?)(\d{3,4})([- \u00a0\uff0d]?)(\d{4})"
+    r"(?![- \u00a0\uff0d]?\d)"
+)
+IDENTITY_VALUE = re.compile(
+    r"(?<!\d)(\d{6})([- \u00a0\uff0d]?)(\d{8})([- \u00a0\uff0d]?)(\d{3}[\dXx])(?![\dXx])"
+)
+BANK_VALUE = re.compile(
+    r"(?<!\d)(?<!\d[- \u00a0\uff0d])(?:\d[- \u00a0\uff0d]?){15,18}\d"
+    r"(?![- \u00a0\uff0d]?\d)"
+)
 EMAIL_VALUE = re.compile(
     r"(?i)(?<![A-Z0-9._%+-])([A-Z0-9])[A-Z0-9._%+-]*@([A-Z0-9.-]+\.[A-Z]{2,})(?![A-Z0-9.-])"
 )
-LABELED_NAME_VALUE = re.compile(r"(联系人姓名|联系人|员工姓名|劳动者姓名|姓名)\s*[:：为是]?\s*([\u4e00-\u9fff]{2,4})")
+LABELED_NAME_VALUE = re.compile(
+    r"(?i)((?:联系人姓名|联系人|员工姓名|劳动者姓名|姓名|contact\s+name|"
+    r"employee\s+name|worker\s+name|applicant\s+name|name)\s*[:：为是]?\s*)"
+    r"(?!(?:电话|座机|手机|邮箱|地址|联系方式|联系信息|phone|email|address))"
+    r"([\u4e00-\u9fff]{2,4}|[A-Z][A-Z'’-]*(?:[ -][A-Z][A-Z'’-]*){1,4})"
+    r"(?=[\s，。；;,.:：\n]|$)"
+)
+LABELED_PASSPORT_VALUE = re.compile(
+    r"(?i)((?:护照号码?|passport(?:\s*(?:no\.?|number))?)\s*[:：为是]?\s*)"
+    r"([A-Z0-9]{5,20})"
+)
+LABELED_ACCOUNT_VALUE = re.compile(
+    r"(?i)((?:微信号?|wechat(?:\s*(?:id|account))?|QQ号?|"
+    r"qq(?:\s*(?:id|number))?)\s*[:：为是]?\s*)"
+    r"([^\s，。；;,\n]{5,64})"
+)
+LABELED_ADDRESS_VALUE = re.compile(
+    r"(?i)((?:家庭住址|家庭地址|联系地址|现住址|住址|地址|home\s+address|"
+    r"residential\s+address|mailing\s+address|contact\s+address|address)"
+    r"\s*[:：为是]?\s*)"
+    r"([^。.;；\n]{4,160})"
+)
+LABELED_HEALTH_VALUE = re.compile(
+    r"(?i)((?:健康情况|健康信息|医疗信息|生育情况|诊断|病历|孕期|妊娠|"
+    r"diagnosis|medical\s+(?:condition|information|notes?|history)|"
+    r"health\s+(?:condition|information|notes?|status)|pregnancy|maternity)"
+    r"\s*[:：为是]?\s*)"
+    r"([^。.;；\n]{2,160})"
+)
+LABELED_BIRTH_VALUE = re.compile(
+    r"(?i)((?:出生日期|出生年月|生日|date\s+of\s+birth|birth\s*date|dob)"
+    r"\s*[:：为是]?\s*)"
+    r"(\d{4}(?:(?:[-/.]\d{1,2}){1,2}|年\d{1,2}月(?:\d{1,2}日)?))"
+)
 SAVEABLE_CASE_SECTIONS = (
     "facts",
     "goals",
@@ -128,9 +214,21 @@ def _mask_name(value: str) -> str:
     return value[:1] + "*" * max(1, len(value) - 1) if value else "[已脱敏]"
 
 
+def _mask_bank_value(match: re.Match[str]) -> str:
+    digits = re.sub(r"[- \u00a0\uff0d]", "", match.group(0))
+    return digits[:6] + "*" * (len(digits) - 10) + digits[-4:]
+
+
+def normalize_field_name(value: object) -> str:
+    text = re.sub(
+        r"(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", "_", str(value).strip()
+    )
+    return re.sub(r"[-\s]+", "_", text).lower()
+
+
 def _export_names(value: object, *, key: str = "") -> set[str]:
     names: set[str] = set()
-    normalized = key.strip().lower()
+    normalized = normalize_field_name(key)
     if normalized in PERSON_NAME_FIELDS and isinstance(value, str) and 2 <= len(value) <= 20:
         names.add(value)
     if isinstance(value, dict):
@@ -142,32 +240,106 @@ def _export_names(value: object, *, key: str = "") -> set[str]:
     return names
 
 
-def _redact_export_text(value: str, names: set[str]) -> str:
-    redacted = IDENTITY_VALUE.sub(lambda match: match.group(1) + "********" + match.group(3)[-4:], value)
-    redacted = PHONE_VALUE.sub(lambda match: match.group(1)[:3] + "****" + match.group(1)[-4:], redacted)
+def redact_personal_text(value: str, names: set[str] | None = None) -> str:
+    """Mask common personal identifiers and any explicitly supplied names."""
+
+    if CREDENTIAL_VALUE.search(value) or any(
+        marker in value.lower() for marker in HIGH_RISK_TEXT_MARKERS
+    ):
+        return "[高风险企业信息已排除]"
+    redacted = IDENTITY_VALUE.sub(
+        lambda match: match.group(1)
+        + match.group(2)
+        + "********"
+        + match.group(4)
+        + match.group(5),
+        value,
+    )
+    redacted = PHONE_VALUE.sub(
+        lambda match: match.group(1)
+        + match.group(2)
+        + match.group(3)
+        + "****"
+        + match.group(5)
+        + match.group(6),
+        redacted,
+    )
+    redacted = LANDLINE_VALUE.sub(
+        lambda match: match.group(1)
+        + match.group(2)
+        + match.group(3)
+        + "****"
+        + match.group(5)
+        + match.group(6),
+        redacted,
+    )
     redacted = EMAIL_VALUE.sub(lambda match: match.group(1) + "***@" + match.group(2), redacted)
-    redacted = BANK_VALUE.sub(lambda match: match.group(1) + "*" * len(match.group(2)) + match.group(3), redacted)
+    redacted = BANK_VALUE.sub(_mask_bank_value, redacted)
     redacted = LABELED_NAME_VALUE.sub(lambda match: match.group(1) + _mask_name(match.group(2)), redacted)
-    for name in sorted(names, key=len, reverse=True):
+    redacted = LABELED_PASSPORT_VALUE.sub(
+        lambda match: match.group(1)
+        + match.group(2)[:1]
+        + "*" * max(1, len(match.group(2)) - 3)
+        + match.group(2)[-2:],
+        redacted,
+    )
+    redacted = LABELED_ACCOUNT_VALUE.sub(
+        lambda match: match.group(1) + "[已脱敏账号]", redacted
+    )
+    redacted = LABELED_ADDRESS_VALUE.sub(lambda match: match.group(1) + "[已脱敏地址]", redacted)
+    redacted = LABELED_HEALTH_VALUE.sub(
+        lambda match: match.group(1) + "[已脱敏健康信息]", redacted
+    )
+    redacted = LABELED_BIRTH_VALUE.sub(
+        lambda match: match.group(1) + "[已脱敏出生日期]", redacted
+    )
+    for name in sorted(names or (), key=len, reverse=True):
         redacted = redacted.replace(name, _mask_name(name))
     return redacted
 
 
-def _redact_export_value(value: object, names: set[str], *, key: str = "") -> object:
-    normalized = key.strip().lower()
+def _redact_export_value(
+    value: object, names: set[str], *, key: str = "", private: bool = False
+) -> object:
+    normalized = normalize_field_name(key)
+    if normalized in HIGH_RISK_EXPORT_FIELDS:
+        return None if value is None else "[高风险企业信息已排除]"
+    private = private or normalized in PRIVATE_PERSONAL_FIELDS
     if isinstance(value, dict):
-        return {
-            child_key: _redact_export_value(child, names, key=str(child_key))
-            for child_key, child in value.items()
-            if str(child_key).strip().lower() not in INTERNAL_EXPORT_FIELDS
-        }
+        redacted: dict[str, object] = {}
+        for child_key, child in value.items():
+            if normalize_field_name(child_key) in INTERNAL_EXPORT_FIELDS:
+                continue
+            masked_key = redact_personal_text(str(child_key))
+            unique_key = masked_key
+            suffix = 2
+            while unique_key in redacted:
+                unique_key = f"{masked_key}#{suffix}"
+                suffix += 1
+            redacted[unique_key] = _redact_export_value(
+                child, names, key=str(child_key), private=private
+            )
+        return redacted
     if isinstance(value, list):
-        return [_redact_export_value(child, names) for child in value]
+        return [_redact_export_value(child, names, private=private) for child in value]
+    if private:
+        return None if value is None else "[已脱敏的个人敏感信息]"
+    if normalized in PERSON_NAME_FIELDS:
+        return _mask_name(value) if isinstance(value, str) else "[已脱敏的个人敏感信息]"
+    if normalized in PERSONAL_IDENTIFIER_FIELDS and not isinstance(value, str):
+        return None if value is None else "[已脱敏的个人敏感信息]"
     if not isinstance(value, str):
         return value
-    if normalized in PERSON_NAME_FIELDS:
-        return _mask_name(value)
-    return _redact_export_text(value, names)
+    redacted = redact_personal_text(value, names)
+    if normalized in PERSONAL_IDENTIFIER_FIELDS and redacted == value:
+        return "[已脱敏的个人敏感信息]"
+    return redacted
+
+
+def redact_personal_value(value: Any) -> Any:
+    """Return a recursively redacted copy suitable for sharing."""
+
+    return _redact_export_value(value, _export_names(value))
 
 
 def _root_identity(root: Path) -> str:
@@ -729,7 +901,7 @@ class CaseStore:
                             ) from exc
                         output = staging / "artifacts" / relative
                         output.parent.mkdir(parents=True, exist_ok=True)
-                        _atomic_write(output, _redact_export_text(content, names).encode("utf-8"))
+                        _atomic_write(output, redact_personal_text(content, names).encode("utf-8"))
                 _assert_tree_has_no_links(staging)
                 staging.rename(destination)
             finally:

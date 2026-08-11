@@ -69,6 +69,20 @@ def validate(matrix_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
     legal_anchors = collect_legal_anchors(legal_map_path)
 
     matrix_anchor_failures = sorted(all_matrix_anchors(matrix) - legal_anchors)
+    human_fields = [
+        matrix["source_note"],
+        *(item["description"] for item in matrix["document_types"].values()),
+        *(
+            item[field]
+            for item in matrix["clause_types"].values()
+            for field in ("label", "worker_side_risk", "recommended_edit", "evidence_impact")
+        ),
+        *matrix["review_outputs"].values(),
+        *matrix["global_safety_rules"],
+    ]
+    non_chinese_human_fields = [
+        value for value in human_fields if not re.search(r"[\u3400-\u9fff]", value)
+    ]
     failures: list[dict[str, Any]] = []
     results: list[dict[str, Any]] = []
 
@@ -121,6 +135,8 @@ def validate(matrix_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
 
     if matrix_anchor_failures:
         failures.append({"matrix_anchor_failures": matrix_anchor_failures})
+    if non_chinese_human_fields:
+        failures.append({"non_chinese_human_fields": non_chinese_human_fields})
 
     return {
         "matrix_path": str(matrix_path),
@@ -130,6 +146,8 @@ def validate(matrix_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
         "passed": len(cases) - sum(1 for item in failures if "case" in item),
         "failed": len(failures),
         "matrix_anchor_failures": matrix_anchor_failures,
+        "human_field_count": len(human_fields),
+        "non_chinese_human_fields": non_chinese_human_fields,
         "results": results,
         "failures": failures,
     }

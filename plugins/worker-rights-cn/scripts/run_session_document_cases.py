@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -62,12 +63,59 @@ def missing_expected_items(actual: list[Any], expected: list[Any]) -> list[Any]:
     return [item for item in expected if item not in actual]
 
 
-def validate_document_case(raw_case: dict[str, Any], state: dict[str, Any], rendered: dict[str, Any]) -> list[dict[str, Any]]:
+def validate_document_case(
+    raw_case: dict[str, Any],
+    state: dict[str, Any],
+    rendered: dict[str, Any],
+    resources: dict[str, Any],
+) -> list[dict[str, Any]]:
     failures: list[dict[str, Any]] = []
     expected = raw_case.get("expected", {})
     manifest = rendered.get("manifest", {})
     documents = {document["id"]: document for document in rendered.get("documents", [])}
     document_ids = list(documents)
+    package = (state.get("case_package") or {}).get("package", {})
+
+    guidance_fields = {
+        "case_snapshot.open_questions": package.get("case_snapshot", {}).get("open_questions", []),
+        "termination_assessment.missing_facts": package.get("termination_assessment", {}).get("missing_facts", []),
+        "safety_and_review_notes.lawful_collection_limits": package.get("safety_and_review_notes", {}).get("lawful_collection_limits", []),
+        "safety_and_review_notes.unsupported_assumptions": package.get("safety_and_review_notes", {}).get("unsupported_assumptions", []),
+        "safety_and_review_notes.local_verify_items": package.get("safety_and_review_notes", {}).get("local_verify_items", []),
+        "safety_and_review_notes.lawyer_check_items": package.get("safety_and_review_notes", {}).get("lawyer_check_items", []),
+    }
+    worker_position = package.get("termination_assessment", {}).get("worker_position")
+    if worker_position:
+        guidance_fields["termination_assessment.worker_position"] = [worker_position]
+    for index, item in enumerate(package.get("evidence_directory", [])):
+        guidance_fields[f"evidence_directory[{index}]"] = [
+            item.get(field)
+            for field in ("evidence_name", "lawful_source", "proof_purpose", "collection_note")
+        ]
+    arbitration_pack = package.get("arbitration_draft_pack", {})
+    city_fields = {
+        "case_snapshot.city": [package.get("case_snapshot", {}).get("city")],
+        "case_snapshot.work_location": [package.get("case_snapshot", {}).get("work_location")],
+        "arbitration_draft_pack.candidate_commission": [arbitration_pack.get("candidate_commission")],
+        "arbitration_draft_pack.pre_filing_checks": arbitration_pack.get("pre_filing_checks", []),
+        "safety_and_review_notes.local_verify_items": package.get("safety_and_review_notes", {}).get("local_verify_items", []),
+    }
+    city_pattern = re.compile(
+        rf"(?<![\w])(?:{'|'.join(map(re.escape, resources['city_rules']['cities']))})(?![\w])",
+        re.IGNORECASE,
+    )
+    for field, values in city_fields.items():
+        for index, value in enumerate(values):
+            if isinstance(value, str) and city_pattern.search(value):
+                failures.append({"untranslated_city": field, "index": index, "actual": value})
+    for index, claim in enumerate(arbitration_pack.get("claim_requests", [])):
+        guidance_fields[f"arbitration_draft_pack.claim_requests[{index}]"] = [
+            claim.get(field) for field in ("claim_name", "formula_text", "draft_note")
+        ]
+    for field, values in guidance_fields.items():
+        for index, value in enumerate(values):
+            if not isinstance(value, str) or not re.search(r"[\u4e00-\u9fff]", value):
+                failures.append({"non_chinese_guidance": field, "index": index, "actual": value})
 
     if manifest.get("status") != state["status"]:
         failures.append(
@@ -92,6 +140,14 @@ def validate_document_case(raw_case: dict[str, Any], state: dict[str, Any], rend
             failures.append({"document": doc_id, "empty_content": True})
         if not document.get("required_confirmations"):
             failures.append({"document": doc_id, "missing_required_confirmations": True})
+        untranslated = [
+            token
+            for token in renderer.DISPLAY_LABELS
+            if "_" in token
+            and re.search(rf"(?<![\w.]){re.escape(token)}(?![\w.])", document.get("content", ""))
+        ]
+        if untranslated:
+            failures.append({"document": doc_id, "untranslated_display_tokens": untranslated})
 
     for doc_id, snippets in expected.get("content_contains", {}).items():
         content = documents.get(doc_id, {}).get("content", "")
@@ -121,6 +177,18 @@ def validate_document_case(raw_case: dict[str, Any], state: dict[str, Any], rend
                 }
             )
 
+    for confirmation_id, snippets in expected.get("confirmation_text_contains", {}).items():
+        text = manifest_confirmations.get(confirmation_id, "")
+        missing = [snippet for snippet in snippets if snippet not in text]
+        if missing:
+            failures.append(
+                {
+                    "confirmation": confirmation_id,
+                    "missing_text_snippets": missing,
+                    "actual": text,
+                }
+            )
+
     return failures
 
 
@@ -140,7 +208,7 @@ def validate(cases_path: Path, session_cases_path: Path, user_intake_cases_path:
         try:
             state = materialize_state(raw_case, session_cases_by_id, user_cases_by_id, resources, schema)
             rendered = renderer.render_documents(state)
-            case_failures = validate_document_case(raw_case, state, rendered)
+            case_failures = validate_document_case(raw_case, state, rendered, resources)
         except Exception as exc:  # noqa: BLE001
             case_failures = [{"exception": str(exc)}]
 
