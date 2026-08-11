@@ -40,6 +40,14 @@ python3 scripts/calculate_compensation.py --input case.json --payroll-csv payrol
 
 The result includes the source SHA-256, normalized monthly rows, missing-month list, total, average, and calculation formula. The CSV average replaces any `average_monthly_wage` supplied in the JSON; verify missing months and the legally applicable wage-base period before relying on it.
 
+For a standard-hours overtime estimate, set `work_schedule_type` to `standard` and provide an explicit `overtime_monthly_wage_base` in the JSON. Then import a UTF-8 CSV with exactly `work_date,started_at,ended_at,break_minutes,day_type,compensatory_leave_minutes`:
+
+```bash
+python3 scripts/calculate_compensation.py --input case.json --attendance-csv attendance.csv
+```
+
+`day_type` is `workday`, `rest_day`, or `statutory_holiday`. Timestamps use local `YYYY-MM-DDTHH:MM`. The script rejects overlaps, aggregates split shifts by work date, preserves the source SHA-256, and emits each daily formula and amount. It supports only standard hours; comprehensive or flexible schedules require separate approval documents and local analysis. Attendance rows and day labels remain worker-provided facts that must be checked against original records and employer-arrangement evidence.
+
 For quick testing:
 
 ```bash
@@ -78,6 +86,7 @@ Return:
 - Apply the high-wage cap only when local average monthly wage is provided.
 - Use `previous_month_wage` for substitute notice wage when available; if missing, explain that the script falls back to average monthly wage.
 - Label annual leave and overtime as estimates unless the user has attendance and payroll evidence.
+- Require an explicit overtime wage base and standard-hours classification; never infer special-hours treatment from timestamps alone.
 - Do not calculate social insurance losses without local rules and payment records.
 
 ## Resources

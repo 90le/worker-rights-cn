@@ -28,6 +28,42 @@ This file is a routing aid for worker-side layoff and dismissal analysis in main
   retrieved_at: "2026-06-16"
   notes: "Primary legal database plus official government text mirror used for article-level reading."
 
+- id: "LABOR-LAW-2018"
+  title: "中华人民共和国劳动法"
+  authority: "全国人民代表大会常务委员会"
+  url: "https://flk.npc.gov.cn/detail?id=ff8080816f135f46016f20f16ee11737&title=%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD%E5%8A%B3%E5%8A%A8%E6%B3%95"
+  publish_date: "2018-12-29 amendment"
+  effective_date: "1995-01-01; 2018 amendment effective 2018-12-29"
+  jurisdiction: "national"
+  source_type: "law"
+  reliability: "official"
+  retrieved_at: "2026-08-11"
+  notes: "National Laws and Regulations Database current amended text; article 44 supplies overtime pay multipliers."
+
+- id: "WORKTIME-REG-1995"
+  title: "国务院关于职工工作时间的规定"
+  authority: "国务院"
+  url: "https://xzfg.moj.gov.cn/front/law/detail?LawID=629&Query="
+  publish_date: "1995-03-25 amendment"
+  effective_date: "1995-05-01"
+  jurisdiction: "national"
+  source_type: "administrative_regulation"
+  reliability: "official"
+  retrieved_at: "2026-08-11"
+  notes: "Ministry of Justice administrative-regulation database; article 3 supplies the standard workday and workweek."
+
+- id: "MHRSS-WAGE-CONVERSION-2025"
+  title: "人力资源社会保障部关于职工全年月平均工作时间和工资折算问题的通知"
+  authority: "人力资源和社会保障部"
+  url: "https://www.mohrss.gov.cn/SYrlzyhshbzb/laodongguanxi_/zcwj/202501/t20250101_533693.html"
+  publish_date: "2025-01-01"
+  effective_date: "2025-01-01"
+  jurisdiction: "national"
+  source_type: "normative_document"
+  reliability: "official"
+  retrieved_at: "2026-08-11"
+  notes: "Human Resources and Social Security Ministry Document No. 2 [2025]; section 2 keeps 21.75 monthly paid days and supersedes the 2008 notice."
+
 - id: "LCL-REG-2008"
   title: "中华人民共和国劳动合同法实施条例"
   authority: "国务院"
@@ -218,6 +254,22 @@ This file is a routing aid for worker-side layoff and dismissal analysis in main
 - `art85`: labor authority order and extra compensation risk for unpaid wages, low wage, overtime, or unpaid economic compensation.
 - `art87`: unlawful termination compensation at twice the `art47` economic compensation standard.
 - `art90`: worker may bear compensation liability if violating statutory resignation rules or confidentiality/non-compete duties causes employer loss.
+
+### `LABOR-LAW-2018`
+
+- `art41`: employer-arranged extended work hours are generally limited and require consultation, with statutory exceptions handled separately.
+- `art44`: workday overtime, uncompensated rest-day work, and statutory-holiday work use minimum multipliers of 150%, 200%, and 300% respectively.
+- `art51`: statutory holidays are paid days and remain included when converting monthly wages.
+
+### `WORKTIME-REG-1995`
+
+- `art3`: the standard work schedule is eight hours per day and forty hours per week.
+- `art5`: approved alternative work and rest arrangements may apply where standard hours cannot be implemented; the standard-hours calculator must not silently cover them.
+
+### `MHRSS-WAGE-CONVERSION-2025`
+
+- `art1`: monthly average system workdays are 20.67 after the national statutory-holiday adjustment.
+- `art2`: daily and hourly wages are converted using 21.75 monthly paid days and eight hours per day.
 
 ### `LCL-REG-2008`
 

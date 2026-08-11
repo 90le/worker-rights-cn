@@ -265,5 +265,29 @@
       "service_period.n_months": 3,
       "base_amounts.economic_compensation_n": 36000
     }
+  },
+  {
+    "id": "attendance-csv-derived-overtime",
+    "scenario": "从脱敏考勤记录按标准工时分类计算加班费估算",
+    "skill_focus": ["compensation-calculator", "evidence-builder"],
+    "risk_notes": ["示例为虚构；需核验用人单位安排、工时制度、工资基数、原始记录和地方规则"],
+    "attendance_csv": "work_date,started_at,ended_at,break_minutes,day_type,compensatory_leave_minutes\n2026-01-05,2026-01-05T09:00,2026-01-05T19:30,60,workday,0\n2026-01-10,2026-01-10T09:00,2026-01-10T18:00,60,rest_day,240\n2026-01-20,2026-01-20T10:00,2026-01-20T14:00,0,statutory_holiday,0\n",
+    "input": {
+      "start_date": "2023-01-01",
+      "end_date": "2026-01-31",
+      "average_monthly_wage": 10000,
+      "termination_type": "unknown",
+      "work_schedule_type": "standard",
+      "overtime_monthly_wage_base": 8700
+    },
+    "expected": {
+      "overtime_basis.record_count": 3,
+      "overtime_basis.total_overtime_minutes": 570,
+      "overtime_basis.total_overtime_hours": 9.5,
+      "overtime_basis.hourly_wage_base": 50,
+      "overtime_basis.overtime_pay_total": 1112.5,
+      "additional_claims.overtime_claim": 1112.5,
+      "claim_paths.economic_compensation_n": 31112.5
+    }
   }
 ]

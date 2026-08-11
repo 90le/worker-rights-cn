@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from calculate_compensation import InputError, calculate
+from calculate_compensation import InputError, calculate_with_imports, parse_attendance_csv, parse_payroll_csv
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,10 +30,18 @@ def equivalent(actual: Any, expected: Any) -> bool:
     return actual == expected
 
 
+def calculate_case(case: dict[str, Any]) -> dict[str, Any]:
+    return calculate_with_imports(
+        case["input"],
+        payroll=parse_payroll_csv(case["payroll_csv"]) if "payroll_csv" in case else None,
+        attendance=parse_attendance_csv(case["attendance_csv"]) if "attendance_csv" in case else None,
+    )
+
+
 def validate_valid_case(case: dict[str, Any]) -> list[dict[str, Any]]:
     failures: list[dict[str, Any]] = []
     try:
-        result = calculate(case["input"])
+        result = calculate_case(case)
     except InputError as exc:
         return [{"error": "unexpected InputError", "message": str(exc)}]
 
@@ -65,7 +73,7 @@ def validate_valid_case(case: dict[str, Any]) -> list[dict[str, Any]]:
 def validate_invalid_case(case: dict[str, Any]) -> list[dict[str, Any]]:
     expected = case["expected_error_contains"]
     try:
-        result = calculate(case["input"])
+        result = calculate_case(case)
     except InputError as exc:
         message = str(exc)
         if expected in message:

@@ -10,7 +10,7 @@ import io
 import json
 import math
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 from typing import Any
@@ -21,6 +21,20 @@ class InputError(ValueError):
 
 
 PAYROLL_COLUMNS = ("month", "gross_wage")
+ATTENDANCE_COLUMNS = (
+    "work_date",
+    "started_at",
+    "ended_at",
+    "break_minutes",
+    "day_type",
+    "compensatory_leave_minutes",
+)
+OVERTIME_MULTIPLIERS = {
+    "workday": Decimal("1.5"),
+    "rest_day": Decimal("2"),
+    "statutory_holiday": Decimal("3"),
+}
+STANDARD_DAILY_MINUTES = 8 * 60
 CENT = Decimal("0.01")
 
 
@@ -128,19 +142,233 @@ def parse_payroll_csv(text: str, *, source_sha256: str | None = None) -> dict[st
     }
 
 
-def calculate_from_payroll(data: dict[str, Any], payroll: dict[str, Any]) -> dict[str, Any]:
+def parse_csv_minutes(value: str, *, row: int, field: str) -> int:
+    try:
+        amount = Decimal(value.strip())
+    except InvalidOperation as exc:
+        raise InputError(f"attendance CSV row {row} {field} must be an integer from 0 to 1440") from exc
+    if not amount.is_finite() or amount < 0 or amount > 24 * 60 or amount != amount.to_integral_value():
+        raise InputError(f"attendance CSV row {row} {field} must be an integer from 0 to 1440")
+    return int(amount)
+
+
+def parse_attendance_csv(text: str, *, source_sha256: str | None = None) -> dict[str, Any]:
+    reader = csv.DictReader(io.StringIO(text))
+    if tuple(reader.fieldnames or ()) != ATTENDANCE_COLUMNS:
+        raise InputError(f"attendance CSV columns must be exactly: {','.join(ATTENDANCE_COLUMNS)}")
+
+    records: list[dict[str, Any]] = []
+    previous_start: datetime | None = None
+    previous_end: datetime | None = None
+    for line_number, row in enumerate(reader, start=2):
+        if None in row or any(value is None for value in row.values()):
+            raise InputError(f"attendance CSV row {line_number} has an invalid column count")
+
+        raw_date = row["work_date"].strip()
+        try:
+            work_date = date.fromisoformat(raw_date)
+        except ValueError as exc:
+            raise InputError(f"attendance CSV row {line_number} work_date must be YYYY-MM-DD") from exc
+        if raw_date != work_date.isoformat():
+            raise InputError(f"attendance CSV row {line_number} work_date must be YYYY-MM-DD")
+
+        timestamps: dict[str, datetime] = {}
+        for field in ("started_at", "ended_at"):
+            raw_timestamp = row[field].strip()
+            try:
+                parsed = datetime.fromisoformat(raw_timestamp)
+            except ValueError as exc:
+                raise InputError(
+                    f"attendance CSV row {line_number} {field} must be YYYY-MM-DDTHH:MM"
+                ) from exc
+            if parsed.tzinfo is not None or raw_timestamp != parsed.strftime("%Y-%m-%dT%H:%M"):
+                raise InputError(f"attendance CSV row {line_number} {field} must be YYYY-MM-DDTHH:MM")
+            timestamps[field] = parsed
+
+        started_at = timestamps["started_at"]
+        ended_at = timestamps["ended_at"]
+        if started_at.date() != work_date:
+            raise InputError(f"attendance CSV row {line_number} work_date must match started_at")
+        duration_minutes = int((ended_at - started_at).total_seconds() // 60)
+        if duration_minutes <= 0 or duration_minutes > 24 * 60:
+            raise InputError(f"attendance CSV row {line_number} shift must be longer than 0 and at most 24 hours")
+        if previous_start is not None and started_at < previous_start:
+            raise InputError("attendance CSV rows must be in ascending started_at order")
+        if previous_end is not None and started_at < previous_end:
+            raise InputError(f"attendance CSV row {line_number} overlaps the previous row")
+        previous_start, previous_end = started_at, ended_at
+
+        break_minutes = parse_csv_minutes(row["break_minutes"], row=line_number, field="break_minutes")
+        if break_minutes >= duration_minutes:
+            raise InputError(f"attendance CSV row {line_number} break_minutes must be shorter than the shift")
+        worked_minutes = duration_minutes - break_minutes
+
+        day_type = row["day_type"].strip()
+        if day_type not in OVERTIME_MULTIPLIERS:
+            raise InputError(
+                f"attendance CSV row {line_number} day_type must be one of: "
+                + ",".join(OVERTIME_MULTIPLIERS)
+            )
+        leave_minutes = parse_csv_minutes(
+            row["compensatory_leave_minutes"],
+            row=line_number,
+            field="compensatory_leave_minutes",
+        )
+        if day_type != "rest_day" and leave_minutes:
+            raise InputError(
+                f"attendance CSV row {line_number} compensatory leave may only offset rest_day hours"
+            )
+        if leave_minutes > worked_minutes:
+            raise InputError(
+                f"attendance CSV row {line_number} compensatory_leave_minutes exceeds worked minutes"
+            )
+
+        records.append(
+            {
+                "work_date": work_date.isoformat(),
+                "started_at": started_at.strftime("%Y-%m-%dT%H:%M"),
+                "ended_at": ended_at.strftime("%Y-%m-%dT%H:%M"),
+                "break_minutes": break_minutes,
+                "worked_minutes": worked_minutes,
+                "day_type": day_type,
+                "compensatory_leave_minutes": leave_minutes,
+            }
+        )
+        if len(records) > 10_000:
+            raise InputError("attendance CSV must contain at most 10000 records")
+
+    if not records:
+        raise InputError("attendance CSV must contain at least one record")
+
+    daily: dict[str, dict[str, Any]] = {}
+    for record in records:
+        work_date = record["work_date"]
+        item = daily.setdefault(
+            work_date,
+            {
+                "work_date": work_date,
+                "day_type": record["day_type"],
+                "worked_minutes": 0,
+                "compensatory_leave_minutes": 0,
+            },
+        )
+        if item["day_type"] != record["day_type"]:
+            raise InputError(f"attendance CSV has conflicting day_type values for {work_date}")
+        item["worked_minutes"] += record["worked_minutes"]
+        item["compensatory_leave_minutes"] += record["compensatory_leave_minutes"]
+
+    daily_calculations: list[dict[str, Any]] = []
+    totals = {day_type: 0 for day_type in OVERTIME_MULTIPLIERS}
+    for item in daily.values():
+        if item["day_type"] == "workday":
+            overtime_minutes = max(0, item["worked_minutes"] - STANDARD_DAILY_MINUTES)
+        elif item["day_type"] == "rest_day":
+            overtime_minutes = max(0, item["worked_minutes"] - item["compensatory_leave_minutes"])
+        else:
+            overtime_minutes = item["worked_minutes"]
+        item["overtime_minutes"] = overtime_minutes
+        item["worked_hours"] = float((Decimal(item["worked_minutes"]) / 60).quantize(CENT))
+        item["overtime_hours"] = float((Decimal(overtime_minutes) / 60).quantize(CENT))
+        totals[item["day_type"]] += overtime_minutes
+        daily_calculations.append(item)
+
+    total_minutes = sum(totals.values())
+    return {
+        "schema_version": "0.1.0",
+        "source_sha256": source_sha256 or hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        "record_count": len(records),
+        "period_start": records[0]["work_date"],
+        "period_end": records[-1]["work_date"],
+        "records": records,
+        "daily_calculations": daily_calculations,
+        "overtime_minutes_by_day_type": totals,
+        "total_overtime_minutes": total_minutes,
+        "total_overtime_hours": float((Decimal(total_minutes) / 60).quantize(CENT)),
+    }
+
+
+def calculate_overtime(data: dict[str, Any], attendance: dict[str, Any]) -> dict[str, Any]:
+    if data.get("work_schedule_type") != "standard":
+        raise InputError("work_schedule_type must be standard when attendance CSV is used")
+    monthly_base = Decimal(str(money(data.get("overtime_monthly_wage_base"), "overtime_monthly_wage_base")))
+    hourly_base = monthly_base / Decimal("21.75") / Decimal("8")
+    daily_amounts: list[dict[str, Any]] = []
+    total = Decimal("0")
+    for item in attendance["daily_calculations"]:
+        multiplier = OVERTIME_MULTIPLIERS[item["day_type"]]
+        hours = Decimal(item["overtime_minutes"]) / Decimal("60")
+        amount = (hourly_base * hours * multiplier).quantize(CENT, rounding=ROUND_HALF_UP)
+        total += amount
+        daily_amounts.append(
+            {
+                **item,
+                "multiplier": float(multiplier),
+                "amount": float(amount),
+                "formula": "monthly wage base / 21.75 / 8 * overtime minutes / 60 * multiplier",
+            }
+        )
+    try:
+        hourly_output = hourly_base.quantize(Decimal("0.0001"), rounding=ROUND_HALF_UP)
+        total_output = total.quantize(CENT, rounding=ROUND_HALF_UP)
+    except InvalidOperation as exc:
+        raise InputError("overtime_monthly_wage_base is outside the supported range") from exc
+    return {
+        **attendance,
+        "work_schedule_type": "standard",
+        "overtime_monthly_wage_base": float(monthly_base),
+        "monthly_paid_days": 21.75,
+        "standard_daily_hours": 8,
+        "hourly_wage_base": float(hourly_output),
+        "daily_calculations": daily_amounts,
+        "overtime_pay_total": float(total_output),
+        "calculation": "sum(monthly wage base / 21.75 / 8 * overtime minutes / 60 * day-type multiplier)",
+        "source_anchors": [
+            "LABOR-LAW-2018#art44",
+            "WORKTIME-REG-1995#art3",
+            "MHRSS-WAGE-CONVERSION-2025#art2",
+        ],
+    }
+
+
+def calculate_with_imports(
+    data: dict[str, Any],
+    *,
+    payroll: dict[str, Any] | None = None,
+    attendance: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     calculation_input = dict(data)
-    supplied_average = calculation_input.get("average_monthly_wage")
-    calculation_input["average_monthly_wage"] = payroll["average_monthly_wage"]
+    supplied_average = calculation_input.get("average_monthly_wage") if payroll else None
+    if payroll:
+        calculation_input["average_monthly_wage"] = payroll["average_monthly_wage"]
+    supplied_overtime = calculation_input.get("overtime_claim") if attendance else None
+    overtime_basis = calculate_overtime(data, attendance) if attendance else None
+    if overtime_basis:
+        calculation_input["overtime_claim"] = overtime_basis["overtime_pay_total"]
     result = calculate(calculation_input)
-    result["payroll_basis"] = payroll
-    if supplied_average not in (None, ""):
-        result["warnings"].append("average_monthly_wage from input was replaced by the payroll CSV average.")
-    if payroll["record_count"] < 12 or payroll["missing_months"]:
+    if payroll:
+        result["payroll_basis"] = payroll
+        if supplied_average not in (None, ""):
+            result["warnings"].append("average_monthly_wage from input was replaced by the payroll CSV average.")
+        if payroll["record_count"] < 12 or payroll["missing_months"]:
+            result["warnings"].append(
+                "Payroll average uses available records only; verify the statutory wage-base period and missing months."
+            )
+    if overtime_basis:
+        result["overtime_basis"] = overtime_basis
+        if supplied_overtime not in (None, ""):
+            result["warnings"].append("overtime_claim from input was replaced by the attendance CSV calculation.")
         result["warnings"].append(
-            "Payroll average uses available records only; verify the statutory wage-base period and missing months."
+            "Attendance rows are worker-provided records, not proof that the employer arranged overtime; verify originals, context, schedule type, wage base, and local rules."
         )
     return result
+
+
+def calculate_from_payroll(data: dict[str, Any], payroll: dict[str, Any]) -> dict[str, Any]:
+    return calculate_with_imports(data, payroll=payroll)
+
+
+def calculate_from_attendance(data: dict[str, Any], attendance: dict[str, Any]) -> dict[str, Any]:
+    return calculate_with_imports(data, attendance=attendance)
 
 
 def completed_months(start: date, end: date) -> int:
@@ -267,7 +495,13 @@ def calculate(data: dict[str, Any]) -> dict[str, Any]:
             "n_plus_one": ["LCL-2012#art40", "LCL-REG-2008#art20"],
             "unlawful_termination_2n": ["LCL-2012#art48", "LCL-2012#art87"],
             "unpaid_wages": ["LCL-2012#art30", "LCL-2012#art85"],
-            "overtime_claim": ["LCL-2012#art30", "LCL-2012#art85"],
+            "overtime_claim": [
+                "LABOR-LAW-2018#art44",
+                "WORKTIME-REG-1995#art3",
+                "MHRSS-WAGE-CONVERSION-2025#art2",
+                "LCL-2012#art30",
+                "LCL-2012#art85",
+            ],
             "unused_annual_leave_extra": [
                 "PAID-LEAVE-REG-2007#art5",
                 "PAID-LEAVE-MEASURES-2008#art10",
@@ -306,6 +540,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Calculate baseline China labor compensation amounts.")
     parser.add_argument("--input", help="Path to JSON input case facts.")
     parser.add_argument("--payroll-csv", help="Optional UTF-8 CSV with month,gross_wage columns.")
+    parser.add_argument("--attendance-csv", help="Optional UTF-8 CSV with timestamped attendance rows.")
     parser.add_argument("--self-test", action="store_true", help="Run built-in smoke test.")
     args = parser.parse_args()
 
@@ -318,6 +553,7 @@ def main() -> int:
         data = json.loads(Path(args.input).read_text(encoding="utf-8"))
         if not isinstance(data, dict):
             raise InputError("input JSON must be an object")
+        payroll = None
         if args.payroll_csv:
             raw_payroll = Path(args.payroll_csv).read_bytes()
             try:
@@ -328,9 +564,18 @@ def main() -> int:
                 payroll_text,
                 source_sha256=hashlib.sha256(raw_payroll).hexdigest(),
             )
-            result = calculate_from_payroll(data, payroll)
-        else:
-            result = calculate(data)
+        attendance = None
+        if args.attendance_csv:
+            raw_attendance = Path(args.attendance_csv).read_bytes()
+            try:
+                attendance_text = raw_attendance.decode("utf-8-sig")
+            except UnicodeDecodeError as exc:
+                raise InputError("attendance CSV must be UTF-8") from exc
+            attendance = parse_attendance_csv(
+                attendance_text,
+                source_sha256=hashlib.sha256(raw_attendance).hexdigest(),
+            )
+        result = calculate_with_imports(data, payroll=payroll, attendance=attendance)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except (InputError, json.JSONDecodeError, OSError) as exc:
