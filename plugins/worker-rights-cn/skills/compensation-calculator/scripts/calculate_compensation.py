@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import html
 import io
 import json
 import math
@@ -36,6 +37,7 @@ OVERTIME_MULTIPLIERS = {
 }
 STANDARD_DAILY_MINUTES = 8 * 60
 CENT = Decimal("0.01")
+SOURCE_CURRENCY = Path(__file__).resolve().parents[3] / "references" / "source-currency.json"
 
 
 @dataclass
@@ -330,6 +332,62 @@ def calculate_overtime(data: dict[str, Any], attendance: dict[str, Any]) -> dict
     }
 
 
+def build_import_evidence_directory(
+    payroll: dict[str, Any] | None,
+    attendance: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    if payroll:
+        items.append(
+            {
+                "evidence_id": "E-PAYROLL",
+                "status": "source_digest_available",
+                "proof_purpose": "monthly wage records and average-wage calculation",
+                "lawful_source": "worker-provided payroll export; original retained by worker",
+                "source_sha256": payroll["source_sha256"],
+                "linked_claims": ["economic_compensation_n"],
+            }
+        )
+    if attendance:
+        items.extend(
+            [
+                {
+                    "evidence_id": "E-ATTENDANCE",
+                    "status": "source_digest_available",
+                    "proof_purpose": "recorded work dates, time ranges, breaks, and day classifications",
+                    "lawful_source": "worker-provided attendance export; original retained by worker",
+                    "source_sha256": attendance["source_sha256"],
+                    "linked_claims": ["overtime_claim"],
+                },
+                {
+                    "evidence_id": "E-ARRANGEMENT",
+                    "status": "to_verify",
+                    "proof_purpose": "whether the employer arranged or knew about the claimed overtime",
+                    "lawful_source": "full-context work messages, schedules, emails, task records, or approvals",
+                    "source_sha256": None,
+                    "linked_claims": ["overtime_claim"],
+                },
+                {
+                    "evidence_id": "E-SCHEDULE",
+                    "status": "to_verify",
+                    "proof_purpose": "standard-hours classification and any special-hours approval",
+                    "lawful_source": "labor contract, published schedule, rules, and approval documents",
+                    "source_sha256": None,
+                    "linked_claims": ["overtime_claim"],
+                },
+                {
+                    "evidence_id": "E-OVERTIME-WAGE-BASE",
+                    "status": "to_verify",
+                    "proof_purpose": "the monthly wage base used for the overtime estimate",
+                    "lawful_source": "contract, payslips, payroll records, and applicable local wage rules",
+                    "source_sha256": None,
+                    "linked_claims": ["overtime_claim"],
+                },
+            ]
+        )
+    return items
+
+
 def calculate_with_imports(
     data: dict[str, Any],
     *,
@@ -360,6 +418,13 @@ def calculate_with_imports(
         result["warnings"].append(
             "Attendance rows are worker-provided records, not proof that the employer arranged overtime; verify originals, context, schedule type, wage base, and local rules."
         )
+    evidence_directory = build_import_evidence_directory(payroll, attendance)
+    if evidence_directory:
+        result["evidence_directory"] = evidence_directory
+        result["evidence_summary"] = {
+            status: sum(item["status"] == status for item in evidence_directory)
+            for status in ("source_digest_available", "to_verify")
+        }
     return result
 
 
@@ -517,6 +582,121 @@ def calculate(data: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def html_table(headers: list[str], rows: list[list[Any]]) -> str:
+    head = "".join(f"<th>{html.escape(header)}</th>" for header in headers)
+    body = "".join(
+        "<tr>" + "".join(f"<td>{html.escape(str(value))}</td>" for value in row) + "</tr>"
+        for row in rows
+    )
+    return f"<div class=\"table-wrap\"><table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>"
+
+
+def render_html_report(result: dict[str, Any]) -> str:
+    money_rows = [
+        [name, f"{float(amount):,.2f}"]
+        for name, amount in result.get("claim_paths", {}).items()
+    ]
+    overtime = result.get("overtime_basis", {})
+    overtime_rows = [
+        [
+            item["work_date"],
+            item["day_type"],
+            f"{item['worked_hours']:.2f}",
+            f"{item['overtime_hours']:.2f}",
+            f"{item['multiplier']:.1f}",
+            f"{item['amount']:,.2f}",
+        ]
+        for item in overtime.get("daily_calculations", [])
+    ]
+    evidence_rows = [
+        [
+            item["evidence_id"],
+            item["status"],
+            item["proof_purpose"],
+            item["lawful_source"],
+            item.get("source_sha256") or "—",
+        ]
+        for item in result.get("evidence_directory", [])
+    ]
+
+    anchors = sorted(
+        {
+            anchor
+            for values in result.get("source_anchors", {}).values()
+            for anchor in values
+        }
+        | set(overtime.get("source_anchors", []))
+    )
+    source_data = json.loads(SOURCE_CURRENCY.read_text(encoding="utf-8"))["national_sources"]
+    source_rows = []
+    for anchor in anchors:
+        source_id = anchor.split("#", 1)[0]
+        source = source_data.get(source_id, {})
+        url = source.get("source_of_truth_url", "")
+        linked_anchor = (
+            f'<a href="{html.escape(url, quote=True)}">{html.escape(anchor)}</a>'
+            if url
+            else html.escape(anchor)
+        )
+        source_rows.append(
+            "<tr>"
+            f"<td>{linked_anchor}</td>"
+            f"<td>{html.escape(str(source.get('title', 'source card required')))}</td>"
+            f"<td>{html.escape(str(source.get('effective_date', 'verify')))}</td>"
+            f"<td>{html.escape(str(source.get('current_as_of', 'verify')))}</td>"
+            f"<td>{html.escape(str(source.get('currency_status', 'verify')))}</td>"
+            "</tr>"
+        )
+    sources = (
+        '<div class="table-wrap"><table><thead><tr><th>Anchor</th><th>Official source</th><th>Effective</th><th>Reviewed</th><th>Status</th></tr></thead>'
+        f"<tbody>{''.join(source_rows)}</tbody></table></div>"
+    )
+    warnings = "".join(f"<li>{html.escape(warning)}</li>" for warning in result.get("warnings", []))
+    overtime_section = ""
+    if overtime_rows:
+        overtime_section = f"""
+<section><h2>Overtime detail / 加班明细</h2>
+<p>Monthly wage base: {overtime['overtime_monthly_wage_base']:,.2f}; hourly base: {overtime['hourly_wage_base']:,.4f}; estimated overtime total: <strong>{overtime['overtime_pay_total']:,.2f}</strong>.</p>
+{html_table(['Work date', 'Day type', 'Worked hours', 'Overtime hours', 'Multiplier', 'Estimate'], overtime_rows)}
+</section>"""
+    return f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Worker-side calculation report</title>
+<style>
+:root{{--ink:#132238;--muted:#5c6b7a;--line:#dbe3ea;--paper:#fff;--accent:#146c5a;--wash:#f3f8f6}}*{{box-sizing:border-box}}body{{margin:0;background:#edf2f5;color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}}main{{max-width:1080px;margin:32px auto;padding:40px;background:var(--paper);box-shadow:0 12px 40px #17324d1a}}h1{{margin:.15em 0;font-size:2.2rem}}h2{{margin-top:1.8em;border-bottom:2px solid var(--accent);padding-bottom:.35em;font-size:1.25rem}}.eyebrow{{margin:0;color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase}}.notice{{margin:24px 0;padding:16px 18px;border-left:4px solid var(--accent);background:var(--wash)}}.table-wrap{{overflow-x:auto}}table{{width:100%;border-collapse:collapse;font-size:.9rem}}th,td{{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}}th{{background:#f5f7f9}}a{{color:#075e9b}}code{{font-size:.85em;word-break:break-all}}footer{{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem}}@media(max-width:700px){{main{{margin:0;padding:24px 16px;box-shadow:none}}h1{{font-size:1.7rem}}}}
+</style></head><body><main>
+<p class="eyebrow">Worker Rights CN · deterministic export</p><h1>Worker-side calculation report<br><small>劳动者测算报告</small></h1>
+<div class="notice"><strong>Review draft / 复核草稿。</strong> Amounts are estimates. Check facts, evidence, local rules, limitation periods, and unnecessary personal data before sharing or filing.</div>
+<section><h2>Claim paths / 金额路径</h2>{html_table(['Path', 'Estimate'], money_rows)}</section>
+{overtime_section}
+<section><h2>Evidence directory / 证据目录</h2>{html_table(['ID', 'Status', 'Proof purpose', 'Lawful source', 'Source SHA-256'], evidence_rows)}</section>
+<section><h2>Official source cards / 官方来源卡</h2>{sources}</section>
+<section><h2>Checks and uncertainties / 核验事项</h2><ul>{warnings}</ul></section>
+<footer>This static HTML excludes source file paths, raw payroll rows, raw attendance timestamps, names, IDs, chats, and attachments. Keep originals separately and review the digest-only evidence links before sharing.</footer>
+</main></body></html>
+"""
+
+
+def write_html_report(result: dict[str, Any], output_path: Path) -> dict[str, Any]:
+    path = output_path.expanduser().resolve()
+    if not path.parent.is_dir():
+        raise InputError(f"report output directory does not exist: {path.parent}")
+    content = render_html_report(result)
+    try:
+        with path.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(content)
+    except FileExistsError as exc:
+        raise InputError(f"report output already exists: {path}") from exc
+    encoded = content.encode("utf-8")
+    return {
+        "format": "html",
+        "path": str(path),
+        "sha256": hashlib.sha256(encoded).hexdigest(),
+        "bytes": len(encoded),
+        "redaction_profile": "digest_and_aggregate_only",
+    }
+
+
 def run_self_test() -> None:
     sample = {
         "start_date": "2022-01-01",
@@ -541,6 +721,7 @@ def main() -> int:
     parser.add_argument("--input", help="Path to JSON input case facts.")
     parser.add_argument("--payroll-csv", help="Optional UTF-8 CSV with month,gross_wage columns.")
     parser.add_argument("--attendance-csv", help="Optional UTF-8 CSV with timestamped attendance rows.")
+    parser.add_argument("--report-html", help="Write a new digest-and-aggregate-only HTML report.")
     parser.add_argument("--self-test", action="store_true", help="Run built-in smoke test.")
     args = parser.parse_args()
 
@@ -576,6 +757,8 @@ def main() -> int:
                 source_sha256=hashlib.sha256(raw_attendance).hexdigest(),
             )
         result = calculate_with_imports(data, payroll=payroll, attendance=attendance)
+        if args.report_html:
+            result["report_export"] = write_html_report(result, Path(args.report_html))
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except (InputError, json.JSONDecodeError, OSError) as exc:

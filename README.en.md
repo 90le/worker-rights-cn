@@ -26,6 +26,8 @@ The compensation calculator can derive the average wage from a UTF-8 CSV contain
 
 It can also import timestamped attendance CSV rows for a standard-hours overtime estimate. The deterministic output preserves the source SHA-256, rejects overlapping shifts, itemizes workday/rest-day/statutory-holiday hours and formulas, and requires an explicit overtime wage base. Original records, employer arrangement, day classification, special-hours approvals, and local rules still require verification.
 
+An explicit `--report-html` path creates a self-contained worker-side review report with itemized amounts, official source cards, and a numbered evidence directory. The digest-and-aggregate-only export omits source paths, raw payroll rows, raw clock timestamps, names, IDs, chats, and attachments, and it does not overwrite an existing file.
+
 ## Privacy
 
 Chats and case materials are not automatically saved, uploaded, or sent. Any persistence must disclose the absolute path and scope and require explicit consent. Review identifiers before export. See [PRIVACY.md](PRIVACY.md).

@@ -48,6 +48,14 @@ python3 scripts/calculate_compensation.py --input case.json --attendance-csv att
 
 `day_type` is `workday`, `rest_day`, or `statutory_holiday`. Timestamps use local `YYYY-MM-DDTHH:MM`. The script rejects overlaps, aggregates split shifts by work date, preserves the source SHA-256, and emits each daily formula and amount. It supports only standard hours; comprehensive or flexible schedules require separate approval documents and local analysis. Attendance rows and day labels remain worker-provided facts that must be checked against original records and employer-arrangement evidence.
 
+To write a new self-contained HTML review report, add an unused output path:
+
+```bash
+python3 scripts/calculate_compensation.py --input case.json --attendance-csv attendance.csv --report-html report.html
+```
+
+The result and report include a numbered evidence directory linking source digests and missing verification items to the wage or overtime claim. The report contains aggregate/daily calculations and official source cards, while excluding source paths, raw payroll rows, raw clock timestamps, names, IDs, chats, and attachments. Existing files are never overwritten; review the remaining dates and amounts before sharing.
+
 For quick testing:
 
 ```bash
@@ -77,6 +85,8 @@ Return:
 - `claim_paths`: conservative, negotiation, and high-risk paths.
 - `formula_notes`: concise formula explanation.
 - `source_notes`: article numbers and source cards to verify.
+- `evidence_directory`: digest-backed source entries plus missing arrangement, schedule, and wage-base evidence.
+- `report_export`: absolute HTML path, SHA-256, byte count, and redaction profile when explicitly requested.
 - `uncertainties`: local wage cap, limitation period, evidence gaps, procedural defenses.
 
 ## Calculation Boundaries
