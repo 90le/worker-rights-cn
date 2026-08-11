@@ -54,7 +54,7 @@ To write a new self-contained HTML review report, add an unused output path:
 python3 scripts/calculate_compensation.py --input case.json --attendance-csv attendance.csv --report-html report.html
 ```
 
-The result and report include a numbered evidence directory linking source digests and missing verification items to the wage or overtime claim. The report contains aggregate/daily calculations and official source cards, while excluding source paths, raw payroll rows, raw clock timestamps, names, IDs, chats, and attachments. Existing files are never overwritten; review the remaining dates and amounts before sharing.
+Add `--source-as-of YYYY-MM-DD` when a reproducible source-health date is required. The result and report include a numbered evidence directory linking source digests and missing verification items to the wage or overtime claim. The report contains aggregate/daily calculations and official source cards with jurisdiction, effective/expiry dates, retrieval/review dates, and freshness health. Expired or review-due cards produce a visible degraded warning. Source paths, raw payroll rows, raw clock timestamps, names, IDs, chats, and attachments are excluded. Existing files are never overwritten; review the remaining dates and amounts before sharing.
 
 For quick testing:
 
@@ -86,7 +86,7 @@ Return:
 - `formula_notes`: concise formula explanation.
 - `source_notes`: article numbers and source cards to verify.
 - `evidence_directory`: digest-backed source entries plus missing arrangement, schedule, and wage-base evidence.
-- `report_export`: absolute HTML path, SHA-256, byte count, and redaction profile when explicitly requested.
+- `report_export`: absolute HTML path, SHA-256, byte count, redaction profile, source assessment date/status, and degraded source IDs when explicitly requested.
 - `uncertainties`: local wage cap, limitation period, evidence gaps, procedural defenses.
 
 ## Calculation Boundaries

@@ -10,6 +10,7 @@ import html
 import io
 import json
 import math
+import sys
 from dataclasses import dataclass
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
@@ -37,7 +38,10 @@ OVERTIME_MULTIPLIERS = {
 }
 STANDARD_DAILY_MINUTES = 8 * 60
 CENT = Decimal("0.01")
-SOURCE_CURRENCY = Path(__file__).resolve().parents[3] / "references" / "source-currency.json"
+PLUGIN_ROOT = Path(__file__).resolve().parents[3]
+SOURCE_CURRENCY = PLUGIN_ROOT / "references" / "source-currency.json"
+sys.path.insert(0, str(PLUGIN_ROOT))
+from worker_rights_cn.source_health import classify_source_health  # noqa: E402
 
 
 @dataclass
@@ -591,7 +595,48 @@ def html_table(headers: list[str], rows: list[list[Any]]) -> str:
     return f"<div class=\"table-wrap\"><table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>"
 
 
-def render_html_report(result: dict[str, Any]) -> str:
+def report_source_health(
+    result: dict[str, Any],
+    source_as_of: date | None = None,
+) -> dict[str, Any]:
+    source_as_of = source_as_of or date.today()
+    source_document = json.loads(SOURCE_CURRENCY.read_text(encoding="utf-8"))
+    source_data = source_document["national_sources"]
+    max_age = source_document.get("currency_policy", {}).get("max_review_age_days", 366)
+    overtime = result.get("overtime_basis", {})
+    anchors = sorted(
+        {
+            anchor
+            for values in result.get("source_anchors", {}).values()
+            for anchor in values
+        }
+        | set(overtime.get("source_anchors", []))
+    )
+    cards = []
+    for anchor in anchors:
+        source_id = anchor.split("#", 1)[0]
+        source = source_data.get(source_id, {})
+        cards.append(
+            {
+                "anchor": anchor,
+                "source_id": source_id,
+                "source": source,
+                "health": classify_source_health(source, source_as_of, max_age),
+            }
+        )
+    degraded = sorted(
+        {card["source_id"] for card in cards if card["health"]["status"] != "current"}
+    )
+    return {
+        "as_of": source_as_of.isoformat(),
+        "max_review_age_days": max_age,
+        "status": "degraded" if degraded else "current",
+        "degraded_source_ids": degraded,
+        "cards": cards,
+    }
+
+
+def render_html_report(result: dict[str, Any], source_as_of: date | None = None) -> str:
     money_rows = [
         [name, f"{float(amount):,.2f}"]
         for name, amount in result.get("claim_paths", {}).items()
@@ -619,19 +664,11 @@ def render_html_report(result: dict[str, Any]) -> str:
         for item in result.get("evidence_directory", [])
     ]
 
-    anchors = sorted(
-        {
-            anchor
-            for values in result.get("source_anchors", {}).values()
-            for anchor in values
-        }
-        | set(overtime.get("source_anchors", []))
-    )
-    source_data = json.loads(SOURCE_CURRENCY.read_text(encoding="utf-8"))["national_sources"]
+    source_health = report_source_health(result, source_as_of)
     source_rows = []
-    for anchor in anchors:
-        source_id = anchor.split("#", 1)[0]
-        source = source_data.get(source_id, {})
+    for card in source_health["cards"]:
+        anchor = card["anchor"]
+        source = card["source"]
         url = source.get("source_of_truth_url", "")
         linked_anchor = (
             f'<a href="{html.escape(url, quote=True)}">{html.escape(anchor)}</a>'
@@ -642,15 +679,27 @@ def render_html_report(result: dict[str, Any]) -> str:
             "<tr>"
             f"<td>{linked_anchor}</td>"
             f"<td>{html.escape(str(source.get('title', 'source card required')))}</td>"
+            f"<td>{html.escape(str(source.get('jurisdiction', 'verify')))}</td>"
             f"<td>{html.escape(str(source.get('effective_date', 'verify')))}</td>"
+            f"<td>{html.escape(str(source.get('expiry_date') or 'none recorded'))}</td>"
+            f"<td>{html.escape(str(source.get('retrieved_at', 'verify')))}</td>"
             f"<td>{html.escape(str(source.get('current_as_of', 'verify')))}</td>"
             f"<td>{html.escape(str(source.get('currency_status', 'verify')))}</td>"
+            f"<td>{html.escape(str(card['health']['status']))}</td>"
             "</tr>"
         )
     sources = (
-        '<div class="table-wrap"><table><thead><tr><th>Anchor</th><th>Official source</th><th>Effective</th><th>Reviewed</th><th>Status</th></tr></thead>'
+        '<div class="table-wrap"><table><thead><tr><th>Anchor</th><th>Official source</th><th>Jurisdiction</th><th>Effective</th><th>Expiry</th><th>Retrieved</th><th>Reviewed</th><th>Card status</th><th>Health</th></tr></thead>'
         f"<tbody>{''.join(source_rows)}</tbody></table></div>"
     )
+    source_notice = ""
+    if source_health["degraded_source_ids"]:
+        source_ids = ", ".join(source_health["degraded_source_ids"])
+        source_notice = (
+            '<div class="notice warning"><strong>Source review required / 来源需复核。</strong> '
+            f"As of {source_health['as_of']}, these cards are expired, not yet effective, invalid, or beyond the review-age limit: "
+            f"{html.escape(source_ids)}. Recheck the official links before relying on legal-source status.</div>"
+        )
     warnings = "".join(f"<li>{html.escape(warning)}</li>" for warning in result.get("warnings", []))
     overtime_section = ""
     if overtime_rows:
@@ -663,25 +712,31 @@ def render_html_report(result: dict[str, Any]) -> str:
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Worker-side calculation report</title>
 <style>
-:root{{--ink:#132238;--muted:#5c6b7a;--line:#dbe3ea;--paper:#fff;--accent:#146c5a;--wash:#f3f8f6}}*{{box-sizing:border-box}}body{{margin:0;background:#edf2f5;color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}}main{{max-width:1080px;margin:32px auto;padding:40px;background:var(--paper);box-shadow:0 12px 40px #17324d1a}}h1{{margin:.15em 0;font-size:2.2rem}}h2{{margin-top:1.8em;border-bottom:2px solid var(--accent);padding-bottom:.35em;font-size:1.25rem}}.eyebrow{{margin:0;color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase}}.notice{{margin:24px 0;padding:16px 18px;border-left:4px solid var(--accent);background:var(--wash)}}.table-wrap{{overflow-x:auto}}table{{width:100%;border-collapse:collapse;font-size:.9rem}}th,td{{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}}th{{background:#f5f7f9}}a{{color:#075e9b}}code{{font-size:.85em;word-break:break-all}}footer{{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem}}@media(max-width:700px){{main{{margin:0;padding:24px 16px;box-shadow:none}}h1{{font-size:1.7rem}}}}
+:root{{--ink:#132238;--muted:#5c6b7a;--line:#dbe3ea;--paper:#fff;--accent:#146c5a;--wash:#f3f8f6}}*{{box-sizing:border-box}}body{{margin:0;background:#edf2f5;color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}}main{{max-width:1080px;margin:32px auto;padding:40px;background:var(--paper);box-shadow:0 12px 40px #17324d1a}}h1{{margin:.15em 0;font-size:2.2rem}}h2{{margin-top:1.8em;border-bottom:2px solid var(--accent);padding-bottom:.35em;font-size:1.25rem}}.eyebrow{{margin:0;color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase}}.notice{{margin:24px 0;padding:16px 18px;border-left:4px solid var(--accent);background:var(--wash)}}.warning{{border-color:#b45309;background:#fff7ed}}.table-wrap{{overflow-x:auto}}table{{width:100%;border-collapse:collapse;font-size:.9rem}}th,td{{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}}th{{background:#f5f7f9}}a{{color:#075e9b}}code{{font-size:.85em;word-break:break-all}}footer{{margin-top:32px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem}}@media(max-width:700px){{main{{margin:0;padding:24px 16px;box-shadow:none}}h1{{font-size:1.7rem}}}}
 </style></head><body><main>
 <p class="eyebrow">Worker Rights CN · deterministic export</p><h1>Worker-side calculation report<br><small>劳动者测算报告</small></h1>
 <div class="notice"><strong>Review draft / 复核草稿。</strong> Amounts are estimates. Check facts, evidence, local rules, limitation periods, and unnecessary personal data before sharing or filing.</div>
+{source_notice}
 <section><h2>Claim paths / 金额路径</h2>{html_table(['Path', 'Estimate'], money_rows)}</section>
 {overtime_section}
 <section><h2>Evidence directory / 证据目录</h2>{html_table(['ID', 'Status', 'Proof purpose', 'Lawful source', 'Source SHA-256'], evidence_rows)}</section>
-<section><h2>Official source cards / 官方来源卡</h2>{sources}</section>
+<section><h2>Official source cards / 官方来源卡</h2><p>Source health assessed as of {source_health['as_of']}; review limit {source_health['max_review_age_days']} days.</p>{sources}</section>
 <section><h2>Checks and uncertainties / 核验事项</h2><ul>{warnings}</ul></section>
 <footer>This static HTML excludes source file paths, raw payroll rows, raw attendance timestamps, names, IDs, chats, and attachments. Keep originals separately and review the digest-only evidence links before sharing.</footer>
 </main></body></html>
 """
 
 
-def write_html_report(result: dict[str, Any], output_path: Path) -> dict[str, Any]:
+def write_html_report(
+    result: dict[str, Any],
+    output_path: Path,
+    source_as_of: date | None = None,
+) -> dict[str, Any]:
     path = output_path.expanduser().resolve()
     if not path.parent.is_dir():
         raise InputError(f"report output directory does not exist: {path.parent}")
-    content = render_html_report(result)
+    source_health = report_source_health(result, source_as_of)
+    content = render_html_report(result, source_as_of)
     try:
         with path.open("x", encoding="utf-8", newline="\n") as stream:
             stream.write(content)
@@ -694,6 +749,9 @@ def write_html_report(result: dict[str, Any], output_path: Path) -> dict[str, An
         "sha256": hashlib.sha256(encoded).hexdigest(),
         "bytes": len(encoded),
         "redaction_profile": "digest_and_aggregate_only",
+        "source_as_of": source_health["as_of"],
+        "source_status": source_health["status"],
+        "degraded_source_ids": source_health["degraded_source_ids"],
     }
 
 
@@ -722,6 +780,7 @@ def main() -> int:
     parser.add_argument("--payroll-csv", help="Optional UTF-8 CSV with month,gross_wage columns.")
     parser.add_argument("--attendance-csv", help="Optional UTF-8 CSV with timestamped attendance rows.")
     parser.add_argument("--report-html", help="Write a new digest-and-aggregate-only HTML report.")
+    parser.add_argument("--source-as-of", help="Assess report source freshness on YYYY-MM-DD (default: today).")
     parser.add_argument("--self-test", action="store_true", help="Run built-in smoke test.")
     args = parser.parse_args()
 
@@ -758,7 +817,12 @@ def main() -> int:
             )
         result = calculate_with_imports(data, payroll=payroll, attendance=attendance)
         if args.report_html:
-            result["report_export"] = write_html_report(result, Path(args.report_html))
+            source_as_of = parse_date(args.source_as_of, "source_as_of") if args.source_as_of else date.today()
+            result["report_export"] = write_html_report(
+                result,
+                Path(args.report_html),
+                source_as_of,
+            )
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except (InputError, json.JSONDecodeError, OSError) as exc:

@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from datetime import date
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,13 @@ from urllib.parse import urlparse
 
 PLUGIN_ROOT = Path(__file__).resolve().parents[1]
 PROJECT_ROOT = PLUGIN_ROOT.parents[1]
+sys.path.insert(0, str(PLUGIN_ROOT))
+from worker_rights_cn.source_health import (  # noqa: E402
+    DEFAULT_MAX_REVIEW_AGE_DAYS,
+    classify_source_health,
+    parse_iso_date,
+)
+
 SOURCE_CURRENCY = PLUGIN_ROOT / "references" / "source-currency.json"
 LEGAL_MAP = PLUGIN_ROOT / "skills" / "layoff-defense" / "references" / "legal-map.md"
 CALCULATION_RULES = (
@@ -28,7 +36,6 @@ CASE_PROTOTYPES = PLUGIN_ROOT / "references" / "case-prototypes.json"
 
 TEXT_SUFFIXES = {".json", ".md", ".py", ".yaml", ".yml"}
 ANCHOR_RE = re.compile(r"[A-Z0-9-]+#art[0-9]+")
-DATE_RE = re.compile(r"20[0-9]{2}-[0-9]{2}-[0-9]{2}$")
 NEGATIVE_TEST_SOURCE_PREFIXES = ("FAKE-SOURCE#",)
 NON_PRODUCTION_PARTS = {"tests", "fixtures", "reports", ".local", "__pycache__"}
 
@@ -50,12 +57,6 @@ def production_text_files(root: Path):
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
-
-
-def parse_iso_date(value: str) -> date | None:
-    if not isinstance(value, str) or not DATE_RE.match(value):
-        return None
-    return date.fromisoformat(value)
 
 
 def host(value: str | None) -> str | None:
@@ -177,6 +178,16 @@ def validate_date_field(
         )
 
 
+def validate_nullable_date_field(
+    failures: list[dict[str, Any]],
+    location: str,
+    field: str,
+    value: Any,
+) -> None:
+    if value is not None and parse_iso_date(value) is None:
+        failures.append({"location": location, "invalid_date_field": field, "value": value})
+
+
 def validate_urls(
     failures: list[dict[str, Any]],
     location: str,
@@ -229,6 +240,8 @@ def validate_national_sources(
     for source_id, source in national_sources.items():
         location = f"source-currency national_sources.{source_id}"
         missing_fields = sorted(field for field in required_fields if not source.get(field))
+        if "expiry_date" not in source:
+            missing_fields.append("expiry_date")
         if missing_fields:
             failures.append({"location": location, "missing_fields": missing_fields})
 
@@ -244,6 +257,8 @@ def validate_national_sources(
 
         validate_date_field(failures, location, "retrieved_at", source.get("retrieved_at"))
         validate_date_field(failures, location, "current_as_of", source.get("current_as_of"))
+        validate_nullable_date_field(failures, location, "effective_date", source.get("effective_date"))
+        validate_nullable_date_field(failures, location, "expiry_date", source.get("expiry_date"))
         validate_urls(failures, location, list_urls(source), allowed_hosts)
 
         legal_card = legal_by_id.get(source_id)
@@ -295,19 +310,31 @@ def validate_calculation_rules(
 
 def validate_local_rules(
     data: dict[str, Any],
+    city_data: dict[str, Any],
     failures: list[dict[str, Any]],
 ) -> dict[str, Any]:
-    city_data = load_json(CITY_RULES)
     allowed_hosts = set(data.get("official_host_allowlist", []))
     local_statuses = set(data.get("local_source_policy", {}).get("status_values", []))
 
     for source_id, card in city_data.get("source_cards", {}).items():
         location = f"city-rules source_cards.{source_id}"
+        missing_fields = sorted(
+            field
+            for field in ("jurisdiction", "current_as_of")
+            if not card.get(field)
+        )
+        missing_fields.extend(
+            field for field in ("effective_date", "expiry_date") if field not in card
+        )
+        if missing_fields:
+            failures.append({"location": location, "missing_fields": sorted(missing_fields)})
         status = card.get("source_status")
         if status not in local_statuses:
             failures.append({"location": location, "invalid_local_source_status": status})
-        if status != "local_verify":
-            validate_date_field(failures, location, "retrieved_at", card.get("retrieved_at"))
+        validate_date_field(failures, location, "retrieved_at", card.get("retrieved_at"))
+        validate_date_field(failures, location, "current_as_of", card.get("current_as_of"))
+        validate_nullable_date_field(failures, location, "effective_date", card.get("effective_date"))
+        validate_nullable_date_field(failures, location, "expiry_date", card.get("expiry_date"))
 
         url = card.get("url")
         official_host = card.get("official_host")
@@ -340,6 +367,47 @@ def validate_local_rules(
     return {
         "local_source_count": len(city_data.get("source_cards", {})),
         "city_count": len(city_data.get("cities", {})),
+    }
+
+
+def validate_source_health(
+    data: dict[str, Any],
+    city_data: dict[str, Any],
+    failures: list[dict[str, Any]],
+    *,
+    as_of: date,
+    max_review_age_days: int,
+) -> dict[str, Any]:
+    health: dict[str, dict[str, dict[str, Any]]] = {"national": {}, "local": {}}
+    degraded: list[str] = []
+    scopes = (
+        ("national", data.get("national_sources", {}), "source-currency national_sources"),
+        ("local", city_data.get("source_cards", {}), "city-rules source_cards"),
+    )
+    for scope, sources, prefix in scopes:
+        for source_id, source in sources.items():
+            record = classify_source_health(source, as_of, max_review_age_days)
+            health[scope][source_id] = record
+            if record["status"] != "current":
+                degraded.append(source_id)
+                failures.append(
+                    {
+                        "location": f"{prefix}.{source_id}",
+                        "source_health_status": record["status"],
+                        "as_of": record["as_of"],
+                        "review_age_days": record["review_age_days"],
+                    }
+                )
+    return {
+        "source_health": health,
+        "degraded_source_ids": sorted(degraded),
+        "source_health_counts": {
+            scope: {
+                status: sum(1 for record in records.values() if record["status"] == status)
+                for status in ("current", "review_due", "expired", "not_yet_effective", "invalid")
+            }
+            for scope, records in health.items()
+        },
     }
 
 
@@ -449,24 +517,49 @@ def validate_deprecated_urls(data: dict[str, Any], failures: list[dict[str, Any]
     return {"deprecated_url_count": len(deprecated_urls)}
 
 
-def validate(path: Path) -> dict[str, Any]:
+def validate(
+    path: Path,
+    *,
+    as_of: date | None = None,
+    max_review_age_days: int | None = None,
+) -> dict[str, Any]:
     data = load_json(path)
     failures: list[dict[str, Any]] = []
+    as_of = as_of or date.today()
+    configured_max_age = data.get("currency_policy", {}).get(
+        "max_review_age_days", DEFAULT_MAX_REVIEW_AGE_DAYS
+    )
+    max_review_age_days = configured_max_age if max_review_age_days is None else max_review_age_days
+    if not isinstance(max_review_age_days, int) or isinstance(max_review_age_days, bool) or max_review_age_days <= 0:
+        failures.append({"location": "source-currency currency_policy", "invalid_max_review_age_days": max_review_age_days})
+        max_review_age_days = DEFAULT_MAX_REVIEW_AGE_DAYS
 
     validate_date_field(failures, "source-currency", "audit_date", data.get("audit_date"))
     validate_date_field(failures, "source-currency", "current_as_of", data.get("current_as_of"))
 
     legal_map_text = LEGAL_MAP.read_text(encoding="utf-8")
     legal_cards = legal_map_source_cards(legal_map_text)
+    city_data = load_json(CITY_RULES)
 
     summary: dict[str, Any] = {
         "path": str(path),
         "audit_date": data.get("audit_date"),
         "current_as_of": data.get("current_as_of"),
+        "as_of": as_of.isoformat(),
+        "max_review_age_days": max_review_age_days,
     }
     summary.update(validate_national_sources(data, legal_cards, failures))
     summary.update(validate_calculation_rules(data, failures))
-    summary.update(validate_local_rules(data, failures))
+    summary.update(validate_local_rules(data, city_data, failures))
+    summary.update(
+        validate_source_health(
+            data,
+            city_data,
+            failures,
+            as_of=as_of,
+            max_review_age_days=max_review_age_days,
+        )
+    )
     summary.update(validate_case_prototypes(legal_map_article_anchors(legal_map_text), failures))
     summary.update(validate_anchor_coverage(legal_map_text, failures))
     summary.update(validate_deprecated_urls(data, failures))
@@ -478,9 +571,15 @@ def validate(path: Path) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("path", nargs="?", type=Path, default=SOURCE_CURRENCY)
+    parser.add_argument("--as-of", type=date.fromisoformat, default=date.today())
+    parser.add_argument("--max-review-age-days", type=int)
     args = parser.parse_args()
 
-    result = validate(args.path)
+    result = validate(
+        args.path,
+        as_of=args.as_of,
+        max_review_age_days=args.max_review_age_days,
+    )
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if result["ok"] else 1
 
