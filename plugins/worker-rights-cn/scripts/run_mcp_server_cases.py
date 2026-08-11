@@ -142,7 +142,7 @@ def validate_stdio_initialize(failures: list[dict[str, Any]]) -> None:
     )
     metadata = json.loads(PROJECT_METADATA.read_text(encoding="utf-8"))
     require(
-        server_info.get("version") == metadata.get("version") == "0.2.0",
+        server_info.get("version") == metadata.get("version") == "0.3.0",
         {"stdio_initialize_server_info": server_info, "metadata_version": metadata.get("version")},
         failures,
     )
@@ -159,7 +159,7 @@ def validate_core_rpc(user_cases: dict[str, dict[str, Any]], failures: list[dict
     )
     metadata = json.loads(PROJECT_METADATA.read_text(encoding="utf-8"))
     require(
-        init.get("serverInfo", {}).get("version") == metadata.get("version") == "0.2.0",
+        init.get("serverInfo", {}).get("version") == metadata.get("version") == "0.3.0",
         {"initialize_server_info": init.get("serverInfo"), "metadata_version": metadata.get("version")},
         failures,
     )

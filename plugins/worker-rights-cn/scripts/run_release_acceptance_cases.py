@@ -44,7 +44,7 @@ def main() -> int:
             injected = dict(baseline)
             injected[gate] = runner.failed_gate(gate, "injected failure")
             decision = runner.evaluate_release(
-                version="0.2.0",
+                version=runner.VERSION,
                 channel="development",
                 gates=injected,
                 platforms={"windows": "passed", "linux": "passed", "macos": "passed"},
@@ -62,7 +62,7 @@ def main() -> int:
         assert plugin_eval["details"]["error_count"] == 5, plugin_eval
 
         no_archive = runner.evaluate_release(
-            version="0.2.0",
+            version=runner.VERSION,
             channel="development",
             gates=baseline,
             platforms={"windows": "passed", "linux": "passed", "macos": "passed"},
@@ -127,7 +127,7 @@ def main() -> int:
             base = Path(temporary) / f"release-{runner.VERSION}"
             expected = Path(f"{base}.json")
             expected.write_text("{}\n", encoding="utf-8")
-            assert expected.name == "release-0.2.0.json"
+            assert expected.name == "release-0.3.0.json"
     except Exception as error:
         failures.append({"case": "release_acceptance_contract", "error": f"{type(error).__name__}: {error}"})
     result = {

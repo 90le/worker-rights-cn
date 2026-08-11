@@ -1,6 +1,6 @@
 {
   "name": "worker-rights-cn",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "China labor rights assistant plugin for worker-side intake, safety guardrails, layoff defense, lawful recovery strategy optimization, compensation estimation, local rule routing, evidence, negotiation, agreement review, and arbitration drafting workflows.",
   "author": {
     "name": "丘彬彬"

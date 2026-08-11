@@ -77,7 +77,7 @@ def assert_manifest_contract(plugin_root: Path, metadata_path: Path, channel: st
     claude = load_json(plugin_root / MANIFEST_PATHS["claude"])
     opencode = load_json(plugin_root / MANIFEST_PATHS["opencode"])
 
-    assert metadata["version"] == "0.2.0"
+    assert metadata["version"] == "0.3.0"
     assert codex["version"] == metadata["version"]
     assert claude["version"] == metadata["version"]
     assert opencode["version"] == metadata["version"]
