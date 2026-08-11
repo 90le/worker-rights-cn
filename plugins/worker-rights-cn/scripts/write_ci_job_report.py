@@ -39,7 +39,7 @@ def main() -> int:
         digest.update(path.name.encode("utf-8") + b"\0" + path.read_bytes() + b"\0")
     payload = {
         "schema_version": 1,
-        "version": "0.2.0",
+        "version": "0.3.0",
         "provider": "github-actions",
         "workflow": ".github/workflows/plugin-ci.yml",
         "run_id": args.run_id,

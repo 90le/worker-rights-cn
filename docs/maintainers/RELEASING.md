@@ -46,7 +46,7 @@ python plugins/worker-rights-cn/scripts/run_documentation_cases.py --check
 构建 archive 后，用隔离宿主目录验证安装、重复安装、0.1 升级、普通卸载保留案件与显式清除：
 
 ```text
-python plugins/worker-rights-cn/scripts/run_install_cases.py --package dist/worker-rights-cn-0.2.0-development.zip
+python plugins/worker-rights-cn/scripts/run_install_cases.py --package dist/worker-rights-cn-0.3.0-public.zip
 ```
 
 该命令只操作临时目录；不得把真实用户的 Codex 配置或案件目录传给测试 runner。OpenClaw 等真实次要宿主未安装时结果必须是 `pending_external`。
