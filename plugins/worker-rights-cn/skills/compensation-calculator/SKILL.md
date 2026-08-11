@@ -32,6 +32,14 @@ Use `scripts/calculate_compensation.py` for deterministic baseline calculations:
 python3 scripts/calculate_compensation.py --input case.json
 ```
 
+To derive the wage base from up to 12 monthly payroll records without saving them, use a UTF-8 CSV with exactly `month,gross_wage` columns:
+
+```bash
+python3 scripts/calculate_compensation.py --input case.json --payroll-csv payroll.csv
+```
+
+The result includes the source SHA-256, normalized monthly rows, missing-month list, total, average, and calculation formula. The CSV average replaces any `average_monthly_wage` supplied in the JSON; verify missing months and the legally applicable wage-base period before relying on it.
+
 For quick testing:
 
 ```bash

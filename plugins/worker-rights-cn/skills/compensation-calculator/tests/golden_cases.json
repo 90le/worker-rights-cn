@@ -246,5 +246,24 @@
       "claim_paths.economic_compensation_n": 90436.8,
       "claim_paths.unlawful_termination_2n": 160436.8
     }
+  },
+  {
+    "id": "payroll-csv-derived-wage-base",
+    "scenario": "从脱敏月度工资记录推导平均工资后计算补偿路径",
+    "skill_focus": ["compensation-calculator"],
+    "risk_notes": ["示例为虚构；需核验工资口径、缺失月份和适用期间"],
+    "payroll_csv": "month,gross_wage\n2025-10,10000.00\n2025-11,12000.00\n2025-12,14000.00\n",
+    "input": {
+      "start_date": "2023-01-01",
+      "end_date": "2026-01-15",
+      "termination_type": "economic_layoff"
+    },
+    "expected": {
+      "payroll_basis.record_count": 3,
+      "payroll_basis.average_monthly_wage": 12000,
+      "payroll_basis.gross_wage_total": 36000,
+      "service_period.n_months": 3,
+      "base_amounts.economic_compensation_n": 36000
+    }
   }
 ]

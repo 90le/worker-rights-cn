@@ -4,16 +4,24 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import hashlib
+import io
 import json
 import math
 from dataclasses import dataclass
 from datetime import date
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 from typing import Any
 
 
 class InputError(ValueError):
     pass
+
+
+PAYROLL_COLUMNS = ("month", "gross_wage")
+CENT = Decimal("0.01")
 
 
 @dataclass
@@ -52,6 +60,87 @@ def money(value: Any, field: str, default: float | None = None) -> float:
     if amount < 0:
         raise InputError(f"{field} cannot be negative")
     return round(amount, 2)
+
+
+def parse_payroll_csv(text: str, *, source_sha256: str | None = None) -> dict[str, Any]:
+    reader = csv.DictReader(io.StringIO(text))
+    if tuple(reader.fieldnames or ()) != PAYROLL_COLUMNS:
+        raise InputError("payroll CSV columns must be exactly: month,gross_wage")
+
+    records: list[dict[str, Any]] = []
+    seen_months: set[str] = set()
+    for line_number, row in enumerate(reader, start=2):
+        if None in row or any(value is None for value in row.values()):
+            raise InputError(f"payroll CSV row {line_number} has an invalid column count")
+        month = row["month"].strip()
+        try:
+            parsed_month = date.fromisoformat(f"{month}-01")
+        except ValueError as exc:
+            raise InputError(f"payroll CSV row {line_number} month must be YYYY-MM") from exc
+        if month != parsed_month.strftime("%Y-%m"):
+            raise InputError(f"payroll CSV row {line_number} month must be YYYY-MM")
+        if month in seen_months:
+            raise InputError(f"payroll CSV contains duplicate month: {month}")
+        seen_months.add(month)
+
+        try:
+            amount = Decimal(row["gross_wage"].strip())
+        except InvalidOperation as exc:
+            raise InputError(f"payroll CSV row {line_number} gross_wage must be a number") from exc
+        if not amount.is_finite() or amount < 0:
+            raise InputError(f"payroll CSV row {line_number} gross_wage must be a non-negative finite number")
+        try:
+            rounded_amount = amount.quantize(CENT, rounding=ROUND_HALF_UP)
+        except InvalidOperation as exc:
+            raise InputError(f"payroll CSV row {line_number} gross_wage is outside the supported range") from exc
+        records.append({"month": month, "gross_wage": float(rounded_amount)})
+
+    if not records:
+        raise InputError("payroll CSV must contain at least one record")
+    if len(records) > 12:
+        raise InputError("payroll CSV must contain at most 12 monthly records")
+    months = [record["month"] for record in records]
+    if months != sorted(months):
+        raise InputError("payroll CSV months must be in ascending order")
+
+    month_indexes = [int(month[:4]) * 12 + int(month[5:]) - 1 for month in months]
+    if month_indexes[-1] - month_indexes[0] >= 12:
+        raise InputError("payroll CSV records must fit within a 12-month window")
+    present = set(month_indexes)
+    missing_months = [
+        f"{index // 12:04d}-{index % 12 + 1:02d}"
+        for index in range(month_indexes[0], month_indexes[-1] + 1)
+        if index not in present
+    ]
+    total = sum((Decimal(str(record["gross_wage"])) for record in records), Decimal("0"))
+    average = (total / Decimal(len(records))).quantize(CENT, rounding=ROUND_HALF_UP)
+    return {
+        "schema_version": "0.1.0",
+        "source_sha256": source_sha256 or hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        "record_count": len(records),
+        "period_start": months[0],
+        "period_end": months[-1],
+        "missing_months": missing_months,
+        "records": records,
+        "gross_wage_total": float(total.quantize(CENT, rounding=ROUND_HALF_UP)),
+        "average_monthly_wage": float(average),
+        "calculation": "gross_wage_total / record_count",
+    }
+
+
+def calculate_from_payroll(data: dict[str, Any], payroll: dict[str, Any]) -> dict[str, Any]:
+    calculation_input = dict(data)
+    supplied_average = calculation_input.get("average_monthly_wage")
+    calculation_input["average_monthly_wage"] = payroll["average_monthly_wage"]
+    result = calculate(calculation_input)
+    result["payroll_basis"] = payroll
+    if supplied_average not in (None, ""):
+        result["warnings"].append("average_monthly_wage from input was replaced by the payroll CSV average.")
+    if payroll["record_count"] < 12 or payroll["missing_months"]:
+        result["warnings"].append(
+            "Payroll average uses available records only; verify the statutory wage-base period and missing months."
+        )
+    return result
 
 
 def completed_months(start: date, end: date) -> int:
@@ -216,6 +305,7 @@ def run_self_test() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Calculate baseline China labor compensation amounts.")
     parser.add_argument("--input", help="Path to JSON input case facts.")
+    parser.add_argument("--payroll-csv", help="Optional UTF-8 CSV with month,gross_wage columns.")
     parser.add_argument("--self-test", action="store_true", help="Run built-in smoke test.")
     args = parser.parse_args()
 
@@ -226,9 +316,24 @@ def main() -> int:
         if not args.input:
             raise InputError("--input is required unless --self-test is used")
         data = json.loads(Path(args.input).read_text(encoding="utf-8"))
-        print(json.dumps(calculate(data), ensure_ascii=False, indent=2))
+        if not isinstance(data, dict):
+            raise InputError("input JSON must be an object")
+        if args.payroll_csv:
+            raw_payroll = Path(args.payroll_csv).read_bytes()
+            try:
+                payroll_text = raw_payroll.decode("utf-8-sig")
+            except UnicodeDecodeError as exc:
+                raise InputError("payroll CSV must be UTF-8") from exc
+            payroll = parse_payroll_csv(
+                payroll_text,
+                source_sha256=hashlib.sha256(raw_payroll).hexdigest(),
+            )
+            result = calculate_from_payroll(data, payroll)
+        else:
+            result = calculate(data)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
-    except (InputError, json.JSONDecodeError) as exc:
+    except (InputError, json.JSONDecodeError, OSError) as exc:
         print(json.dumps({"error": str(exc)}, ensure_ascii=False, indent=2))
         return 2
 
