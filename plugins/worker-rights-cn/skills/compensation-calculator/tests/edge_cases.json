@@ -85,7 +85,7 @@
         "claim_paths.unlawful_termination_2n": 2220000
       },
       "expected_warning_substrings": [
-        "local_average_monthly_wage missing"
+        "未提供当地月平均工资"
       ]
     },
     {
@@ -111,7 +111,7 @@
         ]
       },
       "expected_warning_substrings": [
-        "unsigned_contract_months_owed capped"
+        "双倍工资月数暂按最多 11 个月计算"
       ]
     },
     {
@@ -160,7 +160,7 @@
         ]
       },
       "expected_warning_substrings": [
-        "unused annual leave uses a default extra-pay estimate"
+        "未休年休假金额采用默认补付倍数估算"
       ]
     }
   ],

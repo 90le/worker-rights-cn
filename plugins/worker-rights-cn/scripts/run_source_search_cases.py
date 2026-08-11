@@ -65,6 +65,18 @@ def validate_search_case(
             failures,
         )
 
+    expected_top_id = case.get("expected_top_id")
+    if expected_top_id:
+        require(
+            bool(results) and str(results[0].get("id")) == str(expected_top_id),
+            {
+                "expected_top_id": expected_top_id,
+                "query": case["query"],
+                "top_ids": [item.get("id") for item in results],
+            },
+            failures,
+        )
+
     allowed_result_types = set(case.get("allowed_result_types", []))
     if allowed_result_types:
         require(
@@ -222,7 +234,7 @@ def validate(cases_path: Path = DEFAULT_CASES) -> dict[str, Any]:
                 failures,
             )
             require(
-                "raw secrets are ignored; configure api_key_env instead"
+                "已忽略原始密钥；请改用 api_key_env 配置"
                 in ai_recall_plan.get("gateway_warnings", []),
                 {"ai_recall_gateway_warnings": ai_recall_plan.get("gateway_warnings")},
                 failures,
@@ -254,7 +266,7 @@ def validate(cases_path: Path = DEFAULT_CASES) -> dict[str, Any]:
                     "reranked_source_ids": ["LCL-2012#art41", "FAKE-SOURCE#art1"],
                     "expanded_queries": [],
                     "missing_source_queries": [],
-                    "risk_flags": [],
+                    "risk_flags": ["local_verify marked final"],
                     "notes": "The worker will definitely win and api_" + "key=sk-must-not-echo-secret",
                     "legal_conclusion": "违法解除最终成立",
                 },
@@ -270,6 +282,42 @@ def validate(cases_path: Path = DEFAULT_CASES) -> dict[str, Any]:
                 rejected_recall.get("status") == "rejected"
                 and {"UNKNOWN_SOURCE_ID", "SECRET_OR_TOKEN_IN_RESPONSE", "FORBIDDEN_LEGAL_CONCLUSION"}.issubset(rejected_codes),
                 {"rejected_ai_recall_response": rejected_recall},
+                failures,
+            )
+            _, narrative_gateway_warnings = local_db.sanitize_ai_recall_gateway_config(
+                {"provider": "legacy-provider", "api_key": "secret-value"}
+            )
+            runtime_narratives = [
+                *narrative_gateway_warnings,
+                *(
+                    output_schema.get("properties", {}).get(name, {}).get("description")
+                    for name in ("reranked_source_ids", "expanded_queries", "missing_source_queries", "risk_flags")
+                ),
+                *ai_recall_plan.get("model_request", {}).get("instructions", []),
+                next(
+                    (
+                        message.get("content")
+                        for message in ai_recall_plan.get("model_request", {}).get("messages", [])
+                        if message.get("role") == "system"
+                    ),
+                    None,
+                ),
+                ai_recall_plan.get("execution", {}).get("secret_policy"),
+                *ai_recall_plan.get("next_steps", []),
+                *(issue.get("message") for issue in rejected_recall.get("issues", [])),
+                rejected_recall.get("policy", {}).get("next_step"),
+            ]
+            non_chinese_runtime_narratives = [
+                item
+                for item in runtime_narratives
+                if not isinstance(item, str) or not any("\u4e00" <= char <= "\u9fff" for char in item)
+            ]
+            require(
+                len(runtime_narratives) == 23 and not non_chinese_runtime_narratives,
+                {
+                    "ai_recall_runtime_narrative_count": len(runtime_narratives),
+                    "ai_recall_runtime_non_chinese_narratives": non_chinese_runtime_narratives,
+                },
                 failures,
             )
             require(

@@ -8,5 +8,10 @@
   {"id":"evidence-body","path":"artifacts.0.content","value":"证据正文：张三 13800138000 被要求今天签字。","classification":"dispute_evidence","action":"summarize"},
   {"id":"third-party-detail","path":"facts.third_parties.0.phone","value":"13900139000","classification":"high_risk_enterprise","action":"exclude"},
   {"id":"customer-list","path":"artifacts.1.body","value":"客户名单：王某 13600136000，李某 13700137000","classification":"high_risk_enterprise","action":"exclude"},
-  {"id":"source-code","path":"artifacts.2.text","value":"source code: API_SECRET = 'private-key'","classification":"high_risk_enterprise","action":"exclude"}
+  {"id":"source-code","path":"artifacts.2.text","value":"source code: API_SECRET = 'private-key'","classification":"high_risk_enterprise","action":"exclude"},
+  {"id":"worker-email","path":"facts.worker.email","value":"worker@example.invalid","classification":"personal_sensitive","action":"redact"},
+  {"id":"worker-bank-card","path":"facts.worker.bank_card","value":"6222020000000000000","classification":"personal_sensitive","action":"redact"},
+  {"id":"embedded-email-and-bank-card","path":"facts.worker.notes","value":"备用邮箱 backup@example.invalid，工资卡 6217000000000000000","classification":"personal_sensitive","action":"redact"},
+  {"id":"chinese-email-key","path":"facts.worker.邮箱","value":"脱敏占位值 A","classification":"personal_sensitive","action":"redact"},
+  {"id":"chinese-bank-key","path":"facts.worker.银行卡号","value":"脱敏占位值 B","classification":"personal_sensitive","action":"redact"}
 ]

@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -113,6 +114,17 @@ def validate_workbench(
             }
         )
 
+    for section in workbench.get("section_summaries", []):
+        title = section.get("title", "")
+        if not isinstance(title, str) or not re.search(r"[\u4e00-\u9fff]", title):
+            failures.append(
+                {
+                    "turn": label,
+                    "section_id": section.get("id"),
+                    "non_chinese_section_title": title,
+                }
+            )
+
     excluded_sections = [
         section for section in expected.get("excluded_sections", []) if section in section_ids
     ]
@@ -139,6 +151,19 @@ def validate_workbench(
             }
         )
 
+    for field in workbench.get("editable_fields", []):
+        for name in ("label", "source_hint"):
+            value = field.get(name, "")
+            if not isinstance(value, str) or not re.search(r"[\u4e00-\u9fff]", value):
+                failures.append(
+                    {
+                        "turn": label,
+                        "editable_path": field.get("path"),
+                        "non_chinese_editable_field": name,
+                        "actual": value,
+                    }
+                )
+
     missing_actions = missing_expected_items(
         action_ids,
         expected.get("workbench_action_ids_contain", []),
@@ -151,6 +176,17 @@ def validate_workbench(
                 "actual": action_ids,
             }
         )
+
+    for action in workbench.get("action_queue", []):
+        action_label = action.get("label", "")
+        if not isinstance(action_label, str) or not re.search(r"[\u4e00-\u9fff]", action_label):
+            failures.append(
+                {
+                    "turn": label,
+                    "action_id": action.get("id"),
+                    "non_chinese_action_label": action_label,
+                }
+            )
 
     export_kinds = [version.get("kind") for version in workbench.get("export_versions", [])]
     missing_export_kinds = missing_expected_items(
@@ -179,6 +215,10 @@ def validate_workbench(
                 "actual": redacted_paths,
             }
         )
+
+    for limit in share_packet.get("sharing_limits", []):
+        if not isinstance(limit, str) or not re.search(r"[\u4e00-\u9fff]", limit):
+            failures.append({"turn": label, "non_chinese_sharing_limit": limit})
 
     return failures
 
@@ -214,6 +254,17 @@ def validate_expectations(
                 }
             )
 
+    product_output = state.get("product_output", {})
+    for card in product_output.get("summary_cards", []):
+        title = card.get("title", "")
+        if not isinstance(title, str) or not re.search(r"[\u4e00-\u9fff]", title):
+            failures.append(
+                {"turn": label, "summary_card_id": card.get("id"), "non_chinese_title": title}
+            )
+    for step in product_output.get("next_steps", []):
+        if not isinstance(step, str) or not re.search(r"[\u4e00-\u9fff]", step):
+            failures.append({"turn": label, "non_chinese_next_step": step})
+
     failures.extend(validate_workbench(label, state, expected))
 
     for expected_field, actual_values in [
@@ -241,6 +292,19 @@ def validate_expectations(
                 "question_count_actual": len(state.get("questions", [])),
             }
         )
+
+    for question in state.get("questions", []):
+        for field in ("label", "question", "source_hint"):
+            value = question.get(field, "")
+            if not isinstance(value, str) or not re.search(r"[\u4e00-\u9fff]", value):
+                failures.append(
+                    {
+                        "turn": label,
+                        "question_path": question.get("path"),
+                        "non_chinese_question_field": field,
+                        "actual": value,
+                    }
+                )
 
     package = state.get("case_package")
     if "package_generated" in expected and bool(package) != expected["package_generated"]:

@@ -1,24 +1,24 @@
 {
   "schema_version": "0.1.0",
   "retrieved_at": "2026-06-16",
-  "source_note": "Use with layoff-defense/references/legal-map.md. Negotiation wording must be verified against case facts, local practice, and any signed documents before sending.",
+  "source_note": "与 layoff-defense/references/legal-map.md 配合使用；发送协商表述前，应结合案件事实、当地实务和已经签署的文件复核。",
   "global_safety_rules": [
-    "Do not threaten, insult, harass, or imply unlawful retaliation.",
-    "Do not fabricate facts, fake evidence, alter screenshots, or backdate documents.",
-    "Do not copy company secrets, source code, customer lists, or unrelated personal data.",
-    "State complaint, arbitration, or enforcement paths as lawful options, not intimidation.",
-    "Separate confirmed facts from requests for clarification."
+    "不要威胁、侮辱、骚扰或暗示实施违法报复。",
+    "不要捏造事实、伪造证据、篡改截图或倒签文件。",
+    "不要复制公司秘密、源代码、客户名单或与争议无关的个人信息。",
+    "将投诉、仲裁或执行表述为依法可选择的途径，不要用作恐吓。",
+    "将已经确认的事实与请求对方说明的事项明确区分。"
   ],
   "message_blocks": {
     "request_written_terms": {
-      "purpose": "Ask HR to provide the proposal, reason, amount, payment date, certificate wording, and agreement draft in writing.",
+      "purpose": "请人力资源部门书面提供方案、理由、金额、付款日期、解除或终止证明表述和协议草稿。",
       "source_anchors": [
         "LDA-2007#art4",
         "LDA-2007#art6"
       ]
     },
     "counteroffer_amount_basis": {
-      "purpose": "Anchor counteroffer to service years, 12-month wage basis, statutory items, and itemized unpaid amounts.",
+      "purpose": "以工作年限、解除或终止前 12 个月工资基数、法定项目及欠付金额明细作为还价依据。",
       "source_anchors": [
         "LCL-2012#art46",
         "LCL-2012#art47",
@@ -26,14 +26,14 @@
       ]
     },
     "rights_reservation": {
-      "purpose": "Preserve rights while negotiations continue, without making unsupported accusations.",
+      "purpose": "协商期间明确保留相关权利，不作缺乏依据的指控。",
       "source_anchors": [
         "LDA-2007#art5",
         "LDA-2007#art27"
       ]
     },
     "factual_refusal_to_resign": {
-      "purpose": "Refuse a personal-reason resignation form when the worker does not voluntarily resign.",
+      "purpose": "劳动者并非自愿离职时，明确拒绝签署“个人原因”辞职文件。",
       "source_anchors": [
         "LCL-2012#art37",
         "LCL-2012#art38",
@@ -41,7 +41,7 @@
       ]
     },
     "employer_breach_record_request": {
-      "purpose": "Ask the employer to confirm wage, social insurance, salary cut, transfer, lockout, or other breach facts in writing.",
+      "purpose": "请用人单位书面确认工资、社保、降薪、调岗、停卡停工或其他相关事实。",
       "source_anchors": [
         "LCL-2012#art30",
         "LCL-2012#art38",
@@ -50,7 +50,7 @@
       ]
     },
     "request_written_reason": {
-      "purpose": "Request the exact written termination reason, basis, date, union procedure, and certificate wording.",
+      "purpose": "要求提供准确的书面解除或终止理由、依据、日期、工会程序情况和证明文件表述。",
       "source_anchors": [
         "LCL-2012#art39",
         "LCL-2012#art40",
@@ -59,7 +59,7 @@
       ]
     },
     "request_economic_layoff_report_package": {
-      "purpose": "Request the economic-layoff reason, 30-day explanation and opinion records, labor-authority report proof, final layoff plan, compensation basis, and Guangzhou HRSS written report package when the case is in Guangzhou.",
+      "purpose": "要求提供经济性裁员理由、提前 30 日说明及听取意见记录、向劳动行政部门报告的凭证、最终裁员方案和补偿计算依据；案件在广州时，还应要求提供当地人社部门的书面报告材料。",
       "source_anchors": [
         "LCL-2012#art41",
         "LCL-2012#art43",
@@ -68,21 +68,21 @@
       ]
     },
     "request_rehire_priority_and_replacement_records": {
-      "purpose": "Ask the employer to confirm whether it is recruiting, outsourcing, dispatching, or otherwise replacing substantially similar roles within six months after an economic layoff, and to notify the laid-off worker of same-condition rehire priority where applicable.",
+      "purpose": "请用人单位确认经济性裁员后 6 个月内是否通过招聘、外包、劳务派遣等方式补充实质相同岗位；符合法定情形时，要求其通知被裁减人员在同等条件下享有优先招用权。",
       "source_anchors": [
         "LCL-2012#art41",
         "LDA-2007#art6"
       ]
     },
     "work_availability": {
-      "purpose": "State the worker remains available to work or hand over lawfully when termination status is unclear.",
+      "purpose": "解除或终止状态不明时，说明劳动者仍可正常提供劳动或依法办理交接。",
       "source_anchors": [
         "LCL-2012#art48",
         "LCL-2012#art50"
       ]
     },
     "itemized_payment_request": {
-      "purpose": "Request itemized wages, bonuses, reimbursements, annual leave, economic compensation, and payment deadline.",
+      "purpose": "要求分项列明工资、奖金、报销、未休年休假工资、经济补偿和付款期限。",
       "source_anchors": [
         "LCL-2012#art30",
         "LCL-2012#art85",
@@ -90,7 +90,7 @@
       ]
     },
     "statutory_path_notice": {
-      "purpose": "State that unresolved wage or separation disputes may be handled by complaint, mediation, arbitration, or litigation paths.",
+      "purpose": "说明尚未解决的工资或离职争议可以依法通过投诉、调解、仲裁或诉讼处理。",
       "source_anchors": [
         "LDA-2007#art5",
         "LDA-2007#art9",
@@ -98,7 +98,7 @@
       ]
     },
     "payment_or_release_request": {
-      "purpose": "Ask employer to pay non-compete compensation or confirm release from non-compete obligations.",
+      "purpose": "要求用人单位支付竞业限制经济补偿，或书面确认解除竞业限制义务。",
       "source_anchors": [
         "LCL-2012#art23",
         "SPC-LDI-1-2020#art36",
@@ -107,7 +107,7 @@
       ]
     },
     "scope_limit_question": {
-      "purpose": "Ask for the basis of personnel scope, confidential matter, territory, term, competing business, and penalty.",
+      "purpose": "要求说明竞业限制适用人员、保密事项、地域、期限、竞争业务和违约责任的依据。",
       "source_anchors": [
         "LCL-2012#art24",
         "LCL-2012#art25",
@@ -116,21 +116,21 @@
       ]
     },
     "payment_default_notice": {
-      "purpose": "Record missed payment under an agreement and request immediate payment with deadline and bank details.",
+      "purpose": "记录协议项下逾期付款，并写明收款账户和期限，要求立即支付。",
       "source_anchors": [
         "SPC-LDI-1-2020#art35",
         "LDA-2007#art51"
       ]
     },
     "evidence_preservation": {
-      "purpose": "Remind the worker to preserve full-context lawful records before and after sending messages.",
+      "purpose": "提醒劳动者在发送消息前后合法保留完整上下文记录。",
       "source_anchors": [
         "LDA-2007#art6",
         "SPC-LDI-1-2020#art44"
       ]
     },
     "lawyer_check": {
-      "purpose": "Flag high-risk legal review before signing or sending.",
+      "purpose": "签署或发送前，对高风险事项标记律师复核。",
       "source_anchors": [
         "SPC-LDI-1-2020#art35",
         "LDA-2007#art27"
@@ -139,9 +139,9 @@
   },
   "scenarios": {
     "separation_offer_counter": {
-      "use_when": "Employer proposes mutual termination, settlement, or low compensation before signing.",
+      "use_when": "用人单位在签署文件前提出协商解除、和解或较低补偿方案。",
       "channels": ["wechat", "email", "meeting_followup"],
-      "objective": "Get written proposal, itemized amount, payment deadline, certificate wording, and preserve ability to counteroffer.",
+      "objective": "取得书面方案、金额明细、付款期限和解除或终止证明表述，并保留提出还价的空间。",
       "message_blocks": [
         "request_written_terms",
         "counteroffer_amount_basis",
@@ -169,15 +169,15 @@
         "SPC-LDI-1-2020#art35"
       ],
       "escalation_triggers": [
-        "Employer refuses written terms.",
-        "Agreement contains broad waiver or personal-reason resignation wording.",
-        "Payment date or amount remains unclear."
+        "用人单位拒绝提供书面方案。",
+        "协议含有宽泛权利放弃或“个人原因辞职”表述。",
+        "付款日期或金额仍不明确。"
       ]
     },
     "forced_resignation_response": {
-      "use_when": "Employer pressures worker to sign personal-reason resignation or OA resignation while dispute facts exist.",
+      "use_when": "用人单位在存在争议事实时，要求或施压劳动者签署“个人原因”辞职文件或 OA 离职申请。",
       "channels": ["wechat", "email", "formal_letter"],
-      "objective": "Avoid voluntary resignation admission and request written factual basis.",
+      "objective": "避免形成自愿离职的意思表示，并要求书面说明事实依据。",
       "message_blocks": [
         "factual_refusal_to_resign",
         "employer_breach_record_request",
@@ -205,15 +205,15 @@
         "SPC-LDI-2-2025#art19"
       ],
       "escalation_triggers": [
-        "Employer blocks work access or withholds wages.",
-        "Employer demands same-day resignation.",
-        "Limitation or evidence loss risk is high."
+        "用人单位停用工作权限或拖欠工资。",
+        "用人单位要求劳动者当日完成辞职。",
+        "劳动仲裁时效可能临近或存在证据灭失风险。"
       ]
     },
     "termination_reason_request": {
-      "use_when": "Employer orally dismisses, locks account, or gives unclear termination reason.",
+      "use_when": "用人单位口头辞退、停用账号或未明确说明解除理由。",
       "channels": ["wechat", "email", "meeting_followup"],
-      "objective": "Get exact written reason, preserve work availability, and avoid accepting unclear termination.",
+      "objective": "取得准确的书面理由，保留继续提供劳动的记录，并避免被视为接受不明原因的解除。",
       "message_blocks": [
         "request_written_reason",
         "work_availability",
@@ -242,15 +242,15 @@
         "SPC-LDI-1-2020#art44"
       ],
       "escalation_triggers": [
-        "Employer refuses written reason.",
-        "Employer changes termination ground.",
-        "Worker wants reinstatement or 2N compensation."
+        "用人单位拒绝提供书面理由。",
+        "用人单位变更解除理由。",
+        "劳动者考虑要求继续履行劳动合同或主张违法解除赔偿金。"
       ]
     },
     "economic_layoff_report_request": {
-      "use_when": "Employer claims economic layoff, headcount optimization, business-method adjustment, technology or AI transformation, or Guangzhou local layoff filing/reporting.",
+      "use_when": "用人单位以经济性裁员、人员优化、经营方式调整、技术或 AI 转型，或广州当地裁员备案、报告为由处理劳动关系。",
       "channels": ["email", "formal_letter", "wechat"],
-      "objective": "Ask for the statutory layoff basis, employee-opinion process, HRSS report materials, priority-retention review, and payment basis while avoiding threats or unlawful evidence collection.",
+      "objective": "要求说明法定裁员依据、听取职工意见程序、人社部门报告材料、优先留用审查和补偿计算依据，同时避免威胁或违法收集证据。",
       "message_blocks": [
         "request_written_reason",
         "request_economic_layoff_report_package",
@@ -282,17 +282,17 @@
         "LDA-2007#art6"
       ],
       "escalation_triggers": [
-        "Employer refuses to identify the statutory layoff reason.",
-        "Employer has no 30-day explanation or opinion record.",
-        "Guangzhou HRSS written report package or final publication is missing.",
-        "Priority-retention or protected-status screening is absent.",
-        "Same or substantially similar roles are recruited, outsourced, or dispatched within six months without rehire notice."
+        "用人单位拒绝说明法定裁员理由。",
+        "用人单位没有提前 30 日说明或听取意见记录。",
+        "缺少向广州市人社部门提交的书面报告材料或最终公布的裁员方案。",
+        "未进行优先留用或受特别保护人员审查。",
+        "经济性裁员后 6 个月内，通过招聘、外包或劳务派遣补充相同或实质相似岗位，却未通知被裁减人员优先招用事项。"
       ]
     },
     "unpaid_wage_demand": {
-      "use_when": "Wages, bonus, reimbursement, annual leave, or economic compensation are unpaid or underpaid.",
+      "use_when": "工资、奖金、报销、未休年休假工资或经济补偿存在未付或少付。",
       "channels": ["email", "formal_letter", "wechat"],
-      "objective": "Request itemized calculation and payment while preserving complaint and arbitration path.",
+      "objective": "要求提供分项计算并付款，同时保留投诉和仲裁等依法处理途径。",
       "message_blocks": [
         "itemized_payment_request",
         "statutory_path_notice",
@@ -319,15 +319,15 @@
         "LDA-2007#art27"
       ],
       "escalation_triggers": [
-        "Employer misses payment deadline.",
-        "Employer refuses itemized calculation.",
-        "Arbitration limitation may be near."
+        "用人单位超过付款期限仍未支付。",
+        "用人单位拒绝提供分项计算。",
+        "劳动仲裁时效可能临近。"
       ]
     },
     "non_compete_payment_or_release": {
-      "use_when": "Employer asserts non-compete, stops paying compensation, or demands broad restriction after departure.",
+      "use_when": "用人单位主张竞业限制、停止支付补偿，或在离职后要求劳动者承担范围过宽的限制。",
       "channels": ["email", "formal_letter"],
-      "objective": "Clarify scope, request compensation, or request written release from restriction.",
+      "objective": "澄清限制范围，要求支付经济补偿或书面解除竞业限制。",
       "message_blocks": [
         "payment_or_release_request",
         "scope_limit_question",
@@ -357,15 +357,15 @@
         "SPC-LDI-2-2025#art15"
       ],
       "escalation_triggers": [
-        "Employer has not paid non-compete compensation for three months.",
-        "Scope, territory, term, or penalty is excessive.",
-        "Worker may join a competitor and needs lawyer_check."
+        "用人单位连续 3 个月未支付竞业限制经济补偿。",
+        "适用范围、地域、期限或违约责任可能过度。",
+        "劳动者拟入职可能构成竞争关系的单位，需要律师复核。"
       ]
     },
     "settlement_payment_default": {
-      "use_when": "Employer signed a settlement or separation agreement but misses payment or refuses certificate transfer duties.",
+      "use_when": "用人单位已经签署和解或解除协议，但逾期付款，或拒绝履行出具证明、办理档案和社保关系转移等义务。",
       "channels": ["email", "formal_letter", "wechat"],
-      "objective": "Record default, request immediate performance, and prepare enforcement/arbitration materials.",
+      "objective": "记录违约情况，要求立即履行，并准备执行或仲裁所需材料。",
       "message_blocks": [
         "payment_default_notice",
         "itemized_payment_request",
@@ -391,9 +391,9 @@
         "SPC-LDI-1-2020#art35"
       ],
       "escalation_triggers": [
-        "Payment remains unpaid after written deadline.",
-        "Employer refuses certificate or transfer paperwork.",
-        "Agreement validity or enforceability is disputed."
+        "书面催告期限届满后仍未付款。",
+        "用人单位拒绝出具证明或办理转移手续。",
+        "协议效力或可执行性存在争议。"
       ]
     }
   }

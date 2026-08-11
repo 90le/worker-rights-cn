@@ -79,7 +79,7 @@ def summarize_reasons(result: dict[str, Any]) -> str:
     messages = []
     for reason in result["reasons"]:
         message = reason.get("message") or reason.get("id")
-        messages.append(f"{reason.get('id')}: {message}")
+        messages.append(str(message))
     return "\n".join(messages)
 
 

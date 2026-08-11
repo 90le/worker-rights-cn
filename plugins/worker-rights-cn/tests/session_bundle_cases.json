@@ -17,6 +17,7 @@
     "expected": {
       "bundle_status": "ready_for_download",
       "share_access_status": "enabled",
+      "share_guidance_contains": "分享前再次检查脱敏内容",
       "missing_confirmations": [],
       "artifact_paths_contain": [
         "private/session_state.json",
@@ -38,9 +39,9 @@
       ],
       "content_contains": {
         "share/redacted_share_packet.md": [
-          "# Redacted Share Packet",
-          "Redaction level: standard",
-          "Sharing Limits"
+          "# 脱敏共享材料",
+          "脱敏级别：标准脱敏",
+          "分享限制"
         ]
       },
       "content_excludes": {
@@ -74,6 +75,7 @@
     "expected": {
       "bundle_status": "blocked_pending_confirmations",
       "share_access_status": "disabled_pending_confirmations",
+      "share_guidance_contains": "完成缺失的分享确认",
       "missing_confirmations": ["redaction_review"],
       "artifact_paths_contain": [
         "private/case_package.json",
@@ -83,8 +85,8 @@
       ],
       "content_contains": {
         "share/redacted_share_packet.md": [
-          "constructive_dismissal",
-          "Sharing Limits"
+          "劳动者因用人单位法定情形解除",
+          "分享限制"
         ]
       },
       "content_excludes": {
@@ -119,6 +121,7 @@
     "expected": {
       "bundle_status": "draft_pending_required_facts",
       "share_access_status": "disabled_pending_required_facts",
+      "share_guidance_contains": "补齐必需事实",
       "missing_confirmations": [],
       "artifact_paths_contain": [
         "private/session_state.json",
@@ -133,12 +136,12 @@
       ],
       "content_contains": {
         "docs/workbench_preview.md": [
-          "intake_follow_up",
+          "补充案件信息",
           "case.parties.employer_legal_name"
         ],
         "share/redacted_share_packet.md": [
-          "draft_pending_required_facts",
-          "No package sections yet"
+          "待补充必要事实的草稿",
+          "暂无材料包板块"
         ]
       },
       "content_excludes": {

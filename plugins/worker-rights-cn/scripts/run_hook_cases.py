@@ -22,6 +22,12 @@ def require(condition: bool, failure: dict[str, Any], failures: list[dict[str, A
 
 def validate_policy_cases(failures: list[dict[str, Any]]) -> None:
     policy = hook_runner.load_json(hook_runner.DEFAULT_POLICY)
+    non_chinese_messages = [
+        rule["id"]
+        for rule in policy["rules"]
+        if not any("\u3400" <= char <= "\u9fff" for char in str(rule.get("message", "")))
+    ]
+    require(not non_chinese_messages, {"non_chinese_policy_messages": non_chinese_messages}, failures)
     cases = [
         {
             "id": "allow-lawful-evidence-plan",

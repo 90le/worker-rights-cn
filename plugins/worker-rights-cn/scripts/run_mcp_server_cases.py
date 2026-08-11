@@ -142,7 +142,7 @@ def validate_stdio_initialize(failures: list[dict[str, Any]]) -> None:
     )
     metadata = json.loads(PROJECT_METADATA.read_text(encoding="utf-8"))
     require(
-        server_info.get("version") == metadata.get("version") == "0.4.0",
+        server_info.get("version") == metadata.get("version") == "0.4.1",
         {"stdio_initialize_server_info": server_info, "metadata_version": metadata.get("version")},
         failures,
     )
@@ -159,8 +159,16 @@ def validate_core_rpc(user_cases: dict[str, dict[str, Any]], failures: list[dict
     )
     metadata = json.loads(PROJECT_METADATA.read_text(encoding="utf-8"))
     require(
-        init.get("serverInfo", {}).get("version") == metadata.get("version") == "0.4.0",
+        init.get("serverInfo", {}).get("version") == metadata.get("version") == "0.4.1",
         {"initialize_server_info": init.get("serverInfo"), "metadata_version": metadata.get("version")},
+        failures,
+    )
+    initialize_instructions = init.get("instructions")
+    require(
+        isinstance(initialize_instructions, str)
+        and "不替代律师" in initialize_instructions
+        and any("\u4e00" <= char <= "\u9fff" for char in initialize_instructions),
+        {"initialize_instructions": initialize_instructions},
         failures,
     )
 
@@ -236,6 +244,30 @@ def validate_core_rpc(user_cases: dict[str, dict[str, Any]], failures: list[dict
         {"ai_recall_gateway_schema": ai_recall_schema},
         failures,
     )
+    configuration = ai_recall_schema.get("configuration_schema", {}).get("properties", {})
+    recall_policy = ai_recall_schema.get("ai_recall_policy", {})
+    response_validation = ai_recall_schema.get("response_validation", {})
+    ai_recall_narratives = [
+        ai_recall_schema.get("purpose"),
+        ai_recall_schema.get("default_behavior", {}).get("secret_policy"),
+        *(configuration.get(name, {}).get("description") for name in ("model", "base_url", "api_key_env")),
+        *(item for name in ("allowed_tasks", "forbidden_tasks", "required_follow_up") for item in recall_policy.get(name, [])),
+        *(response_validation.get(name) for name in ("candidate_id_policy", "secret_policy", "output_sanitization")),
+        *response_validation.get("forbidden_content", []),
+    ]
+    non_chinese_narratives = [
+        item
+        for item in ai_recall_narratives
+        if not isinstance(item, str) or not any("\u4e00" <= char <= "\u9fff" for char in item)
+    ]
+    require(
+        len(ai_recall_narratives) == 23 and not non_chinese_narratives,
+        {
+            "ai_recall_gateway_narrative_count": len(ai_recall_narratives),
+            "ai_recall_gateway_non_chinese_narratives": non_chinese_narratives,
+        },
+        failures,
+    )
 
     forward_resource = rpc.request(
         "resources/read",
@@ -283,9 +315,14 @@ def validate_core_rpc(user_cases: dict[str, dict[str, Any]], failures: list[dict
         {"unsupported_validate_status": unsupported_validate},
         failures,
     )
+    unsupported_user_texts = [str(item) for item in unsupported_validate.get("warnings", [])]
     require(
-        any("Unsupported jurisdiction" in warning for warning in unsupported_validate.get("warnings", [])),
-        {"unsupported_validate_warnings": unsupported_validate.get("warnings", [])},
+        any("非中国大陆管辖" in warning for warning in unsupported_validate.get("warnings", []))
+        and all(
+            any("\u3400" <= char <= "\u9fff" for char in text)
+            for text in unsupported_user_texts
+        ),
+        {"unsupported_validate_user_texts": unsupported_user_texts},
         failures,
     )
 
@@ -365,6 +402,32 @@ def validate_core_rpc(user_cases: dict[str, dict[str, Any]], failures: list[dict
         {"map_termination_source_anchors": mapped.get("source_anchors", [])},
         failures,
     )
+    mapped_warnings = mapped.get("warnings", [])
+    require(
+        len(mapped_warnings) == 2
+        and all(
+            isinstance(item, str) and any("\u4e00" <= char <= "\u9fff" for char in item)
+            for item in mapped_warnings
+        ),
+        {"map_termination_warnings": mapped_warnings},
+        failures,
+    )
+
+    protected_case = copy.deepcopy(guangzhou_case["case"])
+    protected_case.setdefault("risk_flags", {})["pregnancy_or_maternity"] = True
+    protected_mapped = rpc.tool(
+        "worker_rights.map_termination",
+        {"case": protected_case, "termination_map": "economic_layoff"},
+    )
+    protected_gate = protected_mapped.get("protected_status_gate", {})
+    require(
+        protected_gate.get("applies") is True
+        and protected_gate.get("flags") == ["pregnancy_or_maternity"]
+        and any("\u4e00" <= char <= "\u9fff" for char in protected_gate.get("instruction", ""))
+        and protected_mapped.get("maps", [{}])[0].get("status") == "lawyer_check",
+        {"protected_status_map": protected_mapped},
+        failures,
+    )
 
     evidence_plan = rpc.tool(
         "worker_rights.build_evidence_plan",
@@ -389,6 +452,16 @@ def validate_core_rpc(user_cases: dict[str, dict[str, Any]], failures: list[dict
         {"evidence_plan_source_anchors": evidence_plan.get("source_anchors", [])},
         failures,
     )
+    local_rule_notes = evidence_plan.get("local_rule_notes", [])
+    require(
+        len(local_rule_notes) == 1
+        and all(
+            isinstance(item, str) and any("\u4e00" <= char <= "\u9fff" for char in item)
+            for item in local_rule_notes
+        ),
+        {"evidence_plan_local_rule_notes": local_rule_notes},
+        failures,
+    )
 
     unsafe_review = rpc.tool(
         "worker_rights.review_consultation_output",
@@ -404,6 +477,19 @@ def validate_core_rpc(user_cases: dict[str, dict[str, Any]], failures: list[dict
             "MISSING_SOURCE_ANCHORS",
         }.issubset({issue.get("code") for issue in unsafe_review.get("issues", [])}),
         {"unsafe_consultation_review": unsafe_review},
+        failures,
+    )
+    require(
+        all(
+            any("\u3400" <= char <= "\u9fff" for char in str(issue.get("message", "")))
+            for issue in unsafe_review.get("issues", [])
+        )
+        and bool(unsafe_review.get("recommendations"))
+        and all(
+            any("\u3400" <= char <= "\u9fff" for char in str(item))
+            for item in unsafe_review.get("recommendations", [])
+        ),
+        {"unsafe_consultation_review_not_chinese": unsafe_review},
         failures,
     )
 
@@ -1566,6 +1652,7 @@ def validate_internal_error_boundary(
     documents = importlib.import_module("worker_rights_cn.tools.documents")
     evidence = importlib.import_module("worker_rights_cn.tools.evidence")
     sources = importlib.import_module("worker_rights_cn.tools.sources")
+    server_module = importlib.import_module("worker_rights_cn.mcp.server")
     marker = "INTERNAL_PRIVATE_13800138000"
 
     def require_internal_error(
@@ -1744,6 +1831,34 @@ def validate_internal_error_boundary(
                 )
             finally:
                 mcp_server.TOOL_HANDLERS[tool_name] = original_handler
+
+        original_handler = server_module.TOOL_HANDLERS[tool_name]
+        original_audit_tool_call = server_module.audit_tool_call
+
+        def fail_input(_: dict[str, object]) -> dict[str, object]:
+            raise tools_module.DomainInputError("fixture input")
+
+        def fail_audit(*_: Any, **__: Any) -> None:
+            raise RuntimeError("fixture audit")
+
+        server_module.TOOL_HANDLERS[tool_name] = fail_input
+        server_module.audit_tool_call = fail_audit
+        try:
+            audit_failure = server_module.handle_tool_call(
+                {"name": tool_name, "arguments": {"audit": True}}
+            )
+        finally:
+            server_module.TOOL_HANDLERS[tool_name] = original_handler
+            server_module.audit_tool_call = original_audit_tool_call
+        audit_error_message = (
+            audit_failure.get("structuredContent", {}).get("audit_error", {}).get("message")
+        )
+        require(
+            isinstance(audit_error_message, str)
+            and any("\u4e00" <= char <= "\u9fff" for char in audit_error_message),
+            {"audit_error_message": audit_error_message},
+            failures,
+        )
 
 
 def validate_correctable_boundary_edges(
@@ -1987,6 +2102,19 @@ def validate_registry_contract(failures: list[dict[str, Any]]) -> None:
         )
         require(callable(definition.handler), {"mcp_registry_handler": name}, failures)
 
+    tool_metadata_without_chinese = [
+        f"{item['name']}:{field}"
+        for item in registry_module.list_tool_descriptors(registry)
+        for field in ("title", "description")
+        if not isinstance(item.get(field), str)
+        or not any("\u4e00" <= char <= "\u9fff" for char in item[field])
+    ]
+    require(
+        not tool_metadata_without_chinese,
+        {"mcp_tool_metadata_without_chinese": tool_metadata_without_chinese},
+        failures,
+    )
+
     first_definition = next(iter(registry.values()))
     try:
         first_definition.name = "mutated"
@@ -2006,6 +2134,18 @@ def validate_registry_contract(failures: list[dict[str, Any]]) -> None:
             "worker-rights://cases/case-prototypes",
         ],
         {"mcp_resource_uris": resource_uris},
+        failures,
+    )
+    metadata_without_chinese = [
+        f"{item['name']}:{field}"
+        for item in server_module.RESOURCE_DEFINITIONS
+        for field in ("title", "description")
+        if not isinstance(item.get(field), str)
+        or not any("\u4e00" <= char <= "\u9fff" for char in item[field])
+    ]
+    require(
+        not metadata_without_chinese,
+        {"mcp_resource_metadata_without_chinese": metadata_without_chinese},
         failures,
     )
 

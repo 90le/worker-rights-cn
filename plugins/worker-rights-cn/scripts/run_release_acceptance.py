@@ -17,7 +17,7 @@ from typing import Any
 
 PLUGIN_ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY_ROOT = PLUGIN_ROOT.parents[1]
-VERSION = "0.4.0"
+VERSION = "0.4.1"
 REQUIRED_GATES = (
     "manifest", "codex", "privacy", "source_currency", "package_content",
     "windows_lock", "worker_journey", "policy", "plugin_eval", "public_urls",

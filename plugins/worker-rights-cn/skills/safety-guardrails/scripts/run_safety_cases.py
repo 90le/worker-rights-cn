@@ -86,6 +86,21 @@ def validate(policy_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
     if policy_anchor_failures:
         failures.append({"policy_anchor_failures": policy_anchor_failures})
 
+    human_fields = [
+        policy["source_note"],
+        *(action for category in policy["risk_categories"].values() for action in category["blocked_actions"]),
+        *(
+            alternative
+            for category in policy["risk_categories"].values()
+            for alternative in category["safe_alternatives"].values()
+        ),
+    ]
+    non_chinese_human_fields = [
+        value for value in human_fields if not re.search(r"[\u3400-\u9fff]", value)
+    ]
+    if non_chinese_human_fields:
+        failures.append({"non_chinese_human_fields": non_chinese_human_fields})
+
     for category_id, category in policy["risk_categories"].items():
         if category["decision"] not in policy["decision_priority"]:
             failures.append(
@@ -158,6 +173,8 @@ def validate(policy_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
         "passed": len([item for item in results if item["status"] == "pass"]),
         "failed": len(failures),
         "policy_anchor_failures": policy_anchor_failures,
+        "human_field_count": len(human_fields),
+        "non_chinese_human_fields": non_chinese_human_fields,
         "results": results,
         "failures": failures,
     }

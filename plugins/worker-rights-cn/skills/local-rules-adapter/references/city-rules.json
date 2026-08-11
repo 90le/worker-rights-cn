@@ -1,7 +1,7 @@
 {
   "schema_version": "0.2.0",
   "retrieved_at": "2026-06-16",
-  "source_note": "City-level routing data for worker-rights-cn. Use it to decide which local checks and official sources are needed. Do not plug a city wage or social-insurance value into an economic-compensation cap unless the source and city rule are marked verified_final for that use.",
+  "source_note": "本项目的城市级路由数据，用于判断需要核验的地方事项和官方来源。只有来源及城市规则对经济补偿封顶用途均标记为可作最终依据时，才可将城市工资或社会保险数值用于经济补偿封顶计算。",
   "status_values": [
     "verified_final",
     "verified_candidate",
@@ -48,7 +48,7 @@
         "monthly_social_insurance_base_upper": 35811,
         "monthly_social_insurance_base_lower": 7162
       },
-      "notes": "Official Beijing social-insurance base limits. Keep separate from the final LCL art.47 economic-compensation wage cap unless a current local source confirms the exact compensation standard.",
+      "notes": "北京市官方社会保险缴费基数上下限。除非现行地方来源明确确认经济补偿标准，否则应与《劳动合同法》第47条的经济补偿高工资封顶口径分开使用。",
       "jurisdiction": "Beijing",
       "effective_date": "2025-07-01",
       "expiry_date": null,
@@ -73,7 +73,7 @@
       "values": {
         "planned_item": "2025 年北京市全口径城镇单位就业人员平均工资"
       },
-      "notes": "Shows the planned release item for Beijing average-wage data; it is not itself an amount.",
+      "notes": "该来源仅列明北京市平均工资数据的计划发布时间，本身不提供具体数值。",
       "jurisdiction": "Beijing",
       "effective_date": null,
       "expiry_date": null,
@@ -94,7 +94,7 @@
         "economic_compensation_high_wage_cap_final_amount"
       ],
       "values": {},
-      "notes": "Explains LCL art.47 high-wage cap and 12-year limit in Shanghai HRSS public Q&A, but does not publish the current numerical cap.",
+      "notes": "上海市人力资源社会保障部门公开问答解释了《劳动合同法》第47条的高工资封顶规则和十二年上限，但未公布当前封顶数值。",
       "jurisdiction": "Shanghai",
       "effective_date": null,
       "expiry_date": null,
@@ -121,7 +121,7 @@
         "monthly_social_insurance_base_upper": 37302,
         "monthly_social_insurance_base_lower": 7460
       },
-      "notes": "Official social-insurance base and full-caliber wage data; keep as a candidate/reference for compensation cap until local HRSS or filing practice confirms the exact use.",
+      "notes": "上海市官方社会保险缴费基数和全口径工资数据；在地方人力资源社会保障部门或受理实务确认具体用途前，仅作为经济补偿封顶的候选参考。",
       "jurisdiction": "Shanghai",
       "effective_date": "2025-07-01",
       "expiry_date": null,
@@ -143,7 +143,7 @@
         "economic_compensation_high_wage_cap_final"
       ],
       "values": {},
-      "notes": "Official Shenzhen statistical wage page is recorded, but the local toolchain could not reliably fetch the page body because of TLS compatibility. Shenzhen Statistics Bureau later replied that which wage standard to use for economic compensation should be confirmed with HRSS.",
+      "notes": "已记录深圳市统计部门官方工资页面，但因传输层安全协议兼容问题，本地工具链未能稳定抓取正文。深圳市统计部门后续答复称，经济补偿应采用哪一工资口径需向人力资源社会保障部门确认。",
       "jurisdiction": "Shenzhen",
       "effective_date": null,
       "expiry_date": null,
@@ -165,7 +165,7 @@
         "economic_compensation_high_wage_cap_final_amount"
       ],
       "values": {},
-      "notes": "Official reply says the Statistics Bureau publishes wage data, but the specific economic-compensation standard and which wage口径 to use should be consulted with HRSS.",
+      "notes": "官方答复说明工资数据由统计部门发布，但经济补偿采用的具体标准和工资口径仍应向人力资源社会保障部门咨询。",
       "jurisdiction": "Shenzhen",
       "effective_date": null,
       "expiry_date": null,
@@ -223,7 +223,7 @@
           "publish_confirmed_plan_to_all_staff"
         ]
       },
-      "notes": "Official Guangzhou HRSS layoff guidance explains economic layoff procedure, reporting, economic compensation standard, average-wage base, high-wage cap and legal-liability route, but does not publish the current numerical cap.",
+      "notes": "广州市人力资源社会保障部门官方裁员指引说明了经济性裁员程序、报告要求、经济补偿标准、平均工资基数、高工资封顶及法律责任路径，但未公布当前封顶数值。",
       "jurisdiction": "Guangzhou",
       "effective_date": null,
       "expiry_date": null,
@@ -250,7 +250,7 @@
         "annual_urban_non_private_on_post_employee_average_wage_2024": 164443,
         "annual_urban_private_employment_average_wage_2024": 82907
       },
-      "notes": "Official Guangzhou government page publishing Guangzhou Statistics Bureau wage data. Use as a candidate/reference, not as a final LCL art.47 cap without local HRSS/arbitration confirmation.",
+      "notes": "广州市政府页面发布了市统计部门工资数据。未经当地人力资源社会保障部门或仲裁受理实务确认，仅可作为候选参考，不得直接作为《劳动合同法》第47条的最终封顶口径。",
       "jurisdiction": "Guangzhou",
       "effective_date": null,
       "expiry_date": null,
@@ -277,7 +277,7 @@
         "monthly_housing_fund_base_upper": 39828,
         "monthly_housing_fund_base_lower": 2500
       },
-      "notes": "Official housing-fund adjustment source states the 2025 upper limit is three times Guangzhou's 2024 monthly employee average wage. It is a reference source, not a final economic-compensation cap source.",
+      "notes": "住房公积金调整来源载明，2025年度缴存基数上限为广州市2024年职工月平均工资的三倍。该来源仅供参考，不是经济补偿封顶的最终依据。",
       "jurisdiction": "Guangzhou",
       "effective_date": "2025-07-01",
       "expiry_date": null,
@@ -303,7 +303,7 @@
         "monthly_pension_base_upper": 27549,
         "monthly_pension_base_lower_guangzhou": 5510
       },
-      "notes": "Official government service page for Guangdong enterprise pension base limits. Keep separate from economic-compensation cap calculation.",
+      "notes": "广东省企业职工基本养老保险缴费基数上下限的官方政务服务来源，应与经济补偿封顶计算分开使用。",
       "jurisdiction": "Guangdong",
       "effective_date": "2025-07-01",
       "expiry_date": null,
@@ -331,14 +331,14 @@
         "monthly_social_insurance_base_upper": 25299,
         "monthly_social_insurance_base_lower": 4986
       },
-      "notes": "Official Zhejiang provincial social-insurance base source. It is a provincial social-insurance reference, not a verified Hangzhou city economic-compensation cap.",
+      "notes": "浙江省社会保险缴费基数的省级官方来源，仅作为省级社会保险参考，尚未核验为杭州市经济补偿封顶口径。",
       "jurisdiction": "Zhejiang",
       "effective_date": "2025-01-01",
       "expiry_date": null,
       "current_as_of": "2026-06-16"
     },
     "HZ-CITY-CAP-SOURCE-PENDING": {
-      "title": "Hangzhou city economic-compensation wage-cap source pending",
+      "title": "杭州市经济补偿高工资封顶口径待核验",
       "authority": "杭州本地人社/统计/仲裁口径待核验",
       "url": null,
       "official_host": null,
@@ -353,14 +353,14 @@
         "social_insurance_base_amount"
       ],
       "values": {},
-      "notes": "No current official Hangzhou city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations.",
+      "notes": "当前尚未收录杭州市级官方来源；形成最终计算前，应补充当地人力资源社会保障、统计或仲裁受理来源。",
       "jurisdiction": "Hangzhou",
       "effective_date": null,
       "expiry_date": null,
       "current_as_of": "2026-06-16"
     },
     "SZH-CITY-CAP-SOURCE-PENDING": {
-      "title": "苏州市经济补偿高工资封顶口径待核验 / Suzhou city economic-compensation wage-cap source pending",
+      "title": "苏州市经济补偿高工资封顶口径待核验",
       "authority": "苏州本地人社/统计/仲裁口径待核验",
       "url": null,
       "official_host": null,
@@ -375,14 +375,14 @@
         "social_insurance_base_amount"
       ],
       "values": {},
-      "notes": "No current official Suzhou city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations.",
+      "notes": "当前尚未收录苏州市级官方来源；形成最终计算前，应补充当地人力资源社会保障、统计或仲裁受理来源。",
       "jurisdiction": "Suzhou",
       "effective_date": null,
       "expiry_date": null,
       "current_as_of": "2026-06-24"
     },
     "CD-CITY-CAP-SOURCE-PENDING": {
-      "title": "成都市经济补偿高工资封顶口径待核验 / Chengdu city economic-compensation wage-cap source pending",
+      "title": "成都市经济补偿高工资封顶口径待核验",
       "authority": "成都本地人社/统计/仲裁口径待核验",
       "url": null,
       "official_host": null,
@@ -397,7 +397,7 @@
         "social_insurance_base_amount"
       ],
       "values": {},
-      "notes": "No current official Chengdu city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations.",
+      "notes": "当前尚未收录成都市级官方来源；形成最终计算前，应补充当地人力资源社会保障、统计或仲裁受理来源。",
       "jurisdiction": "Chengdu",
       "effective_date": null,
       "expiry_date": null,
@@ -426,7 +426,7 @@
         "hourly_minimum_wage_part_time": 27.7,
         "hourly_minimum_wage_part_time_legal_holiday": 65.1
       },
-      "notes": "Official Beijing HRSS Q&A states the current full-time monthly and part-time hourly standards, their scope, and excluded wage components. Use only after confirming normal labor, employment type, pay period, and wage components.",
+      "notes": "北京市人力资源社会保障部门官方问答说明现行全日制月最低工资和非全日制小时最低工资标准、适用范围及排除的工资项目。使用前应确认属于正常劳动、用工类型、工资期间和工资构成。",
       "jurisdiction": "Beijing",
       "effective_date": "2025-09-01",
       "expiry_date": null,
@@ -453,7 +453,7 @@
         "monthly_minimum_wage_full_time": 2740,
         "hourly_minimum_wage_part_time": 25
       },
-      "notes": "Official Shanghai HRSS Q&A states the current full-time monthly and part-time hourly standards, employment-type scope, and excluded wage components. Use only after confirming normal labor, pay period, and wage components.",
+      "notes": "上海市人力资源社会保障部门官方问答说明现行全日制月最低工资和非全日制小时最低工资标准、适用范围及排除的工资项目。使用前应确认正常劳动、工资期间和工资构成。",
       "jurisdiction": "Shanghai",
       "effective_date": "2025-07-01",
       "expiry_date": null,
@@ -462,9 +462,9 @@
     "SZ-HRSS-MIN-WAGE-2025": {
       "title": "深圳市人力资源和社会保障局关于调整我市最低工资标准的通知",
       "authority": "深圳市人力资源和社会保障局",
-      "url": "https://hrss.sz.gov.cn/attachment/1/1550/1550693/12014791.pdf",
+      "url": "https://hrss.sz.gov.cn/xxgk/qtxx/tzgg/content/post_12014791.html",
       "official_host": "hrss.sz.gov.cn",
-      "publication_date": "2025-02-23",
+      "publication_date": "2025-02-24",
       "effective_from": "2025-03-01",
       "retrieved_at": "2026-08-11",
       "source_status": "verified_final",
@@ -480,7 +480,7 @@
         "monthly_minimum_wage_full_time": 2520,
         "hourly_minimum_wage_part_time": 23.7
       },
-      "notes": "Official Shenzhen HRSS notice states the current full-time monthly and part-time hourly standards and exclusions for overtime, special-environment allowances, and statutory welfare. Use only after confirming normal labor, pay period, employment type, and wage components.",
+      "notes": "深圳市人力资源社会保障部门官方通知载明现行全日制月最低工资和非全日制小时最低工资标准，并明确加班工资、特殊工作环境津贴和法定福利待遇等排除项目。使用前应确认正常劳动、工资期间、用工类型和工资构成。",
       "jurisdiction": "Shenzhen",
       "effective_date": "2025-03-01",
       "expiry_date": null,
@@ -507,7 +507,7 @@
         "monthly_minimum_wage_full_time": 2500,
         "hourly_minimum_wage_part_time": 23.7
       },
-      "notes": "Official Guangzhou HRSS wage-payment Q&A confirms the current monthly and part-time hourly standards. Verify normal labor, employment type, pay period, and locally included or excluded wage components before calculating a gap.",
+      "notes": "广州市人力资源社会保障部门工资支付问答确认现行月最低工资和非全日制小时最低工资标准。计算差额前，应核实正常劳动、用工类型、工资期间及当地计入或排除的工资项目。",
       "jurisdiction": "Guangzhou",
       "effective_date": "2025-03-01",
       "expiry_date": null,
@@ -516,7 +516,7 @@
   },
   "cities": {
     "beijing": {
-      "display_name": "Beijing",
+      "display_name": "北京市",
       "aliases": [
         "北京",
         "北京市",
@@ -594,7 +594,7 @@
       }
     },
     "shanghai": {
-      "display_name": "Shanghai",
+      "display_name": "上海市",
       "aliases": [
         "上海",
         "上海市",
@@ -672,7 +672,7 @@
       }
     },
     "shenzhen": {
-      "display_name": "Shenzhen",
+      "display_name": "深圳市",
       "aliases": [
         "深圳",
         "深圳市",
@@ -752,7 +752,7 @@
       }
     },
     "guangzhou": {
-      "display_name": "Guangzhou",
+      "display_name": "广州市",
       "aliases": [
         "广州",
         "广州市",
@@ -912,7 +912,7 @@
       }
     },
     "hangzhou": {
-      "display_name": "Hangzhou",
+      "display_name": "杭州市",
       "aliases": [
         "杭州",
         "杭州市",
@@ -967,7 +967,7 @@
       }
     },
     "suzhou": {
-      "display_name": "Suzhou",
+      "display_name": "苏州市",
       "aliases": [
         "苏州",
         "苏州市",
@@ -1022,7 +1022,7 @@
       }
     },
     "chengdu": {
-      "display_name": "Chengdu",
+      "display_name": "成都市",
       "aliases": [
         "成都",
         "成都市",

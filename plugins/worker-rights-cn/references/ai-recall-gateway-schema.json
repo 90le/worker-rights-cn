@@ -1,10 +1,10 @@
 {
   "schema_version": "0.1.0",
-  "purpose": "User or host configuration contract for optional AI-assisted source recall. The plugin builds model requests but does not call external gateways by default.",
+  "purpose": "供用户或宿主配置可选 AI 辅助法源召回的约定。插件会生成模型请求，但默认不调用外部网关。",
   "default_behavior": {
     "plugin_network_calls": "none",
     "execution_owner": "host_agent_or_user_gateway",
-    "secret_policy": "Use api_key_env. Do not store raw API keys in plugin files, SQLite, git, or MCP arguments.",
+    "secret_policy": "使用 api_key_env；不得在插件文件、SQLite、git 或 MCP 参数中存储原始 API 密钥。",
     "business_logic_dependency": "none"
   },
   "supported_provider_labels": [
@@ -31,15 +31,15 @@
       },
       "model": {
         "type": "string",
-        "description": "Host or gateway model name. This is user controlled and not interpreted by the plugin."
+        "description": "宿主或网关的模型名称。该值由用户控制，插件不会解释其含义。"
       },
       "base_url": {
         "type": "string",
-        "description": "Optional gateway base URL for a user-managed adapter. The plugin does not call it by default."
+        "description": "用户自管适配器可选的网关基础 URL。插件默认不会调用该地址。"
       },
       "api_key_env": {
         "type": "string",
-        "description": "Environment variable name that the host adapter may read. Raw key values must not be stored here."
+        "description": "宿主适配器可读取的环境变量名称。此处不得存储原始密钥值。"
       },
       "timeout_seconds": {
         "type": "integer",
@@ -52,21 +52,21 @@
   },
   "ai_recall_policy": {
     "allowed_tasks": [
-      "rerank supplied source ids",
-      "suggest extra search queries",
-      "flag source-status or jurisdiction uncertainty"
+      "对给定法源 ID 重新排序",
+      "建议补充检索词",
+      "标记法源状态或适用地域的不确定性"
     ],
     "forbidden_tasks": [
-      "make legal conclusions",
-      "calculate compensation",
-      "treat local_verify or candidate sources as final",
-      "invent source ids",
-      "send private evidence without explicit user approval"
+      "作出法律结论",
+      "计算补偿",
+      "将 local_verify 或候选法源视为最终依据",
+      "虚构法源 ID",
+      "未经用户明确同意发送隐私证据"
     ],
     "required_follow_up": [
-      "validate model output against output_schema",
-      "run expanded queries back through worker_rights.search_sources",
-      "use deterministic tools for legal mapping and compensation"
+      "依据 output_schema 校验模型输出",
+      "通过 worker_rights.search_sources 重新执行扩展检索词",
+      "使用确定性工具完成法律映射和补偿估算"
     ]
   },
   "response_validation": {
@@ -76,10 +76,10 @@
       "needs_revision",
       "rejected"
     ],
-    "candidate_id_policy": "reranked_source_ids must be a subset of candidate_source_ids from worker_rights.plan_ai_recall",
+    "candidate_id_policy": "reranked_source_ids 必须是 worker_rights.plan_ai_recall 返回的 candidate_source_ids 的子集",
     "unknown_source_id_policy": "reject_or_drop_before_any_legal_use",
-    "secret_policy": "raw api keys, bearer tokens, authorization headers, passwords, and secrets must be rejected and not echoed",
-    "output_sanitization": "secret-like text in rejected or needs_revision outputs is replaced with [redacted_sensitive_model_text] or suppressed from notes",
+    "secret_policy": "必须拒绝原始 API 密钥、Bearer 令牌、Authorization 请求头、密码及其他密钥，且不得回显",
+    "output_sanitization": "拒绝或需修订输出中的疑似密钥文本会替换为 [redacted_sensitive_model_text]，或从 notes 中移除",
     "issue_codes": [
       "UNKNOWN_SOURCE_ID",
       "UNEXPECTED_RESPONSE_FIELDS",
@@ -88,10 +88,10 @@
       "SOURCE_FINALITY_OVERREACH"
     ],
     "forbidden_content": [
-      "final legal conclusions",
-      "guaranteed outcomes",
-      "final compensation amounts",
-      "local-rule finality claims"
+      "最终法律结论",
+      "保证结果",
+      "最终补偿金额",
+      "将本地规则表述为确定结论"
     ],
     "allowed_content": [
       "reranked_source_ids",

@@ -10,26 +10,69 @@
       ],
       "content_contains": {
         "workbench_preview": [
-          "# Case Workbench Preview",
-          "case_package_ready",
-          "Review agreement risk before signing"
+          "# 案件工作台预览",
+          "案件材料包已就绪",
+          "签署前复核协议风险",
+          "| 案件概况 | case.jurisdiction.city | 上海市 |"
         ],
         "case_package_review": [
-          "# Case Package Review Draft",
-          "## Money Summary",
-          "## Safety And Review Notes"
+          "# 案件材料包复核稿",
+          "## 金额汇总",
+          "## 风险与复核提示",
+          "协商解除",
+          "谨慎继续",
+          "确认用人单位最终书面理由和文件表述",
+          "最终协议文字和权利放弃范围",
+          "核验上海市当地工资上限",
+          "签署或提交前复核最终文件表述",
+          "协商目标：取得书面方案",
+          "下次跟进：2026-06-18",
+          "### 转入仲裁准备的触发条件",
+          "用人单位拒绝提供书面方案",
+          "证据名称",
+          "劳动合同及续签文件",
+          "劳动者持有的副本",
+          "待核验证据（termination_characterization）"
         ],
         "redacted_share_packet": [
-          "# Redacted Share Packet",
-          "## Redacted Paths",
-          "case.parties.employer_legal_name"
+          "# 脱敏共享材料",
+          "## 脱敏字段路径",
+          "case.parties.employer_legal_name",
+          "签署前 72 小时",
+          "协商解除",
+          "- 所在城市：上海市"
         ]
       },
       "content_excludes": {
+        "workbench_preview": [
+          "- 状态：ready",
+          "- 导出方案：pre_signing_72h",
+          "- 当前页面：case_package_ready",
+          "| case_snapshot | case.",
+          "separation_offer_counter",
+          "proceed_with_caution"
+        ],
+        "case_package_review": [
+          "- 导出方案：pre_signing_72h",
+          "- 当前状态：notice_given",
+          "- 主要情形映射：mutual_termination",
+          "- 安全判断：proceed_with_caution",
+          "Confirm the employer's final written reason",
+          "final agreement wording and waiver scope",
+          "Shanghai local wage cap",
+          "Final document wording before signing or filing",
+          "Get written proposal",
+          "Employer refuses written terms.",
+          "worker copy, onboarding files",
+          "worker-accessible record, official third-party record"
+        ],
         "redacted_share_packet": [
           "Example Technology Shanghai Co., Ltd.",
           "worker-sh",
-          "hr_wechat"
+          "hr_wechat",
+          "- 脱敏级别：standard",
+          "- 导出方案：pre_signing_72h",
+          "- 解除情形映射：mutual_termination"
         ]
       },
       "confirmations_contain": {
@@ -46,7 +89,14 @@
         "verify_local_rules",
         "lawyer_check_before_signing_or_filing",
         "redaction_review"
-      ]
+      ],
+      "confirmation_text_contains": {
+        "not_legal_opinion": ["工作材料", "法律意见"],
+        "verify_local_rules": ["当地规则", "仲裁委员会管辖"],
+        "lawyer_check_before_signing_or_filing": ["签署", "律师核验"],
+        "redaction_review": ["共享材料", "个人信息"],
+        "lawful_evidence_only": ["合法取得", "官方材料"]
+      }
     }
   },
   {
@@ -58,20 +108,30 @@
       "excluded_document_ids": ["case_package_review"],
       "content_contains": {
         "workbench_preview": [
-          "# Case Workbench Preview",
-          "intake_follow_up",
-          "answer_follow_up",
-          "case.parties.employer_legal_name"
+          "# 案件工作台预览",
+          "补充案件信息",
+          "补充回答",
+          "case.parties.employer_legal_name",
+          "| 案件概况 | case.jurisdiction.city | 广州市 |"
         ],
         "redacted_share_packet": [
-          "draft_pending_required_facts",
-          "No package sections yet"
+          "待补充必要事实的草稿",
+          "暂无材料包板块",
+          "- 所在城市：广州市"
         ]
       },
       "content_excludes": {
+        "workbench_preview": [
+          "- 状态：needs_more_input",
+          "- 当前页面：intake_follow_up",
+          "| waiting_for_input |",
+          "answer_follow_up"
+        ],
         "redacted_share_packet": [
           "worker-gz-session",
-          "hr_wechat"
+          "hr_wechat",
+          "- 状态：draft_pending_required_facts",
+          "- 脱敏级别：standard"
         ]
       },
       "confirmations_contain": {
@@ -100,23 +160,59 @@
       ],
       "content_contains": {
         "workbench_preview": [
-          "arbitration_ready",
-          "Verify local arbitration form and commission"
+          "仲裁准备",
+          "核验当地仲裁表格和仲裁委员会",
+          "| 案件概况 | case.jurisdiction.city | 深圳市 |"
         ],
         "case_package_review": [
-          "## Arbitration Draft Pack",
-          "unpaid_wages"
+          "## 仲裁申请草稿包",
+          "经济补偿",
+          "欠付工资",
+          "核验深圳市现行劳动争议仲裁申请表和受理渠道",
+          "尚未确认仲裁委员会管辖",
+          "欠薪或社会保险未缴等用人单位法定情形的材料",
+          "提交前复核劳动者解除通知或用人单位法定情形的表述",
+          "请求名称",
+          "经济补偿金",
+          "各欠付工资期间的未付金额合计",
+          "### 请求起草提示",
+          "逐月列明工资期间"
         ],
         "redacted_share_packet": [
-          "constructive_dismissal",
-          "case.evidence.wage_records"
+          "劳动者因用人单位法定情形解除",
+          "case.evidence.wage_records",
+          "- 所在城市：深圳市"
         ]
       },
       "content_excludes": {
+        "workbench_preview": [
+          "- 导出方案：arbitration_ready",
+          "constructive_dismissal",
+          "required_before_filing"
+        ],
+        "case_package_review": [
+          "Labor dispute arbitration commission at the place",
+          "Verify the current Shenzhen local arbitration commission form",
+          "- 草稿状态：review_draft_not_final",
+          "- 提交门槛：blocked_until_pre_filing_checks_complete",
+          "local_arbitration_form_not_verified",
+          "commission_jurisdiction_not_confirmed",
+          "wage or social-insurance breach records",
+          "Resignation or statutory-breach wording before filing",
+          "| economic_compensation |",
+          "| unpaid_wages |",
+          "average_monthly_wage_for_n * service_period_n",
+          "sum_of_unpaid_wages",
+          "State years of service",
+          "List wage months"
+        ],
         "redacted_share_packet": [
           "Example Platform Shenzhen Co., Ltd.",
           "worker-sz-session",
-          "bank_records"
+          "bank_records",
+          "- 导出方案：arbitration_ready",
+          "- 解除情形映射：constructive_dismissal",
+          "- 仲裁请求类型：economic_compensation"
         ]
       },
       "confirmations_contain": {

@@ -16,11 +16,27 @@
 
 条文锚点采用 `SOURCE-ID#artN`。锚点摘要不能扩大条文含义。
 
-城市数据位于 `skills/local-rules-adapter/references/city-rules.json`。来源卡还要维护 `jurisdiction`、`effective_date`、`expiry_date`、`current_as_of`、`official_host`、`source_status`、`allowed_uses`、`not_allowed_uses` 和 `values`。城市规则维护 aliases、rule_checks、required_facts、source_ids、output_flags 以及禁止作为最终数值的来源。
+顶层 `current_as_of` 表示全国来源卡的全量核验下限，必须等于 `national_sources` 中最早的 `current_as_of`。只复核部分卡片时，不得据此抬高全库日期。
+
+同一 SOURCE-ID 在 `source-currency.json` 与 `legal-map.md` 中的标题、官方 URL 集合和 `retrieved_at` 必须一致，避免双份来源卡静默漂移。
+
+计算规则中的来源卡可以只引用规范来源卡的部分 URL，但不得引入规范卡外链接，且 `retrieved_at` 必须与同名全国来源卡一致。
+
+城市数据位于 `skills/local-rules-adapter/references/city-rules.json`。来源卡还要维护 `jurisdiction`、`effective_date`、`expiry_date`、`current_as_of`、`official_host`、`source_status`、`allowed_uses`、`not_allowed_uses` 和 `values`；其中两类用途边界必须各为非空字符串列表。城市规则维护 aliases、rule_checks、required_facts、source_ids、output_flags 以及禁止作为最终数值的来源。
 
 默认复核期限为 366 天。`expiry_date: null` 只表示没有记录固定失效日，不代表永久有效；来源超过复核期限、尚未生效或已经失效时，校验器失败关闭，HTML 报告降级提示并列出 source ID。
 
+`audit_date`、`retrieved_at` 和 `current_as_of` 不得晚于校验时的 `as_of`，避免未来日期掩盖来源过期或虚增核验时效。
+
+官方来源链接必须使用 HTTPS，并通过官方 host allowlist 校验；仅主机名匹配但使用明文 HTTP 的链接不得通过。
+
+host allowlist 条目本身必须是 `gov.cn` 或其子域，不得通过新增第三方主机绕过官方来源边界。
+
 只有 `verified_final` 可以用于其明确授权用途的当地最终数值。`verified_candidate`、`verified_reference_only`、`verified_guardrail` 和 `local_verify` 不能被自动当成经济补偿最终上限。
+
+标记为 `verified_final` 的地方来源卡必须至少保留一个正数值；空值或非对象 `values` 不能继续保持最终数值状态。
+
+地方来源卡的 `publication_date` 必须是有效 ISO 日期；只有待核验的 `local_verify` 卡可以保留 `null`。
 
 ## 当前最低工资场景（2026-08-11 复核）
 
@@ -53,7 +69,6 @@
 
 ```powershell
 python plugins/worker-rights-cn/scripts/validate_source_currency.py --help
-python plugins/worker-rights-cn/scripts/validate_source_currency.py --as-of 2026-08-11
 python plugins/worker-rights-cn/scripts/validate_legal_map.py --help
 ```
 

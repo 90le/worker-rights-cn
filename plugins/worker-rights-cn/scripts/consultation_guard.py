@@ -185,7 +185,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             issues,
             severity="critical",
             code="UNSAFE_EVIDENCE_INSTRUCTION",
-            message="Output appears to help fabricate, alter, delete, or hide evidence.",
+            message="输出疑似在协助伪造、篡改、删除或隐匿证据。",
             required="lawful_evidence_boundary",
         )
     if THREAT_RE.search(output):
@@ -193,7 +193,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             issues,
             severity="critical",
             code="THREAT_OR_EXTORTION_LANGUAGE",
-            message="Output appears to include threat, doxxing, harassment, or payment-for-silence pressure language.",
+            message="输出疑似包含威胁、人肉、骚扰或以沉默换取付款的施压表述。",
             required="lawful_dispute_channel",
         )
     if EMPLOYER_MISUSE_RE.search(output):
@@ -202,9 +202,8 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             severity="critical",
             code="EMPLOYER_SIDE_EVASION_OR_UNDERPAYMENT",
             message=(
-                "Output appears to help an employer, HR, manager, or company counsel evade "
-                "layoff/termination duties, reduce statutory compensation, induce resignation, "
-                "or bypass protected-status limits."
+                "输出疑似在帮助用人单位、人力资源人员、管理人员或公司法务规避裁员或解除义务、"
+                "压低法定补偿、诱导劳动者辞职，或绕开特殊保护限制。"
             ),
             required="worker_side_boundary_and_compliance_path",
         )
@@ -213,7 +212,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             issues,
             severity="high",
             code="OUTCOME_GUARANTEE",
-            message="Output guarantees or overstates a legal outcome.",
+            message="输出对法律结果作出保证或表述过度确定。",
             required="assumptions_and_evidence_gaps",
         )
     if arbitration_template and FINAL_ARBITRATION_FILING_RE.search(output):
@@ -222,8 +221,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             severity="high",
             code="ARBITRATION_TEMPLATE_PRESENTED_AS_FINAL_FILING",
             message=(
-                "Arbitration application templates must be presented as editable drafts, "
-                "not final documents ready for direct filing."
+                "仲裁申请材料应标注为可编辑草稿，不应表述为可直接提交的最终文件。"
             ),
             required="arbitration_draft_boundary",
         )
@@ -232,7 +230,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             issues,
             severity="high",
             code="SENSITIVE_PERSONAL_INFORMATION_EXPOSED",
-            message="Output appears to expose ID, phone, medical, pregnancy, occupational-disease, or similar sensitive personal information.",
+            message="输出疑似暴露身份证号、手机号、医疗、孕产、职业病等敏感个人信息。",
             required="privacy_minimization",
         )
     if (
@@ -245,8 +243,8 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             severity="high",
             code="UNSUPPORTED_JURISDICTION_MAINLAND_LAW_APPLIED",
             message=(
-                "Output appears to apply mainland China labor-law conclusions, compensation, "
-                "or arbitration framing to a Hong Kong, Macau, Taiwan, or non-mainland scenario."
+                "输出疑似把中国大陆劳动法结论、补偿口径或仲裁路径套用于香港、澳门、台湾或"
+                "其他非中国大陆情形。"
             ),
             required="unsupported_jurisdiction_boundary",
         )
@@ -274,7 +272,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             issues,
             severity="high",
             code="MISSING_SOURCE_ANCHORS",
-            message="Legal consultation output should cite source anchors such as LCL-2012#art47 for material legal claims.",
+            message="涉及重要法律主张时，应引用 LCL-2012#art47 等来源锚点。",
             required="source_anchors_for_legal_claims",
         )
 
@@ -286,7 +284,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             issues,
             severity="medium",
             code="MISSING_NOT_LEGAL_OPINION_BOUNDARY",
-            message="Output should state that it is an assistance draft / information organization, not licensed legal advice.",
+            message="应说明输出仅用于辅助整理信息或材料草稿，不构成持证律师的法律意见。",
             required="not_legal_opinion",
         )
 
@@ -298,7 +296,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             issues,
             severity="medium",
             code="MISSING_ASSUMPTIONS_OR_EVIDENCE_GAPS",
-            message="Output should state key assumptions, evidence gaps, or facts that need verification.",
+            message="应列明关键假设、证据缺口或待核实事实。",
             required="assumptions_and_evidence_gaps",
         )
 
@@ -310,7 +308,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
             issues,
             severity="medium",
             code="MISSING_LAWFUL_EVIDENCE_BOUNDARY",
-            message="Output should remind the user to preserve original context and use only lawful evidence.",
+            message="应提醒用户保留原始上下文，并仅通过合法方式收集和使用证据。",
             required="lawful_evidence_boundary",
         )
 
@@ -323,7 +321,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
                 issues,
                 severity="high",
                 code="LOCAL_RULE_STATUS_NOT_EXPLAINED",
-                message="Local/candidate wage-cap or practice information must be described as reference-only until current local verification.",
+                message="地方或候选工资封顶与实务口径在完成最新本地核验前，应明确标为仅供参考。",
                 required="local_rule_status_if_local_amount_or_practice",
             )
     else:
@@ -338,7 +336,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
                 issues,
                 severity="high",
                 code="MISSING_LAWYER_CHECK_BEFORE_SIGNING_OR_FILING",
-                message="Signing, filing, or arbitration-ready outputs need an explicit lawyer/local professional review checkpoint.",
+                message="涉及签署、提交或仲裁材料的输出，应设置律师或当地专业人员复核节点。",
                 required="lawyer_check_before_signing_or_filing",
             )
     else:
@@ -355,7 +353,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
                 issues,
                 severity="high",
                 code="MISSING_ARBITRATION_DRAFT_BOUNDARY",
-                message="Arbitration application text must be labeled as an editable draft or working file, not final filing material.",
+                message="仲裁申请内容应标注为可编辑草稿或工作稿，而非最终提交材料。",
                 required="arbitration_draft_boundary",
             )
         if ARBITRATION_LOCAL_FORM_RE.search(output):
@@ -366,7 +364,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
                 issues,
                 severity="high",
                 code="MISSING_LOCAL_ARBITRATION_FORM_OR_JURISDICTION_CHECK",
-                message="Arbitration filing drafts must tell the user to verify local commission jurisdiction, form, and filing channel before filing.",
+                message="仲裁材料草稿应提示用户在提交前核验当地仲裁委管辖、表单和提交渠道。",
                 required="local_arbitration_form_or_jurisdiction_check",
             )
         if ARBITRATION_EVIDENCE_DIRECTORY_RE.search(output):
@@ -377,7 +375,7 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
                 issues,
                 severity="high",
                 code="MISSING_EVIDENCE_DIRECTORY_OR_ATTACHMENT_CHECK",
-                message="Arbitration filing drafts must include or require a matched evidence directory/attachment check.",
+                message="仲裁材料草稿应包含或要求核对相互对应的证据目录与附件。",
                 required="evidence_directory_or_attachment_check",
             )
 
@@ -385,11 +383,11 @@ def evaluate_consultation_output(payload: dict[str, Any]) -> dict[str, Any]:
     max_severity = max((severity_order.get(issue["severity"], 0) for issue in issues), default=0)
     status = "block" if max_severity >= 4 else "needs_revision" if issues else "pass"
     recommendations = [
-        "Add source anchors for each material legal claim.",
-        "Use assumption/risk language instead of guarantees.",
-        "Keep local wage-cap or filing-practice data reference-only unless verified_final/current local verification is present.",
-        "Preserve original evidence context, redact unnecessary personal data, and use formal dispute channels.",
-        "Before signing a separation/resignation document or filing arbitration materials, add a lawyer/local professional review checkpoint.",
+        "为每项重要法律主张添加来源锚点。",
+        "以假设和风险表述替代结果保证。",
+        "地方工资封顶或立案实务数据未经最新本地核验时仅作参考；只有标记为 verified_final 或已有最新核验时，才按已核实信息使用。",
+        "保留证据原始上下文，遮盖无关个人信息，并使用正式争议处理渠道。",
+        "签署解除或离职文件、提交仲裁材料前，增加律师或当地专业人员复核节点。",
     ]
     return {
         "schema_version": "0.1.0",

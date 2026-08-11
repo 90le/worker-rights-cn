@@ -4,47 +4,63 @@ from __future__ import annotations
 
 import hashlib
 import os
-import re
 from pathlib import Path
 from typing import Any
 
-from .storage import CaseStore, SaveConsent
-from .storage.cases import DeleteReceipt, SAVEABLE_CASE_SECTIONS
+from .storage import CaseStore, SaveConsent, redact_personal_text
+from .storage.cases import (
+    ACCOUNT_FIELDS,
+    BANK_FIELDS,
+    BANK_VALUE,
+    CREDENTIAL_VALUE,
+    EMAIL_FIELDS,
+    EMAIL_VALUE,
+    HIGH_RISK_EXPORT_FIELDS,
+    HIGH_RISK_TEXT_MARKERS,
+    IDENTITY_FIELDS,
+    IDENTITY_VALUE,
+    INTERNAL_EXPORT_FIELDS,
+    LABELED_ADDRESS_VALUE,
+    LABELED_ACCOUNT_VALUE,
+    LABELED_BIRTH_VALUE,
+    LABELED_HEALTH_VALUE,
+    LABELED_NAME_VALUE,
+    LABELED_PASSPORT_VALUE,
+    LANDLINE_VALUE,
+    PERSON_NAME_FIELDS,
+    PRIVATE_PERSONAL_FIELDS,
+    PHONE_FIELDS,
+    PHONE_VALUE,
+    DeleteReceipt,
+    SAVEABLE_CASE_SECTIONS,
+    normalize_field_name,
+)
 
 
-PHONE_RE = re.compile(r"(?<!\d)1[3-9]\d{9}(?!\d)")
-IDENTITY_RE = re.compile(r"(?<!\d)\d{17}[\dXx](?!\d)")
-PERSONAL_KEYS = frozenset(
-    {
-        "name",
-        "employee_name",
-        "worker_name",
-        "phone",
-        "mobile",
-        "id_number",
-        "identity_number",
-        "address",
-        "home_address",
-        "health",
-        "health_notes",
-        "medical",
-        "pregnancy",
-        "maternity",
-    }
+PERSONAL_KEYS = (
+    PRIVATE_PERSONAL_FIELDS
+    | PERSON_NAME_FIELDS
+    | PHONE_FIELDS
+    | IDENTITY_FIELDS
+    | EMAIL_FIELDS
+    | ACCOUNT_FIELDS
+    | BANK_FIELDS
+)
+PERSONAL_VALUE_PATTERNS = (
+    PHONE_VALUE,
+    LANDLINE_VALUE,
+    IDENTITY_VALUE,
+    EMAIL_VALUE,
+    BANK_VALUE,
+    LABELED_NAME_VALUE,
+    LABELED_PASSPORT_VALUE,
+    LABELED_ACCOUNT_VALUE,
+    LABELED_ADDRESS_VALUE,
+    LABELED_HEALTH_VALUE,
+    LABELED_BIRTH_VALUE,
 )
 EVIDENCE_KEYS = frozenset({"content", "body", "data", "text", "evidence_body"})
-HIGH_RISK_PATH_PARTS = frozenset(
-    {"third_party", "third_parties", "customer", "customers", "customer_list", "source_code"}
-)
-HIGH_RISK_MARKERS = (
-    "客户名单",
-    "客户资料",
-    "商业秘密",
-    "源代码",
-    "source code",
-    "api_secret",
-    "private-key",
-)
+HIGH_RISK_PATH_PARTS = HIGH_RISK_EXPORT_FIELDS | INTERNAL_EXPORT_FIELDS
 
 
 def _leaves(value: object) -> list[tuple[str, object]]:
@@ -60,9 +76,8 @@ def _leaves(value: object) -> list[tuple[str, object]]:
             seen.add(identity)
         if type(current) is dict:
             for key, item in reversed(list(current.items())):
-                if type(key) is not str:
-                    continue
-                stack.append((f"{path}.{key}" if path else key, item))
+                key_text = str(key)
+                stack.append((f"{path}.{key_text}" if path else key_text, item))
         elif type(current) is list:
             for index in range(len(current) - 1, -1, -1):
                 stack.append((f"{path}.{index}" if path else str(index), current[index]))
@@ -71,17 +86,37 @@ def _leaves(value: object) -> list[tuple[str, object]]:
     return leaves
 
 
-def _classification(path: str, value: object) -> str:
-    parts = tuple(part.lower() for part in path.split(".") if not part.isdigit())
+def _declared_names(leaves: list[tuple[str, object]]) -> set[str]:
+    return {
+        item
+        for path, item in leaves
+        if type(item) is str
+        and 2 <= len(item) <= 20
+        and normalize_field_name(path.rsplit(".", 1)[-1]) in PERSON_NAME_FIELDS
+    }
+
+
+def _classification(path: str, value: object, names: set[str] | None = None) -> str:
+    parts = tuple(
+        normalize_field_name(part)
+        for part in path.split(".")
+        if part.strip() and not part.strip().isdigit()
+    )
     key = parts[-1] if parts else ""
     text = value.lower() if type(value) is str else ""
     if any(part in HIGH_RISK_PATH_PARTS for part in parts) or any(
-        marker in text for marker in HIGH_RISK_MARKERS
-    ):
+        marker in text for marker in HIGH_RISK_TEXT_MARKERS
+    ) or (type(value) is str and CREDENTIAL_VALUE.search(value)):
         return "high_risk_enterprise"
     if key in EVIDENCE_KEYS or "artifacts" in parts or "evidence" in parts:
         return "dispute_evidence"
-    if key in PERSONAL_KEYS or (type(value) is str and (PHONE_RE.search(value) or IDENTITY_RE.search(value))):
+    if any(part in PERSONAL_KEYS for part in parts) or (
+        type(value) is str
+        and (
+            any(pattern.search(value) for pattern in PERSONAL_VALUE_PATTERNS)
+            or any(name in value for name in names or ())
+        )
+    ) or any(pattern.search(path) for pattern in PERSONAL_VALUE_PATTERNS):
         return "personal_sensitive"
     return "ordinary_fact"
 
@@ -89,9 +124,14 @@ def _classification(path: str, value: object) -> str:
 def classify_fields(value: object) -> list[dict[str, str]]:
     """Return a stable field-level privacy classification without mutating *value*."""
 
+    leaves = _leaves(value)
+    names = _declared_names(leaves)
     return [
-        {"field_path": path, "classification": _classification(path, item)}
-        for path, item in _leaves(value)
+        {
+            "field_path": redact_personal_text(path),
+            "classification": _classification(path, item, names),
+        }
+        for path, item in leaves
     ]
 
 
@@ -110,12 +150,14 @@ def redaction_preview(value: object) -> list[dict[str, str]]:
     """Return non-mutating, non-PII preview rows for every leaf field."""
 
     result: list[dict[str, str]] = []
-    for path, item in _leaves(value):
-        classification = _classification(path, item)
+    leaves = _leaves(value)
+    names = _declared_names(leaves)
+    for path, item in leaves:
+        classification = _classification(path, item, names)
         action, preview = _preview(classification, item)
         result.append(
             {
-                "field_path": path,
+                "field_path": redact_personal_text(path),
                 "classification": classification,
                 "action": action,
                 "preview": preview,

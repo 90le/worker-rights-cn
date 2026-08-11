@@ -26,109 +26,109 @@ WORKBENCH_SCHEMA_VERSION = "0.1.0"
 
 QUESTION_META_BY_PATH = {
     "case.jurisdiction.city": {
-        "label": "City",
+        "label": "所在城市",
         "answer_type": "city",
-        "source": "work location or employer location",
+        "source": "工作地点或用人单位所在地",
     },
     "case.parties.employer_legal_name": {
-        "label": "Employer legal name",
+        "label": "用人单位法定名称",
         "answer_type": "text",
-        "source": "contract, payslip, tax app, or business record",
+        "source": "劳动合同、工资单、个人所得税 App 或企业登记信息",
     },
     "case.employment.start_date": {
-        "label": "Employment start date",
+        "label": "入职日期",
         "answer_type": "date",
-        "source": "contract, offer, onboarding record, or first payslip",
+        "source": "劳动合同、录用通知、入职记录或首份工资单",
     },
     "case.employment.end_date_or_expected_end": {
-        "label": "End or expected end date",
+        "label": "实际或预计解除/终止日期",
         "answer_type": "date",
-        "source": "notice, HR message, agreement draft, or worker estimate",
+        "source": "通知、HR 消息、协议草稿或劳动者估计",
     },
     "case.employment.current_status": {
-        "label": "Current employment status",
+        "label": "当前劳动关系状态",
         "answer_type": "enum",
-        "source": "worker current situation",
+        "source": "劳动者当前实际情况",
         "options": ["employed", "notice_given", "left", "terminated", "unknown"],
     },
     "case.wage.average_monthly_wage": {
-        "label": "Average monthly wage",
+        "label": "月平均工资",
         "answer_type": "money",
-        "source": "last 12 months or actual shorter service period",
+        "source": "最近 12 个月；工作不足 12 个月的，按实际工作期间",
     },
     "case.dispute.trigger": {
-        "label": "Dispute trigger",
+        "label": "争议起因",
         "answer_type": "text",
-        "source": "first HR meeting, notice, message, lockout, or unpaid wage event",
+        "source": "首次 HR 沟通、通知、消息、停工停卡或欠薪事件",
     },
     "case.dispute.worker_goal": {
-        "label": "Worker goal",
+        "label": "当前目标",
         "answer_type": "text",
-        "source": "negotiation, no-signing review, arbitration preparation, or evidence preservation",
+        "source": "协商、签署前审查、仲裁准备或证据保全",
     },
 }
 
 EDITABLE_FIELD_META = {
     **QUESTION_META_BY_PATH,
     "case.jurisdiction.main_work_location": {
-        "label": "Main work location",
+        "label": "主要工作地点",
         "answer_type": "city",
-        "source": "actual workplace or remote-work base",
+        "source": "实际工作地点或远程办公所在地",
     },
     "case.parties.worker_name_or_alias": {
-        "label": "Worker alias",
+        "label": "劳动者称呼或别名",
         "answer_type": "text",
-        "source": "alias for display and privacy-preserving export",
+        "source": "用于显示和脱敏导出的称呼",
     },
     "case.parties.actual_managing_entity": {
-        "label": "Actual managing entity",
+        "label": "实际管理主体",
         "answer_type": "text",
-        "source": "daily management, payslip, email domain, or affiliate records",
+        "source": "日常管理、工资单、邮箱域名或关联主体记录",
     },
     "case.employment.job_title": {
-        "label": "Job title",
+        "label": "岗位名称",
         "answer_type": "text",
-        "source": "contract, offer, or current role",
+        "source": "劳动合同、录用通知或当前岗位",
     },
     "case.employment.written_contract_signed": {
-        "label": "Written contract signed",
+        "label": "是否签订书面劳动合同",
         "answer_type": "boolean",
-        "source": "labor contract status",
+        "source": "劳动合同签订情况",
     },
     "case.wage.local_average_monthly_wage": {
-        "label": "Local average monthly wage",
+        "label": "当地职工月平均工资候选值",
         "answer_type": "money",
-        "source": "local verified candidate source or manual lawyer/local check",
+        "source": "经核验的当地公开来源，或律师、当地专业人士人工核验",
     },
     "case.wage.previous_month_wage": {
-        "label": "Previous month wage",
+        "label": "上月工资",
         "answer_type": "money",
-        "source": "last full wage month before termination",
+        "source": "解除或终止前最后一个完整工资月",
     },
     "case.wage.unpaid_wages_amount": {
-        "label": "Unpaid wages amount",
+        "label": "欠付工资金额",
         "answer_type": "money",
-        "source": "payroll, bank, payslip, or tax records",
+        "source": "工资表、银行流水、工资单或个税记录",
     },
     "case.dispute.employer_stated_reason": {
-        "label": "Employer stated reason",
+        "label": "用人单位陈述的理由",
         "answer_type": "text",
-        "source": "written notice, HR message, meeting record, or draft agreement",
+        "source": "书面通知、HR 消息、会议记录或协议草稿",
     },
     "case.dispute.deadline_or_meeting_time": {
-        "label": "Deadline or meeting time",
+        "label": "截止时间或会议时间",
         "answer_type": "date_or_datetime",
-        "source": "HR message, meeting invite, or document signing deadline",
+        "source": "HR 消息、会议邀请或文件签署期限",
     },
     "case.dispute.documents_received": {
-        "label": "Documents received",
+        "label": "已收到的文件",
         "answer_type": "list",
-        "source": "notices, agreements, resignation templates, certificates, or emails",
+        "source": "通知、协议、辞职模板、证明或邮件",
     },
     "case.dispute.documents_signed": {
-        "label": "Documents signed",
+        "label": "已签署或确认的文件",
         "answer_type": "list",
-        "source": "documents already signed or acknowledged",
+        "source": "已经签署或确认收悉的文件",
     },
 }
 
@@ -156,15 +156,15 @@ EDITABLE_FIELD_PATHS = [
 ]
 
 SECTION_TITLES = {
-    "case_snapshot": "Case Snapshot",
-    "fact_timeline": "Fact Timeline",
-    "termination_assessment": "Termination Assessment",
-    "money_summary": "Money Summary",
-    "evidence_directory": "Evidence Directory",
-    "negotiation_plan": "Negotiation Plan",
-    "agreement_review_summary": "Agreement Review",
-    "arbitration_draft_pack": "Arbitration Draft Pack",
-    "safety_and_review_notes": "Safety And Review Notes",
+    "case_snapshot": "案件概况",
+    "fact_timeline": "事实时间线",
+    "termination_assessment": "解除劳动关系分析",
+    "money_summary": "金额汇总",
+    "evidence_directory": "证据目录",
+    "negotiation_plan": "协商方案",
+    "agreement_review_summary": "协议审查",
+    "arbitration_draft_pack": "仲裁申请草稿包",
+    "safety_and_review_notes": "风险与复核提示",
 }
 
 SECTION_EDIT_PATHS = {
@@ -324,7 +324,7 @@ def build_editable_fields(state: dict[str, Any]) -> list[dict[str, Any]]:
                 "source_hint": (
                     question.get("source_hint")
                     if question
-                    else meta.get("source", "worker-accessible record")
+                    else meta.get("source", "劳动者可合法取得的材料")
                 ),
                 "question_id": question.get("id") if question else None,
             }
@@ -336,7 +336,7 @@ def section_summary_details(section_name: str, section_value: Any) -> dict[str, 
     items = section_items(section_value)
     if not items:
         return {
-            "headline": "Waiting for required facts",
+            "headline": "待补充必要事实",
             "metrics": {},
             "badges": ["waiting_for_input"],
         }
@@ -351,7 +351,7 @@ def section_summary_details(section_name: str, section_value: Any) -> dict[str, 
 
     if section_name == "fact_timeline":
         return {
-            "headline": f"{len(items)} timeline event(s)",
+            "headline": f"{len(items)} 个时间线事件",
             "metrics": {"event_count": len(items)},
             "badges": ["chronology_ready"],
         }
@@ -360,7 +360,7 @@ def section_summary_details(section_name: str, section_value: Any) -> dict[str, 
         item = items[0]
         maps = item.get("primary_termination_maps", []) + item.get("alternative_termination_maps", [])
         return {
-            "headline": ", ".join(maps[:3]) or "termination route pending",
+            "headline": "、".join(maps[:3]) or "待判断解除、终止情形",
             "metrics": {"missing_fact_count": len(item.get("missing_facts", []))},
             "badges": [item.get("classification_confidence", "medium")],
         }
@@ -372,7 +372,7 @@ def section_summary_details(section_name: str, section_value: Any) -> dict[str, 
             if isinstance(item.get("amount"), (int, float))
         )
         return {
-            "headline": f"{len(items)} money item(s)",
+            "headline": f"{len(items)} 个金额项目",
             "metrics": {"claim_count": len(items), "estimated_total": round(total, 2)},
             "badges": ["estimated_pending_record_check"],
         }
@@ -380,7 +380,7 @@ def section_summary_details(section_name: str, section_value: Any) -> dict[str, 
     if section_name == "evidence_directory":
         p0_count = sum(1 for item in items if str(item.get("priority", "")).startswith("P0"))
         return {
-            "headline": f"{len(items)} evidence item(s)",
+            "headline": f"{len(items)} 项证据",
             "metrics": {"evidence_count": len(items), "p0_count": p0_count},
             "badges": ["lawful_source_required"],
         }
@@ -388,7 +388,7 @@ def section_summary_details(section_name: str, section_value: Any) -> dict[str, 
     if section_name == "negotiation_plan":
         item = items[0]
         return {
-            "headline": item.get("scenario_id", "negotiation route pending"),
+            "headline": item.get("scenario_id", "待确定协商方案"),
             "metrics": {"settlement_floor": item.get("settlement_floor")},
             "badges": ["before_sending_review_required"],
         }
@@ -396,7 +396,7 @@ def section_summary_details(section_name: str, section_value: Any) -> dict[str, 
     if section_name == "agreement_review_summary":
         item = items[0]
         return {
-            "headline": item.get("document_type", "document pending"),
+            "headline": item.get("document_type", "待确认文件类型"),
             "metrics": {"critical_clause_count": len(item.get("critical_clause_types", []))},
             "badges": [item.get("signing_risk_level", "medium")],
         }
@@ -404,7 +404,7 @@ def section_summary_details(section_name: str, section_value: Any) -> dict[str, 
     if section_name == "arbitration_draft_pack":
         item = items[0]
         return {
-            "headline": f"{len(item.get('claim_requests', []))} claim request(s)",
+            "headline": f"{len(item.get('claim_requests', []))} 项仲裁请求",
             "metrics": {"claim_request_count": len(item.get("claim_requests", []))},
             "badges": [item.get("local_form_check", "required_before_filing")],
         }
@@ -412,7 +412,7 @@ def section_summary_details(section_name: str, section_value: Any) -> dict[str, 
     if section_name == "safety_and_review_notes":
         item = items[0]
         return {
-            "headline": item.get("safety_decision", "safety review pending"),
+            "headline": item.get("safety_decision", "待完成风险复核"),
             "metrics": {
                 "local_verify_count": len(item.get("local_verify_items", [])),
                 "lawyer_check_count": len(item.get("lawyer_check_items", [])),
@@ -421,7 +421,7 @@ def section_summary_details(section_name: str, section_value: Any) -> dict[str, 
         }
 
     return {
-        "headline": f"{len(items)} item(s)",
+        "headline": f"{len(items)} 项内容",
         "metrics": {"item_count": len(items)},
         "badges": ["ready"],
     }
@@ -482,7 +482,7 @@ def build_action_queue(
                 "id": "review:local_verify",
                 "kind": "review",
                 "priority": "P0_before_final_use",
-                "label": "Review local verification items",
+                "label": "复核当地规则核验事项",
             }
         )
     if review_notes.get("lawyer_check_items"):
@@ -491,7 +491,7 @@ def build_action_queue(
                 "id": "review:lawyer_check",
                 "kind": "review",
                 "priority": "P0_before_final_use",
-                "label": "Review lawyer-check items",
+                "label": "复核建议律师核验事项",
             }
         )
     if "agreement_review_summary" in package:
@@ -500,7 +500,7 @@ def build_action_queue(
                 "id": "review:agreement_before_signing",
                 "kind": "review",
                 "priority": "P0_before_signing",
-                "label": "Review agreement risk before signing",
+                "label": "签署前复核协议风险",
             }
         )
     if "arbitration_draft_pack" in package:
@@ -509,7 +509,7 @@ def build_action_queue(
                 "id": "verify:arbitration_form",
                 "kind": "local_form_check",
                 "priority": "P1_before_filing",
-                "label": "Verify local arbitration form and commission",
+                "label": "核验当地仲裁表格和仲裁委员会",
             }
         )
     actions.extend(
@@ -518,13 +518,13 @@ def build_action_queue(
                 "id": "export:case_package_json",
                 "kind": "export",
                 "priority": "P2_after_review",
-                "label": "Export full case package JSON",
+                "label": "导出完整案件材料包 JSON",
             },
             {
                 "id": "export:redacted_share_packet",
                 "kind": "export",
                 "priority": "P2_after_review",
-                "label": "Export redacted share packet",
+                "label": "导出脱敏共享材料",
             },
         ]
     )
@@ -595,8 +595,8 @@ def build_share_packet(
             "evidence_count": len(package.get("evidence_directory", [])),
         },
         "sharing_limits": [
-            "Do not include employer names, worker real names, chats, payroll files, or IDs in public sharing.",
-            "Use this packet for lawyer consultation or trusted review only; keep original records private.",
+            "公开分享时不要包含用人单位名称、劳动者真实姓名、聊天原文、工资文件或身份证件。",
+            "仅将本材料用于律师咨询或可信复核，并妥善保管原始材料。",
         ],
     }
 
@@ -731,7 +731,7 @@ def follow_up_questions(diagnostics: dict[str, Any]) -> list[dict[str, Any]]:
     prompts = diagnostics.get("follow_up_questions", [])
     for index, path in enumerate(diagnostics.get("missing_inputs", [])):
         meta = QUESTION_META_BY_PATH.get(path, {})
-        question = prompts[index] if index < len(prompts) else f"Please provide {path}."
+        question = prompts[index] if index < len(prompts) else f"请补充字段 {path}。"
         item = {
             "id": question_id(path),
             "path": path,
@@ -739,7 +739,7 @@ def follow_up_questions(diagnostics: dict[str, Any]) -> list[dict[str, Any]]:
             "question": question,
             "answer_type": meta.get("answer_type", "text"),
             "required": True,
-            "source_hint": meta.get("source", "worker-accessible record"),
+            "source_hint": meta.get("source", "劳动者可合法取得的材料"),
         }
         if meta.get("options"):
             item["options"] = meta["options"]
@@ -796,7 +796,7 @@ def build_product_output(
         "summary_cards": [
             {
                 "id": "case_snapshot",
-                "title": "Case Snapshot",
+                "title": "案件概况",
                 "items": {
                     "city": body.get("jurisdiction", {}).get("city", "unknown"),
                     "employer_legal_name": body.get("parties", {}).get(
@@ -809,7 +809,7 @@ def build_product_output(
             },
             {
                 "id": "route",
-                "title": "Route",
+                "title": "处理路径",
                 "items": {
                     "export_profile": state["export_profile"],
                     "profile_reason": state["profile_reason"],
@@ -821,13 +821,13 @@ def build_product_output(
         "questions": state["questions"],
         "next_steps": (
             [
-                "Collect the required facts above before calculating or drafting.",
-                "Keep source records lawful and worker-accessible.",
+                "先补充上述必要事实，再进行计算或起草。",
+                "仅使用本人可合法取得的来源材料。",
             ]
             if status != "ready"
             else [
-                "Review open questions, local verification items, and lawyer-check items before signing or filing.",
-                "Use the generated package as a working file, not as a final legal opinion.",
+                "签署或提交前，复核待确认问题、当地规则核验事项和建议律师核验事项。",
+                "生成的材料包仅作工作文件，不作为最终法律意见。",
             ]
         ),
     }

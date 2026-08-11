@@ -140,8 +140,8 @@
           ],
           "content_contains": {
             "share/redacted_share_packet.md": [
-              "draft_pending_required_facts",
-              "No package sections yet"
+              "待补充必要事实的草稿",
+              "暂无材料包板块"
             ]
           },
           "content_excludes": {

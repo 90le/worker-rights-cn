@@ -6,6 +6,7 @@ from __future__ import annotations
 import copy
 import dataclasses
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -72,6 +73,21 @@ def main() -> int:
             failures.append({"case": item["id"], "expected_category_order": expected["categories_exact"], "actual": result.categories})
         if expected["decision"] == "blocked" and not result.blocked_content:
             failures.append({"case": item["id"], "missing_blocked_content": True})
+        non_chinese_blocked_content = [
+            value
+            for value in result.blocked_content
+            if not re.search(r"[\u3400-\u9fff]", value)
+        ]
+        if non_chinese_blocked_content:
+            failures.append(
+                {"case": item["id"], "non_chinese_blocked_content": non_chinese_blocked_content}
+            )
+        if result.lawful_alternative and not re.search(
+            r"[\u3400-\u9fff]", result.lawful_alternative
+        ):
+            failures.append(
+                {"case": item["id"], "non_chinese_lawful_alternative": result.lawful_alternative}
+            )
         if expected["alternative_contains"] not in result.lawful_alternative:
             failures.append({"case": item["id"], "lawful_alternative": result.lawful_alternative})
         covered_policy_categories.update(result.categories)

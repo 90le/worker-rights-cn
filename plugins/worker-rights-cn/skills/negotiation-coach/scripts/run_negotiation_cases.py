@@ -72,6 +72,23 @@ def validate(playbook_path: Path, cases_path: Path, legal_map_path: Path) -> dic
                 {"scenario": scenario_id, "missing_blocks": missing_blocks}
             )
 
+    human_fields = [
+        playbook["source_note"],
+        *playbook["global_safety_rules"],
+        *(block["purpose"] for block in playbook["message_blocks"].values()),
+    ]
+    for scenario in playbook["scenarios"].values():
+        human_fields.extend(
+            [
+                scenario["use_when"],
+                scenario["objective"],
+                *scenario["forbidden_phrases"],
+                *scenario["escalation_triggers"],
+            ]
+        )
+    non_chinese_human_fields = [
+        value for value in human_fields if not re.search(r"[\u3400-\u9fff]", value)
+    ]
     failures: list[dict[str, Any]] = []
     results: list[dict[str, Any]] = []
 
@@ -134,6 +151,8 @@ def validate(playbook_path: Path, cases_path: Path, legal_map_path: Path) -> dic
         failures.append({"playbook_anchor_failures": playbook_anchor_failures})
     if missing_block_references:
         failures.append({"missing_block_references": missing_block_references})
+    if non_chinese_human_fields:
+        failures.append({"non_chinese_human_fields": non_chinese_human_fields})
 
     return {
         "playbook_path": str(playbook_path),
@@ -144,6 +163,8 @@ def validate(playbook_path: Path, cases_path: Path, legal_map_path: Path) -> dic
         "failed": len(failures),
         "playbook_anchor_failures": playbook_anchor_failures,
         "missing_block_references": missing_block_references,
+        "human_field_count": len(human_fields),
+        "non_chinese_human_fields": non_chinese_human_fields,
         "results": results,
         "failures": failures,
     }

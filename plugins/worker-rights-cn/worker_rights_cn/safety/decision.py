@@ -263,7 +263,7 @@ def classify_request(case: dict[str, object], message: str) -> SafetyDecision:
         return SafetyDecision(
             "out_of_scope",
             ("employer_side_misuse",),
-            ("employer-side evasion or statutory underpayment assistance",),
+            ("协助雇主规避义务或少付法定款项",),
             "本插件仅支持劳动者侧；雇主应改走合法用工、足额支付和程序合规审查。",
             "scope_review",
         )

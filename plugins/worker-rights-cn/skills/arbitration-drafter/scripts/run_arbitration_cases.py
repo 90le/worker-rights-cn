@@ -81,6 +81,26 @@ def validate(schema_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
     legal_anchors = collect_legal_anchors(legal_map_path)
 
     schema_anchor_failures = sorted(all_schema_anchors(schema) - legal_anchors)
+    missing_amount_rule_text = [
+        claim_type
+        for claim_type, template in schema["claim_templates"].items()
+        if not template.get("amount_rule_text")
+    ]
+    human_fields = [
+        schema["source_note"],
+        *(template["label"] for template in schema["claim_templates"].values()),
+        *(template.get("amount_rule_text", "") for template in schema["claim_templates"].values()),
+        *(template["draft_note"] for template in schema["claim_templates"].values()),
+        *schema["draft_application_outline"],
+        *schema["global_safety_rules"],
+    ]
+    english_guidance = re.compile(r"\b(?:Use|Verify|State|Only|List|Local|Check|Do|If)\b")
+    non_chinese_human_fields = [
+        value
+        for value in human_fields
+        if value
+        and (not re.search(r"[\u3400-\u9fff]", value) or english_guidance.search(value))
+    ]
     failures: list[dict[str, Any]] = []
     results: list[dict[str, Any]] = []
 
@@ -138,6 +158,10 @@ def validate(schema_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
 
     if schema_anchor_failures:
         failures.append({"schema_anchor_failures": schema_anchor_failures})
+    if missing_amount_rule_text:
+        failures.append({"missing_amount_rule_text": missing_amount_rule_text})
+    if non_chinese_human_fields:
+        failures.append({"non_chinese_human_fields": non_chinese_human_fields})
 
     return {
         "schema_path": str(schema_path),
@@ -147,6 +171,9 @@ def validate(schema_path: Path, cases_path: Path, legal_map_path: Path) -> dict[
         "passed": len(cases) - sum(1 for item in failures if "case" in item),
         "failed": len(failures),
         "schema_anchor_failures": schema_anchor_failures,
+        "human_field_count": len(human_fields),
+        "missing_amount_rule_text": missing_amount_rule_text,
+        "non_chinese_human_fields": non_chinese_human_fields,
         "results": results,
         "failures": failures,
     }

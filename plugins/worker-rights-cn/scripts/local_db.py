@@ -1210,7 +1210,9 @@ def expanded_search_query(query: str) -> str:
 
 
 def like_search_terms(query: str) -> list[str]:
-    return unique_strings([query, *query_expansion_terms(query)])
+    clean_query = compact_text(query)
+    query_terms = [term for term in re.split(r"\s+", clean_query) if len(term) >= 2]
+    return unique_strings([clean_query, *query_terms, *query_expansion_terms(clean_query)])
 
 
 def search_query_expansion(query: str) -> dict[str, Any]:
@@ -1427,6 +1429,21 @@ def search_legal_anchors(
     return sorted(results.values(), key=lambda item: (-item["score"], item["id"]))[:limit]
 
 
+def city_rule_query_alias_match(
+    row: sqlite3.Row, query_text: str, *, exact_term: str | None = None
+) -> bool:
+    city_terms = {
+        str(row["city_id"]).lower(),
+        str(row["display_name"]).lower(),
+        *(str(alias).lower() for alias in json.loads(row["aliases_json"])),
+    }
+    return (exact_term is not None and exact_term.lower() in city_terms) or any(
+        term in query_text
+        for term in city_terms
+        if len(term) >= 2 and (not term.isascii() or len(term) >= 3)
+    )
+
+
 def search_city_rules(
     connection: sqlite3.Connection,
     query: str,
@@ -1435,6 +1452,7 @@ def search_city_rules(
     status: str | None = None,
 ) -> list[dict[str, Any]]:
     results: dict[tuple[str, str], dict[str, Any]] = {}
+    query_text = compact_text(query).lower()
     if fts_table_exists(connection, "city_rules_fts"):
         try:
             fts_query = quote_fts_query(expanded_search_query(query))
@@ -1452,9 +1470,13 @@ def search_city_rules(
                     (match["city_id"],),
                 ).fetchone()
                 if row and city_rule_matches_filters(row, status=status):
+                    score = (
+                        100.0 if city_rule_query_alias_match(row, query_text)
+                        else 90.0 - float(match["rank"])
+                    )
                     merge_result(
                         results,
-                        city_rule_result(row, score=90.0 - float(match["rank"]), match_type="fts"),
+                        city_rule_result(row, score=score, match_type="fts"),
                     )
         except sqlite3.OperationalError:
             pass
@@ -1478,11 +1500,10 @@ def search_city_rules(
         for row in rows:
             if not city_rule_matches_filters(row, status=status):
                 continue
-            exact = like_term.lower() in {
-                str(row["city_id"]).lower(),
-                str(row["display_name"]).lower(),
-            }
-            score = 100.0 if exact else (55.0 if term_index == 0 else 51.0)
+            alias_match = city_rule_query_alias_match(
+                row, query_text, exact_term=like_term
+            )
+            score = 100.0 if alias_match else (55.0 if term_index == 0 else 51.0)
             merge_result(
                 results,
                 city_rule_result(row, score=score, match_type="like"),
@@ -1670,11 +1691,11 @@ def sanitize_ai_recall_gateway_config(config: dict[str, Any] | None) -> tuple[di
     warnings: list[str] = []
     provider = str(config.get("provider") or config.get("gateway") or "host_agent").strip().lower()
     if provider not in AI_RECALL_PROVIDERS:
-        warnings.append(f"unknown provider '{provider}' treated as custom")
+        warnings.append(f"未知服务商“{provider}”，已按 custom 处理")
         provider = "custom"
 
     if any(key in config for key in ["api_key", "token", "secret", "authorization"]):
-        warnings.append("raw secrets are ignored; configure api_key_env instead")
+        warnings.append("已忽略原始密钥；请改用 api_key_env 配置")
 
     timeout_seconds = int(config.get("timeout_seconds", 30))
     timeout_seconds = min(max(timeout_seconds, 1), 120)
@@ -1725,22 +1746,22 @@ def ai_recall_output_schema() -> dict[str, Any]:
             "reranked_source_ids": {
                 "type": "array",
                 "items": {"type": "string"},
-                "description": "Only source ids already present in candidate_source_ids.",
+                "description": "仅允许使用 candidate_source_ids 中已有的法源 ID。",
             },
             "expanded_queries": {
                 "type": "array",
                 "items": {"type": "string"},
-                "description": "Extra search queries the host may send back to worker_rights.search_sources.",
+                "description": "宿主可传回 worker_rights.search_sources 的补充检索词。",
             },
             "missing_source_queries": {
                 "type": "array",
                 "items": {"type": "string"},
-                "description": "Queries for source gaps; these are leads, not legal conclusions.",
+                "description": "用于补齐法源缺口的检索词；仅作为线索，不构成法律结论。",
             },
             "risk_flags": {
                 "type": "array",
                 "items": {"type": "string"},
-                "description": "Source-status, jurisdiction, privacy, or evidence-integrity cautions.",
+                "description": "关于法源状态、适用地域、隐私或证据完整性的风险提示。",
             },
             "notes": {"type": "string"},
         },
@@ -1757,11 +1778,11 @@ def ai_recall_prompt_contract(
 ) -> dict[str, Any]:
     candidate_ids = [str(item["id"]) for item in candidates if item.get("id")]
     instructions = [
-        "You are reranking and expanding source recall for a China labor-rights plugin.",
-        "Use only candidate_source_ids when reranking; do not invent source ids.",
-        "Do not make legal conclusions, compensation calculations, or final local-rule statements.",
-        "Candidate/local/reference statuses are gating metadata; flag uncertainty instead of treating them as final.",
-        "Return strict JSON matching output_schema.",
+        "你正在为中国劳动权益插件重新排序法源召回结果并扩展检索词。",
+        "重新排序时仅使用 candidate_source_ids，不得虚构法源 ID。",
+        "不得作出法律结论、计算补偿或将本地规则表述为最终结论。",
+        "候选、本地和参考状态属于门禁元数据；如有不确定性应明确标记，不得视为最终状态。",
+        "严格返回符合 output_schema 的 JSON。",
     ]
     return {
         "task": "source_recall_rerank_and_query_expansion",
@@ -1776,7 +1797,7 @@ def ai_recall_prompt_contract(
         "messages": [
             {
                 "role": "system",
-                "content": "Rerank source records and propose extra recall queries. Stay inside the supplied source ids and output schema.",
+                "content": "重新排序法源记录并提出补充检索词。仅使用给定法源 ID，并严格遵守输出架构。",
             },
             {
                 "role": "user",
@@ -1840,7 +1861,7 @@ def plan_ai_recall(
         "execution": {
             "plugin_network_calls": "none",
             "caller": "host_agent_or_user_configured_gateway",
-            "secret_policy": "api keys must stay in environment variables; raw secrets are ignored",
+            "secret_policy": "API 密钥必须保存在环境变量中；原始密钥会被忽略",
         },
         "policy": {
             "business_logic_dependency": "none",
@@ -1858,10 +1879,10 @@ def plan_ai_recall(
         },
         "model_request": prompt_contract,
         "next_steps": [
-            "Host or user gateway may execute model_request.messages with configured provider/model.",
-            "Validate model output against model_request.output_schema.",
-            "Send expanded_queries back through worker_rights.search_sources before using any new source.",
-            "Use reranked_source_ids only as recall ordering; deterministic tools still own legal mapping and calculation.",
+            "宿主或用户网关可使用已配置的服务商和模型执行 model_request.messages。",
+            "依据 model_request.output_schema 校验模型输出。",
+            "使用任何新增法源前，先将 expanded_queries 传回 worker_rights.search_sources 检索。",
+            "reranked_source_ids 仅用于召回排序；法律映射和补偿估算仍由确定性工具完成。",
         ],
     }
 
@@ -1949,7 +1970,7 @@ def validate_ai_recall_response(
             {
                 "severity": "critical",
                 "code": "UNKNOWN_SOURCE_ID",
-                "message": "AI recall response invented or referenced source ids outside candidate_source_ids.",
+                "message": "AI 召回响应虚构或引用了 candidate_source_ids 之外的法源 ID。",
                 "unknown_source_ids": unknown_ids,
             }
         )
@@ -1960,7 +1981,7 @@ def validate_ai_recall_response(
             {
                 "severity": "high",
                 "code": "UNEXPECTED_RESPONSE_FIELDS",
-                "message": "AI recall response contains fields outside the gateway output schema.",
+                "message": "AI 召回响应包含网关输出架构之外的字段。",
                 "fields": unexpected_keys,
             }
         )
@@ -1971,7 +1992,7 @@ def validate_ai_recall_response(
             {
                 "severity": "high",
                 "code": "FORBIDDEN_LEGAL_CONCLUSION",
-                "message": "AI recall response appears to provide legal conclusions, guaranteed outcomes, or final compensation statements.",
+                "message": "AI 召回响应疑似包含法律结论、结果保证或最终补偿表述。",
             }
         )
     if AI_RECALL_SECRET_RE.search(combined_text):
@@ -1979,7 +2000,7 @@ def validate_ai_recall_response(
             {
                 "severity": "critical",
                 "code": "SECRET_OR_TOKEN_IN_RESPONSE",
-                "message": "AI recall response appears to contain a raw secret, token, API key, or authorization credential.",
+                "message": "AI 召回响应疑似包含原始密钥、令牌、API 密钥或 Authorization 凭据。",
             }
         )
     if AI_RECALL_SOURCE_FINALITY_RE.search(combined_text):
@@ -1987,7 +2008,7 @@ def validate_ai_recall_response(
             {
                 "severity": "high",
                 "code": "SOURCE_FINALITY_OVERREACH",
-                "message": "AI recall response appears to treat candidate/local-verify sources or local-rule facts as final verified law.",
+                "message": "AI 召回响应疑似将候选法源、local_verify 法源或本地规则事实视为最终核验结论。",
             }
         )
 
@@ -2016,7 +2037,7 @@ def validate_ai_recall_response(
             "legal_conclusions": "forbidden_in_ai_recall",
             "unknown_source_ids": "reject_or_drop",
             "secret_handling": "do_not_echo_raw_secret",
-            "next_step": "send accepted ids back to source records and deterministic tools only",
+            "next_step": "仅将已接受的 ID 传回法源记录和确定性工具",
         },
     }
 

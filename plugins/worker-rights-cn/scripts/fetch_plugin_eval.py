@@ -20,7 +20,7 @@ def main() -> int:
     expected = args.sha256.strip().lower()
     if parsed.scheme != "https" or len(expected) != 64 or any(char not in "0123456789abcdef" for char in expected):
         parser.error("a pinned HTTPS URL and 64-character SHA-256 are required")
-    request = urllib.request.Request(args.url, headers={"User-Agent": "worker-rights-cn-ci/0.4.0"})
+    request = urllib.request.Request(args.url, headers={"User-Agent": "worker-rights-cn-ci/0.4.1"})
     with urllib.request.urlopen(request, timeout=30) as response:  # noqa: S310 - HTTPS checked above
         payload = response.read(10_000_001)
     if len(payload) > 10_000_000:

@@ -1,11 +1,11 @@
 {
   "schema_version": "0.1.0",
   "retrieved_at": "2026-06-16",
-  "source_note": "Use with layoff-defense/references/legal-map.md. Verify current law and local rules before final advice.",
+  "source_note": "与 layoff-defense/references/legal-map.md 配合使用；给出最终建议前，应核验现行法律和地方规则。",
   "risk_levels": ["critical", "high", "medium", "low", "lawyer_check"],
   "document_types": {
     "separation_agreement": {
-      "description": "Mutual termination, settlement, departure, or compensation agreement.",
+      "description": "协商解除、和解、离职或补偿协议。",
       "default_source_anchors": [
         "LCL-2012#art36",
         "LCL-2012#art46",
@@ -23,7 +23,7 @@
       ]
     },
     "resignation_form": {
-      "description": "Employee resignation letter, OA resignation form, voluntary resignation template, or personal-reason resignation document.",
+      "description": "劳动者辞职信、OA 离职申请、自愿离职模板或个人原因离职文件。",
       "default_source_anchors": [
         "LCL-2012#art37",
         "LCL-2012#art38",
@@ -39,7 +39,7 @@
       ]
     },
     "non_compete_agreement": {
-      "description": "Post-employment or in-term non-compete agreement, clause, notice, or release.",
+      "description": "在职期间或离职后的竞业限制协议、条款、通知或解除文件。",
       "default_source_anchors": [
         "LCL-2012#art23",
         "LCL-2012#art24",
@@ -61,7 +61,7 @@
       ]
     },
     "confidentiality_agreement": {
-      "description": "Confidentiality, trade secret, IP, customer information, or data protection agreement.",
+      "description": "保密、商业秘密、知识产权、客户信息或数据保护协议。",
       "default_source_anchors": [
         "LCL-2012#art23",
         "LCL-2012#art24",
@@ -75,7 +75,7 @@
       ]
     },
     "service_period_agreement": {
-      "description": "Training, special treatment, service-period, or training-cost repayment agreement.",
+      "description": "培训、特殊待遇、服务期或培训费用返还协议。",
       "default_source_anchors": [
         "LCL-2012#art22",
         "LCL-2012#art25",
@@ -88,7 +88,7 @@
       ]
     },
     "termination_notice_or_certificate": {
-      "description": "Termination notice, termination certificate, departure confirmation, or receipt.",
+      "description": "解除通知、离职证明、解除或终止劳动合同证明、签收文件。",
       "default_source_anchors": [
         "LCL-2012#art39",
         "LCL-2012#art40",
@@ -109,7 +109,7 @@
   },
   "clause_types": {
     "all_claims_waiver": {
-      "label": "All claims settled / no further disputes / rights waiver",
+      "label": "全部争议已结清／不再主张／权利放弃",
       "risk_level": "critical",
       "source_anchors": [
         "LCL-2012#art26",
@@ -126,13 +126,13 @@
         "双方再无争议",
         "一次性了结"
       ],
-      "worker_side_risk": "May release unpaid wages, overtime, annual leave, bonus, social insurance-related claims, double wage, unlawful termination, or future discovered claims.",
-      "recommended_edit": "Carve out unpaid statutory items, social insurance/housing fund, tax, non-compete compensation, undiscovered claims, and claims caused by employer breach or non-payment.",
-      "evidence_impact": "Preserve all drafts and communications showing whether the employer proposed the release and whether pressure, misunderstanding, or unfairness existed.",
+      "worker_side_risk": "可能一并放弃欠薪、加班费、未休年休假工资、奖金、社保相关请求、未签书面劳动合同双倍工资、违法解除赔偿以及以后发现的请求。",
+      "recommended_edit": "明确排除尚未支付的法定项目、社保和公积金、税务、竞业限制补偿、尚未发现的请求，以及因用人单位违约或未付款产生的请求。",
+      "evidence_impact": "保留全部协议草稿和沟通记录，用于说明放弃条款由谁提出，以及是否存在施压、误解或明显不公平。",
       "must_fix_before_signing": true
     },
     "resignation_characterization": {
-      "label": "Voluntary resignation / personal reasons / employee-initiated departure",
+      "label": "自愿离职／个人原因／劳动者主动离职",
       "risk_level": "critical",
       "source_anchors": [
         "LCL-2012#art37",
@@ -150,13 +150,13 @@
         "本人申请离职",
         "自愿离职"
       ],
-      "worker_side_risk": "Can weaken economic compensation and unlawful termination claims if it contradicts forced resignation or employer breach facts.",
-      "recommended_edit": "Use factual wording: employer proposed termination, parties negotiate termination, or worker terminates because of specific employer statutory breach when evidence supports it.",
-      "evidence_impact": "Preserve employer pressure, unpaid wage/social insurance records, lockout, transfer, salary cut, and objection records.",
+      "worker_side_risk": "如果与被迫离职或用人单位违法事实冲突，可能削弱经济补偿和违法解除相关主张。",
+      "recommended_edit": "证据支持时按事实表述为：用人单位提出解除、双方协商解除，或劳动者因用人单位具体法定违法情形解除。",
+      "evidence_impact": "保留用人单位施压、欠薪或欠缴社保、停卡停工、调岗降薪以及劳动者异议记录。",
       "must_fix_before_signing": true
     },
     "payment_amount_and_date": {
-      "label": "Compensation amount, payment deadline, tax, and default liability",
+      "label": "补偿金额、付款期限、税务处理和逾期责任",
       "risk_level": "high",
       "source_anchors": [
         "LCL-2012#art46",
@@ -175,13 +175,13 @@
         "含税",
         "办完交接后支付"
       ],
-      "worker_side_risk": "Unclear amount, tax basis, payment date, or default clause can make enforcement harder and reduce actual recovery.",
-      "recommended_edit": "State itemized gross amount, payment date, bank account, tax treatment, social insurance month, overdue liability, and no offset unless agreed in writing.",
-      "evidence_impact": "Preserve wage basis, settlement sheet, payment schedule, bank records, and 12-month wage proof.",
+      "worker_side_risk": "金额、税务口径、付款日期或违约条款不清，可能增加执行难度并降低实际到账金额。",
+      "recommended_edit": "写明分项税前金额、付款日期、收款账户、税务处理、社保缴至月份和逾期责任；未经书面约定不得抵销。",
+      "evidence_impact": "保留工资基数证明、结算单、付款安排、银行记录和近 12 个月工资证明。",
       "must_fix_before_signing": true
     },
     "handover_condition": {
-      "label": "Handover, return of property, account deletion, and conditional payment",
+      "label": "工作交接、财物返还、账号删除和附条件付款",
       "risk_level": "medium",
       "source_anchors": [
         "LCL-2012#art50",
@@ -197,13 +197,13 @@
         "删除全部资料",
         "不得保留任何资料"
       ],
-      "worker_side_risk": "Overbroad handover or deletion duties can destroy evidence or let employer delay payment.",
-      "recommended_edit": "Define handover list, deadline, receipt, lawful evidence preservation, and payment not unreasonably withheld for disputed handover.",
-      "evidence_impact": "Preserve handover checklist, receipt, account lockout timing, and lawful copies of personal employment records.",
+      "worker_side_risk": "过宽的交接或删除义务可能导致证据灭失，或被用于拖延付款。",
+      "recommended_edit": "明确交接清单、期限和书面签收，并保留合法证据；不得仅因交接争议而无理扣留付款。",
+      "evidence_impact": "保留交接清单、签收记录、账号停用时间以及劳动者合法持有的个人劳动关系材料副本。",
       "must_fix_before_signing": false
     },
     "termination_certificate": {
-      "label": "Termination certificate and departure reason wording",
+      "label": "解除或终止证明及离职原因表述",
       "risk_level": "high",
       "source_anchors": [
         "LCL-2012#art50",
@@ -219,13 +219,13 @@
         "解除证明",
         "离职原因"
       ],
-      "worker_side_risk": "Incorrect reason can affect unemployment benefits, future employment explanation, and dispute characterization.",
-      "recommended_edit": "State neutral lawful wording, termination date, position, service years, and avoid untrue voluntary resignation or misconduct labels.",
-      "evidence_impact": "Preserve certificate drafts and employer refusal or delay records.",
+      "worker_side_risk": "不准确的离职原因可能影响失业保险待遇、后续求职说明和争议性质认定。",
+      "recommended_edit": "采用中性且符合事实的表述，写明解除或终止日期、岗位和工作年限，避免虚假的自愿离职或违纪标签。",
+      "evidence_impact": "保留证明文件各版草稿，以及用人单位拒绝或拖延出具的记录。",
       "must_fix_before_signing": true
     },
     "non_compete": {
-      "label": "Non-compete scope, period, compensation, release, and breach exposure",
+      "label": "竞业限制范围、期限、补偿、解除和违约风险",
       "risk_level": "lawyer_check",
       "source_anchors": [
         "LCL-2012#art23",
@@ -249,13 +249,13 @@
         "竞争关系",
         "竞品公司"
       ],
-      "worker_side_risk": "Overbroad scope, no compensation, wrong personnel scope, excessive geography or term, and high liquidated damages can block new work or create major liability.",
-      "recommended_edit": "Limit personnel basis, protected secrets, competitors, region, duration, compensation amount/date, release mechanism, and breach calculation.",
-      "evidence_impact": "Preserve role, access to secrets/IP, compensation payments, employer release notice, and intended new role facts.",
+      "worker_side_risk": "范围过宽、缺少补偿、人员范围不当、地域或期限过度以及过高违约金，可能妨碍再就业或造成较大责任风险。",
+      "recommended_edit": "限定适用人员依据、受保护秘密、竞争企业、地域、期限、补偿金额和日期、解除机制以及违约责任计算方式。",
+      "evidence_impact": "保留岗位职责、接触商业秘密或知识产权的情况、补偿支付记录、用人单位解除通知和拟任新岗位事实。",
       "must_fix_before_signing": true
     },
     "confidentiality_and_penalty": {
-      "label": "Confidentiality, trade secrets, IP, customer data, and penalty clauses",
+      "label": "保密、商业秘密、知识产权、客户数据和责任条款",
       "risk_level": "high",
       "source_anchors": [
         "LCL-2012#art23",
@@ -274,13 +274,13 @@
         "客户资料",
         "知识产权"
       ],
-      "worker_side_risk": "Confidentiality can be used as disguised non-compete or penalty clause beyond statutory liquidated damages limits.",
-      "recommended_edit": "Define confidential information narrowly, exclude public/known/worker-owned information, remove disguised non-compete and unsupported penalty language.",
-      "evidence_impact": "Preserve job scope and actual access to confidential matters; do not copy company secrets as evidence.",
+      "worker_side_risk": "保密条款可能被用作变相竞业限制，或约定超出法定允许范围的违约责任。",
+      "recommended_edit": "从严界定保密信息，排除公开信息、劳动者已知或自有信息，并删除变相竞业限制和缺乏依据的责任表述。",
+      "evidence_impact": "保留岗位范围和实际接触保密事项的证明；不要复制公司秘密作为证据。",
       "must_fix_before_signing": false
     },
     "liquidated_damages": {
-      "label": "Worker-paid liquidated damages, penalty, clawback, or indemnity",
+      "label": "劳动者承担的违约金、罚款、返还或赔偿责任",
       "risk_level": "critical",
       "source_anchors": [
         "LCL-2012#art22",
@@ -300,13 +300,13 @@
         "返还补偿",
         "罚款"
       ],
-      "worker_side_risk": "Worker-paid penalties are generally limited to statutory service-period and non-compete contexts; broad indemnity may be invalid or excessive.",
-      "recommended_edit": "Delete non-statutory penalties; cap training repayment to remaining allocable training cost; tie non-compete damages to effective agreement and actual breach.",
-      "evidence_impact": "Preserve training invoices, special treatment proof, non-compete compensation proof, and employer loss calculation.",
+      "worker_side_risk": "劳动者承担违约金通常限于法定服务期和竞业限制情形；宽泛赔偿条款可能缺乏效力或金额过高。",
+      "recommended_edit": "删除无法律依据的违约金；培训费返还以剩余服务期可分摊的实际培训成本为限；竞业限制违约责任应与协议有效性和实际违约事实相联系。",
+      "evidence_impact": "保留培训发票、特殊待遇证明、竞业限制补偿支付证明和用人单位损失计算材料。",
       "must_fix_before_signing": true
     },
     "service_period": {
-      "label": "Service period, training cost repayment, and special treatment",
+      "label": "服务期、培训费返还和特殊待遇",
       "risk_level": "high",
       "source_anchors": [
         "LCL-2012#art22",
@@ -322,22 +322,22 @@
         "专项培训",
         "特殊待遇"
       ],
-      "worker_side_risk": "Employer may claim repayment or damages after early resignation; enforceability depends on special training/treatment, actual cost, fault, and remaining period.",
-      "recommended_edit": "Require itemized training cost, actual invoices, amortization schedule, service-period end date, and statutory解除 carve-outs.",
-      "evidence_impact": "Preserve training content, invoice, attendance, certificate, and whether it was ordinary onboarding or special technical training.",
+      "worker_side_risk": "劳动者提前离职后，用人单位可能主张返还费用或赔偿；是否支持需结合专项培训或特殊待遇、实际成本、过错和剩余服务期判断。",
+      "recommended_edit": "要求列明培训费用明细、真实发票、分摊计划和服务期截止日期，并排除劳动者依法解除劳动合同的情形。",
+      "evidence_impact": "保留培训内容、发票、考勤、证书，以及属于普通入职培训还是专项技术培训的材料。",
       "must_fix_before_signing": true
     }
   },
   "review_outputs": {
-    "must_fix_before_signing": "Clauses with critical/high risk or missing essential terms.",
-    "negotiate": "Clauses that should be narrowed, clarified, or priced.",
-    "verify_amounts": "Payment, tax, wage-base, cap, non-compete compensation, or service-period cost checks.",
-    "lawyer_check": "Non-compete, stock options, executive status, foreign worker, high-value settlement, group layoff, or broad release."
+    "must_fix_before_signing": "签署前必须修正的重大或高风险条款，以及缺少必要内容的条款。",
+    "negotiate": "需要缩小范围、澄清内容或重新议价的条款。",
+    "verify_amounts": "需要核验付款、税务、工资基数、封顶、竞业限制补偿或服务期成本。",
+    "lawyer_check": "涉及竞业限制、股权期权、高管身份、外籍劳动者、高额和解、经济性裁员或宽泛权利放弃时，需要律师复核。"
   },
   "global_safety_rules": [
-    "Do not draft fake resignation reasons, fake payment receipts, or backdated agreements.",
-    "Do not advise signing broad all-claims waivers before amounts, payment date, and carve-outs are clear.",
-    "Do not tell the worker to copy company secrets or customer data as evidence.",
-    "If already signed, analyze validity, revocation, performance, and non-payment instead of pretending the document is unsigned."
+    "不要起草虚假离职原因、虚假付款凭证或倒签协议。",
+    "金额、付款日期和保留事项尚未明确前，不要建议签署宽泛的全部权利放弃条款。",
+    "不要让劳动者复制公司秘密或客户数据作为证据。",
+    "文件已经签署的，应分析效力、撤销可能、履行情况和未付款问题，不要按未签署情形处理。"
   ]
 }

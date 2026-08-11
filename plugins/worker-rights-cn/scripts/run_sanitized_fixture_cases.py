@@ -32,7 +32,10 @@ PII_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("prc_id_number", re.compile(r"(?<!\d)(?:\d{17}[0-9Xx]|\d{15})(?!\d)")),
     ("china_mobile_phone", re.compile(r"(?<!\d)1[3-9]\d{9}(?!\d)")),
     ("bank_card_number", re.compile(r"(?<!\d)\d{16,19}(?!\d)")),
-    ("raw_street_address", re.compile(r"(?:身份证号|手机号|家庭住址|银行卡|病历号|住院号|门诊号)")),
+    (
+        "labeled_sensitive_value",
+        re.compile(r"(?:身份证号|手机号|家庭住址|银行卡|病历号|住院号|门诊号)\s*[:：]\s*[^\s，。；;,\"]{4,}"),
+    ),
     ("hospital_record_number", re.compile(r"\b(?:MRN|HN|IP|OP)[-_ ]?\d{4,}\b", re.IGNORECASE)),
 ]
 
@@ -120,7 +123,7 @@ def validate_generated_package(
         failures.append({"case": case_id, "missing_redline_categories": missing_categories})
 
     review_text = json.dumps(review_notes, ensure_ascii=False)
-    for required_phrase in ["Do not", "sensitive", "lawyer", "local"]:
+    for required_phrase in ["不要", "敏感", "律师", "当地"]:
         if required_phrase.lower() not in review_text.lower():
             failures.append({"case": case_id, "review_notes_missing_phrase": required_phrase})
 

@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+/output/
+/dist/
+/plugins/worker-rights-cn/.local/
+/plugins/worker-rights-cn/reports/

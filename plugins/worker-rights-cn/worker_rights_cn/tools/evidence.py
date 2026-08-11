@@ -208,8 +208,8 @@ def _protected_status(case: dict[str, Any] | None) -> dict[str, object]:
             "FEP-2012#art6",
         ],
         "instruction": (
-            "If any protected status applies, treat art40, art41, or fixed-term expiry "
-            "classification as lawyer_check until facts and current local practice are verified."
+            "如存在孕期、生育期、医疗期、工伤或职业病等受保护状态，在核实事实和当地现行口径前，"
+            "对劳动合同法第四十条、第四十一条或固定期限届满路径应标记为“建议律师核验”。"
         ),
     }
 
@@ -353,8 +353,8 @@ def map_termination(arguments: dict[str, object]) -> dict[str, object]:
         "source_anchors": sorted(source_anchors),
         "protected_status_gate": protected,
         "warnings": [
-            "This classification is a routing aid. Verify current law, local rules, documents, and evidence before final advice.",
-            "Do not let employer or worker document labels override the factual termination sequence.",
+            "该分类仅用于辅助确定处理路径。形成最终意见前，请核验现行法律、本地规则、相关文件和证据。",
+            "应以实际解除经过为准，不要让用人单位或劳动者给文件使用的名称替代事实判断。",
         ],
     }
 
@@ -459,9 +459,9 @@ def build_evidence_plan(arguments: dict[str, object]) -> dict[str, object]:
     city = _case_city(case)
     local_rule_notes = []
     if "economic_layoff" in termination_maps and city and city.lower() == "guangzhou":
-        local_rule_notes.append("Guangzhou economic-layoff report package is included as verified_candidate procedure evidence; still verify district HRSS form and receipt.")
+        local_rule_notes.append("已将广州经济性裁员报告材料作为“候选已核验”的程序证据纳入；仍需核验所在区人社部门的现行表格和收件回执要求。")
     elif "guangzhou_layoff_report_package" in items:
-        local_rule_notes.append("The Guangzhou layoff-report item is a model local checklist; replace or verify with the case city's current HRSS practice before final use.")
+        local_rule_notes.append("广州裁员报告材料仅作为地方清单模板；最终使用前，应以案件所在城市人社部门的现行要求替换或核验。")
     return {
         "schema_version": "0.1.0",
         "tool": "worker_rights.build_evidence_plan",

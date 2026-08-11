@@ -15,6 +15,7 @@ PLUGIN_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_E2E_CASES = PLUGIN_ROOT / "tests" / "e2e_cases.json"
 CASE_PACKAGE_SCHEMA = PLUGIN_ROOT / "references" / "case-package-schema.json"
 LEGAL_MAP = PLUGIN_ROOT / "skills" / "layoff-defense" / "references" / "legal-map.md"
+CITY_RULES = PLUGIN_ROOT / "skills" / "local-rules-adapter" / "references" / "city-rules.json"
 
 sys.path.insert(0, str(PLUGIN_ROOT / "scripts"))
 import run_e2e_cases as e2e  # noqa: E402
@@ -49,14 +50,14 @@ MONEY_SOURCE_KEY = {
 RISK_ORDER = ["critical", "lawyer_check", "high", "medium", "low"]
 
 INTAKE_QUESTION_BY_PATH = {
-    "case.jurisdiction.city": "Which city should be used for local rule routing?",
-    "case.parties.employer_legal_name": "What is the employer's legal name shown on the contract, payslip, tax app, or business record?",
-    "case.employment.start_date": "What was the employment start date in YYYY-MM-DD format?",
-    "case.employment.end_date_or_expected_end": "What is the actual or expected termination date in YYYY-MM-DD format?",
-    "case.employment.current_status": "Is the worker still employed, notice_given, left, terminated, or unknown?",
-    "case.wage.average_monthly_wage": "What is the average monthly wage for the last 12 months or actual shorter service period?",
-    "case.dispute.trigger": "What happened first: meeting, notice, resignation pressure, settlement offer, lockout, or unpaid wages?",
-    "case.dispute.worker_goal": "What is the immediate goal: negotiate before signing, refuse resignation, prepare arbitration, or preserve evidence?",
+    "case.jurisdiction.city": "请说明用于匹配当地规则的工作城市。",
+    "case.parties.employer_legal_name": "请提供劳动合同、工资单、个人所得税 App 或企业登记信息显示的用人单位法定名称。",
+    "case.employment.start_date": "请提供入职日期（YYYY-MM-DD）。",
+    "case.employment.end_date_or_expected_end": "请提供实际或预计解除、终止劳动关系的日期（YYYY-MM-DD）。",
+    "case.employment.current_status": "请确认当前状态：在职、已收到通知、已离职、已被解除，或暂不清楚。",
+    "case.wage.average_monthly_wage": "请提供最近 12 个月的月平均工资；工作不足 12 个月的，请按实际工作期间计算。",
+    "case.dispute.trigger": "请说明争议最初如何发生，例如首次沟通、通知、被要求辞职、和解方案、停工停卡或欠薪。",
+    "case.dispute.worker_goal": "请说明当前最紧迫的目标，例如签署前协商、拒绝辞职、准备仲裁或保全证据。",
 }
 
 SUPPORTED_MAINLAND_COUNTRY_VALUES = {
@@ -207,6 +208,7 @@ def load_resources() -> dict[str, Any]:
         "negotiation_playbook": json.loads(e2e.NEGOTIATION_PLAYBOOK.read_text(encoding="utf-8")),
         "arbitration_schema": json.loads(e2e.ARBITRATION_SCHEMA.read_text(encoding="utf-8")),
         "safety_policy": json.loads(e2e.SAFETY_POLICY.read_text(encoding="utf-8")),
+        "city_rules": json.loads(CITY_RULES.read_text(encoding="utf-8")),
     }
 
 
@@ -275,6 +277,14 @@ def normalized_text(value: Any) -> str:
     return str(value or "").strip().lower()
 
 
+def city_display_name(value: Any, resources: dict[str, Any]) -> Any:
+    needle = normalized_text(value)
+    for city_id, rule in resources["city_rules"].get("cities", {}).items():
+        if needle in {normalized_text(alias) for alias in [city_id, *rule.get("aliases", [])]}:
+            return rule.get("display_name") or value
+    return value
+
+
 def unsupported_jurisdiction_details(body: dict[str, Any]) -> dict[str, Any] | None:
     jurisdiction = body.get("jurisdiction", {})
     if not isinstance(jurisdiction, dict):
@@ -294,7 +304,7 @@ def unsupported_jurisdiction_details(body: dict[str, Any]) -> dict[str, Any] | N
             "code": "UNSUPPORTED_COUNTRY_OR_REGION",
             "field": "case.jurisdiction.country",
             "value": fields.get("country"),
-            "message": "This plugin currently supports mainland China labor-rights workflows only.",
+            "message": "本插件目前仅支持中国大陆劳动权益工作流。",
         }
 
     for field, value in normalized.items():
@@ -303,7 +313,7 @@ def unsupported_jurisdiction_details(body: dict[str, Any]) -> dict[str, Any] | N
                 "code": "UNSUPPORTED_COUNTRY_OR_REGION",
                 "field": f"case.jurisdiction.{field}",
                 "value": fields.get(field),
-                "message": "Hong Kong, Macau, Taiwan, and non-mainland labor-law scenarios are outside this plugin's default scope.",
+                "message": "香港、澳门、台湾及其他非中国大陆劳动法情形需要按当地规则另行处理。",
             }
     return None
 
@@ -556,20 +566,20 @@ def adapt_user_intake_case(
             "arbitration_claim_types": arbitration_claim_types,
         },
         "warnings": [
-            "Inferences are routing hints for the package generator, not final legal conclusions.",
-            "Local wage caps, limitation dates, document wording, and employer-controlled procedure records still need verification.",
+            "推断结果仅用于案件材料生成器的流程分派，不是最终法律结论。",
+            "地方工资封顶、时效日期、文书措辞以及由用人单位掌握的程序材料仍需核验。",
         ],
     }
     if unsupported:
         diagnostics["status"] = "unsupported_jurisdiction"
         diagnostics["unsupported_jurisdiction"] = unsupported
         diagnostics["safe_alternatives"] = [
-            "Use this workflow only for fact organization and evidence inventory.",
-            "Consult a lawyer or labor authority in the applicable local jurisdiction.",
-            "Do not apply mainland China N/N+1/2N, labor arbitration, or city-rule outputs to this case.",
+            "本工作流仅用于整理事实和制作证据清单。",
+            "请向适用地的律师或劳动主管机构核验当地规则与处理路径。",
+            "本案不要套用中国大陆的 N、N+1、2N、劳动仲裁或城市规则输出。",
         ]
         diagnostics["warnings"].append(
-            "Unsupported jurisdiction detected: do not generate mainland China labor-law conclusions, compensation estimates, or arbitration filing materials."
+            "已识别为非中国大陆管辖情形：不要生成中国大陆劳动法结论、补偿估算或仲裁提交材料。"
         )
         return diagnostics
     if missing_paths:
@@ -666,21 +676,21 @@ def document_type_from_case(e2e_case: dict[str, Any]) -> str:
 
 
 def missing_facts_for_maps(termination_maps: list[str]) -> list[str]:
-    missing = ["final written reason", "itemized payment basis and payment date"]
+    missing = ["用人单位最终书面理由", "分项付款依据和付款日期"]
     if "economic_layoff" in termination_maps:
         missing.extend(
             [
-                "layoff headcount and threshold",
-                "30-day explanation and employee or union opinion records",
-                "labor-authority report proof and final layoff plan",
+                "裁员人数及是否达到法定门槛",
+                "提前三十日说明以及听取职工或工会意见的材料",
+                "向劳动行政部门报告的材料和最终裁员方案",
             ]
         )
     if "non_fault_dismissal" in termination_maps:
-        missing.extend(["article 40 ground evidence", "30-day notice or substitute wage proof"])
+        missing.extend(["《劳动合同法》第四十条对应事实依据", "提前三十日书面通知或额外一个月工资的材料"])
     if "constructive_dismissal" in termination_maps:
-        missing.extend(["wage or social-insurance breach records", "worker objection wording"])
+        missing.extend(["欠薪或社会保险未缴等用人单位法定情形的材料", "劳动者书面异议或解除通知的表述"])
     if "mutual_termination" in termination_maps:
-        missing.append("final agreement wording and waiver scope")
+        missing.append("最终协议文字和权利放弃范围")
     return dedupe(missing)
 
 
@@ -701,7 +711,7 @@ def risk_flags_for_case(e2e_case: dict[str, Any], termination_maps: list[str]) -
     return dedupe(flags)
 
 
-def build_case_snapshot(e2e_case: dict[str, Any]) -> dict[str, Any]:
+def build_case_snapshot(e2e_case: dict[str, Any], resources: dict[str, Any]) -> dict[str, Any]:
     body = case_body(e2e_case)
     jurisdiction = body["jurisdiction"]
     parties = body["parties"]
@@ -710,16 +720,16 @@ def build_case_snapshot(e2e_case: dict[str, Any]) -> dict[str, Any]:
     return {
         "worker_alias": parties["worker_name_or_alias"],
         "employer_legal_name": parties["employer_legal_name"],
-        "city": jurisdiction["city"],
-        "work_location": jurisdiction["main_work_location"],
+        "city": city_display_name(jurisdiction["city"], resources),
+        "work_location": city_display_name(jurisdiction["main_work_location"], resources),
         "employment_start_date": employment["start_date"],
         "expected_or_actual_end_date": employment["end_date_or_expected_end"],
         "current_status": employment["current_status"],
         "worker_goal": dispute["worker_goal"],
         "open_questions": [
-            "Confirm the employer's final written reason and document wording.",
-            "Verify wage basis, payment date, and local filing requirements.",
-            "Keep local_verify and lawyer_check items visible before signing or filing.",
+            "确认用人单位最终书面理由和文件表述。",
+            "核验工资基数、付款日期及当地提交要求。",
+            "签署或提交前保留“当地规则核验”和“建议律师核验”事项。",
         ],
     }
 
@@ -752,8 +762,7 @@ def build_termination_assessment(
         "alternative_termination_maps": termination_maps[1:] or ["unclear_or_mixed"],
         "employer_stated_reason": dispute.get("employer_stated_reason", "unknown"),
         "worker_position": (
-            f"{dispute.get('worker_goal', 'Preserve rights')} while requesting written basis, "
-            "itemized amounts, and lawful evidence production."
+            f"{dispute.get('worker_goal', '保留权利')}；同时要求书面依据、分项金额和依法可调取的材料。"
         ),
         "key_risk_flags": risk_flags_for_case(e2e_case, termination_maps),
         "classification_confidence": "medium",
@@ -773,21 +782,21 @@ def formula_for_claim(compensation: dict[str, Any], claim_type: str) -> str:
     service_months = compact_number(compensation["service_period"]["n_months_after_cap"])
     wage_for_n = compact_number(compensation["base_amounts"]["monthly_wage_for_n"])
     if claim_type == "economic_compensation_n":
-        return f"{service_months} months x {wage_for_n} wage basis"
+        return f"{service_months} 个月 × 月工资基数 {wage_for_n} 元"
     if claim_type == "substitute_notice_wage":
-        return "previous month's wage"
+        return "解除前一个月工资"
     if claim_type == "unlawful_termination_2n":
         amount = compact_number(compensation["base_amounts"]["economic_compensation_n"])
-        return f"2 x economic compensation N ({amount})"
+        return f"经济补偿（N）{amount} 元 × 2"
     if claim_type == "unpaid_wages":
-        return "sum of unpaid wages entered by worker"
+        return "劳动者填写的欠付工资合计"
     if claim_type == "unused_annual_leave_extra":
-        return "unused annual leave days x daily wage x statutory extra-pay estimate"
+        return "未休年休假天数 × 日工资 × 补付倍数（估算，需核验）"
     if claim_type == "unsigned_contract_double_wage":
-        return "eligible unsigned-contract months x average monthly wage"
+        return "符合条件的未签书面劳动合同月数 × 月平均工资"
     if claim_type == "overtime_claim":
-        return "overtime amount entered by worker"
-    return "itemized amount from compensation input"
+        return "劳动者填写的加班费金额"
+    return "根据补偿计算输入分项计算"
 
 
 def calculation_inputs_for_claim(compensation: dict[str, Any], claim_type: str) -> dict[str, Any]:
@@ -890,23 +899,24 @@ def build_evidence_directory(
             evidence_id,
             {
                 "id": evidence_id,
+                "label": f"待核验证据（{evidence_id}）",
                 "priority": "P3_local_verify",
                 "default_status": "to_request",
-                "proves": title_from_id(evidence_id),
-                "lawful_source": "worker-accessible record, official third-party record, or tribunal production request",
-                "collection_note": "Verify lawful source and collection limits before using this item.",
+                "proves": f"核验与“{evidence_id}”对应的待确认事实",
+                "lawful_source": "劳动者可合法取得的记录、官方或第三方记录，或依法申请仲裁庭要求用人单位提供的材料",
+                "collection_note": "使用前核验合法来源和收集边界。",
             },
         )
         directory.append(
             {
                 "evidence_id": evidence_id,
-                "evidence_name": title_from_id(evidence_id),
+                "evidence_name": item.get("label", f"待核验证据（{evidence_id}）"),
                 "priority": item.get("priority", "P3_local_verify"),
                 "status": item.get("default_status", "to_request"),
-                "lawful_source": item.get("lawful_source", "lawful source to verify"),
-                "proof_purpose": item.get("proves", title_from_id(evidence_id)),
+                "lawful_source": item.get("lawful_source", "待核验的合法来源"),
+                "proof_purpose": item.get("proves", f"核验与“{evidence_id}”对应的待确认事实"),
                 "related_claims": related_claims,
-                "collection_note": item.get("collection_note", "Preserve full context lawfully."),
+                "collection_note": item.get("collection_note", "依法保留完整上下文。"),
             }
         )
     return directory
@@ -974,15 +984,15 @@ def build_agreement_review_summary(
         for item in money_summary
         if item["claim_type"] not in {"economic_compensation_n", "substitute_notice_wage"}
     ]
-    claims_to_reserve.append("social insurance or housing fund disputes if any")
+    claims_to_reserve.append("如有社保或公积金争议，一并保留相关请求")
 
     return {
         "document_type": document_type,
         "critical_clause_types": clause_types,
         "revision_requests": revision_requests,
         "payment_safeguards": [
-            "State itemized gross amount, payment date, tax handling, and default liability.",
-            "Do not make a broad release effective before payment is completed.",
+            "写明分项税前金额、付款日期、税务处理和逾期责任。",
+            "全部权利放弃条款不得早于付款完成生效。",
         ],
         "claims_to_reserve": dedupe(claims_to_reserve),
         "signing_risk_level": signing_risk_level(clause_types, resources),
@@ -1020,8 +1030,11 @@ def build_arbitration_draft_pack(
         claim_requests.append(
             {
                 "claim_type": claim_type,
+                "claim_name": template.get("label", f"待核验请求（{claim_type}）"),
                 "amount": compact_number(amount),
                 "formula": template.get("amount_rule", "itemized amount from compensation input"),
+                "formula_text": template.get("amount_rule_text", "根据已确认的事实、金额和证据分项计算"),
+                "draft_note": template.get("draft_note", "提交前核验请求依据、金额和证据。"),
                 "source_anchors": template.get("source_anchors", []),
             }
         )
@@ -1032,7 +1045,7 @@ def build_arbitration_draft_pack(
     evidence_refs = [evidence_id for evidence_id in dedupe(needed_evidence) if evidence_id in evidence_ids]
     if not evidence_refs:
         evidence_refs = [item["evidence_id"] for item in evidence_directory[:5]]
-    city = body["jurisdiction"]["city"]
+    city = city_display_name(body["jurisdiction"]["city"], resources)
 
     return {
         "draft_status": "review_draft_not_final",
@@ -1040,8 +1053,8 @@ def build_arbitration_draft_pack(
         "not_final_filing_document": True,
         "lawyer_review_required": True,
         "candidate_commission": (
-            "Labor dispute arbitration commission at the place of contract performance or "
-            f"{city} employer location, subject to local form check."
+            f"劳动合同履行地或{city}用人单位所在地的劳动争议仲裁委员会；"
+            "提交前需核验当地表格、受理渠道和具体管辖。"
         ),
         "parties": {
             "applicant_alias": parties["worker_name_or_alias"],
@@ -1053,12 +1066,12 @@ def build_arbitration_draft_pack(
         "limitation_check": "within_one_year_pending_exact_trigger_date",
         "local_form_check": "required_before_filing",
         "pre_filing_checks": [
-            f"Verify the current {city} local arbitration commission form and accepted filing channel.",
-            "Confirm jurisdiction by contract performance place or employer registered/location evidence.",
-            "Confirm respondent legal name, unified social credit code, and service address.",
-            "Attach numbered evidence copies matching evidence_directory_refs and redact unnecessary sensitive data.",
-            "Recheck limitation trigger date, claim amounts, and local filing copy requirements.",
-            "Have a lawyer or local professional review the draft before signing or filing.",
+            f"核验{city}现行劳动争议仲裁申请表和受理渠道。",
+            "根据劳动合同履行地或用人单位所在地的证明材料确认管辖。",
+            "确认被申请人法定名称、统一社会信用代码和送达地址。",
+            "按证据目录编号附上副本，并删除无关敏感信息。",
+            "复核仲裁时效起算日、请求金额和当地材料份数要求。",
+            "签署或提交前请律师或当地专业人士复核草稿。",
         ],
         "filing_blockers": [
             "local_arbitration_form_not_verified",
@@ -1085,28 +1098,28 @@ def build_safety_and_review_notes(
     for category_id in category_ids:
         category = resources["safety_policy"]["risk_categories"].get(category_id, {})
         alternative_notes.extend(category.get("safe_alternatives", {}).values())
-    city = case_body(e2e_case)["jurisdiction"]["city"]
-    lawyer_items = ["Final document wording before signing or filing."]
+    city = city_display_name(case_body(e2e_case)["jurisdiction"]["city"], resources)
+    lawyer_items = ["签署或提交前复核最终文件表述。"]
     if "economic_layoff" in termination_maps:
-        lawyer_items.append("Economic-layoff procedure gaps and priority retention facts.")
+        lawyer_items.append("复核经济性裁员程序材料缺口和优先留用相关事实。")
     if "constructive_dismissal" in termination_maps:
-        lawyer_items.append("Resignation or statutory-breach wording before filing.")
+        lawyer_items.append("提交前复核劳动者解除通知或用人单位法定情形的表述。")
 
     return {
         "safety_decision": decision or expected_safety.get("decision", "proceed_with_caution"),
         "redline_categories": category_ids,
         "lawful_collection_limits": [
-            "Use only worker-accessible chats, emails, contracts, wage records, and official records.",
-            "Do not copy company secrets, unrelated personal data, source code, customer lists, or private files.",
+            "仅使用劳动者可合法取得的聊天、邮件、合同、工资材料和官方记录。",
+            "不要复制商业秘密、无关个人信息、源代码、客户名单或其他无关私密文件。",
             *dedupe(alternative_notes),
         ],
         "unsupported_assumptions": [
-            "Employer-side procedure records and final legal reason remain unverified until produced.",
-            "Amounts are estimates until wage records, local caps, payment status, and limitation dates are checked.",
+            "在用人单位提交相关材料前，其程序记录和最终法律理由仍待核验。",
+            "在核验工资材料、当地上限、付款状态和时效日期前，金额仅为估算。",
         ],
         "local_verify_items": [
-            f"{city} local wage cap, arbitration filing form, and commission jurisdiction.",
-            "Current local social insurance or housing fund handling if those issues are involved.",
+            f"核验{city}当地工资上限、仲裁申请表和仲裁委员会管辖。",
+            "涉及社会保险或住房公积金时，核验当地现行处理口径。",
         ],
         "lawyer_check_items": lawyer_items,
     }
@@ -1139,7 +1152,7 @@ def assemble_package(
     evidence_directory = build_evidence_directory(e2e_case, resources, money_summary)
 
     sections = {
-        "case_snapshot": build_case_snapshot(e2e_case),
+        "case_snapshot": build_case_snapshot(e2e_case, resources),
         "fact_timeline": build_fact_timeline(e2e_case, termination_maps),
         "termination_assessment": build_termination_assessment(e2e_case, termination_maps),
         "money_summary": money_summary,

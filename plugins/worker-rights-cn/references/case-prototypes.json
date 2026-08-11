@@ -3,8 +3,8 @@
   "prototypes": [
     {
       "id": "spc-mixed-affiliate-no-contract",
-      "title": "Mixed-affiliate employment and unsigned contract",
-      "summary": "Generalized public-case record covering employer identity, mixed-affiliate work, unsigned-contract claims, and employer-controlled evidence.",
+      "title": "关联主体混同用工与未签书面劳动合同",
+      "summary": "基于公开案例归纳的参考记录，涵盖用人单位主体识别、关联主体混同用工、未签书面劳动合同请求及由用人单位掌握的证据。",
       "jurisdiction": "national",
       "issue_tags": [
         "mixed_affiliate_employment",
@@ -41,12 +41,12 @@
         "LDA-2007",
         "SPC-LDI-1-2020"
       ],
-      "applicability_notes": "Use when employment facts span affiliated entities or the written-contract record conflicts with payroll, attendance, or social-insurance records."
+      "applicability_notes": "劳动事实跨越多个关联主体，或书面合同记录与工资、考勤、社会保险记录相互矛盾时适用。"
     },
     {
       "id": "spc-worker-refused-renewal-double-wage-limit",
-      "title": "Worker refusal and unsigned-contract double-wage limits",
-      "summary": "Generalized public-case record for reviewing good-faith contract renewal requests before assessing unsigned-contract double-wage exposure.",
+      "title": "劳动者拒绝续签与未签合同二倍工资边界",
+      "summary": "基于公开案例归纳的参考记录，用于在评估未签书面劳动合同二倍工资请求前，核查用人单位是否善意提出续签。",
       "jurisdiction": "national",
       "issue_tags": [
         "contract_renewal",
@@ -82,12 +82,12 @@
         "LDA-2007",
         "SPC-LDI-1-2020"
       ],
-      "applicability_notes": "Check who initiated renewal, what terms were offered, and whether delivery or refusal evidence exists before estimating a double-wage claim."
+      "applicability_notes": "估算二倍工资请求前，应核实续签由谁发起、提出了哪些条件，以及是否有送达或拒签证据。"
     },
     {
       "id": "spc-noncompete-scope-limited-pharma",
-      "title": "Non-compete scope tied to protected confidential interests",
-      "summary": "Generalized public-case record for evaluating role scope, protected information, competitor overlap, payment, and release options in non-compete disputes.",
+      "title": "竞业限制范围与受保护保密利益的对应关系",
+      "summary": "基于公开案例归纳的参考记录，用于评估竞业限制争议中的人员范围、受保护信息、竞争业务重合、补偿支付及解除路径。",
       "jurisdiction": "national",
       "issue_tags": [
         "non_compete_scope",
@@ -124,12 +124,12 @@
         "LCL-2012",
         "SPC-LDI-2-2025"
       ],
-      "applicability_notes": "Use for scope and payment review; preserve confidential information and route enforceability conclusions for jurisdiction-specific legal review."
+      "applicability_notes": "用于审查适用范围和补偿支付；应保护保密信息，并将效力判断交由熟悉当地实务的律师复核。"
     },
     {
       "id": "spc-social-insurance-waiver-constructive-resignation",
-      "title": "Social-insurance waiver and constructive resignation",
-      "summary": "Generalized public-case record for social-insurance nonpayment, statutory resignation grounds, economic compensation, and written objection evidence.",
+      "title": "社会保险放弃约定与劳动者因用人单位过错解除",
+      "summary": "基于公开案例归纳的参考记录，涵盖未依法缴纳社会保险、法定解除事由、经济补偿及书面异议证据。",
       "jurisdiction": "national",
       "issue_tags": [
         "social_insurance_nonpayment",
@@ -167,12 +167,12 @@
         "SPC-LDI-1-2020",
         "SPC-LDI-2-2025"
       ],
-      "applicability_notes": "Confirm payment records, waiver wording, objection chronology, and the stated resignation ground before selecting a claim path."
+      "applicability_notes": "选择请求路径前，应核对缴费记录、放弃约定的具体措辞、提出异议的时间线及解除通知中载明的理由。"
     },
     {
       "id": "mohrss-spc-pregnancy-project-removal-wage-cut",
-      "title": "Pregnancy-related project removal, transfer, and wage reduction",
-      "summary": "Generalized public-case record for protected-status job changes, wage differences, sensitive evidence minimization, and formal dispute preparation.",
+      "title": "孕期撤出项目、调岗与降薪",
+      "summary": "基于公开案例归纳的参考记录，用于梳理受特殊保护状态下的岗位变动、工资差额、敏感证据最小化及正式争议准备。",
       "jurisdiction": "national",
       "issue_tags": [
         "pregnancy_protection",
@@ -214,12 +214,12 @@
         "FEP-2012",
         "LDA-2007"
       ],
-      "applicability_notes": "Minimize medical details, preserve wage and transfer records, and separate protected-status facts from unrelated health or family information."
+      "applicability_notes": "应尽量减少医疗细节，保全工资和岗位变动记录，并将受保护状态事实与无关健康或家庭信息分开。"
     },
     {
       "id": "guangzhou-hrss-economic-layoff-report-package",
-      "title": "Guangzhou economic-layoff reporting and worker-opinion process",
-      "summary": "Generalized local reference for economic-layoff thresholds, worker-opinion procedure, written reporting materials, authority feedback, and evidence preservation.",
+      "title": "广州经济性裁员报告与听取劳动者意见程序",
+      "summary": "地方参考记录，涵盖经济性裁员人数门槛、听取劳动者意见程序、书面报告材料、主管部门反馈及证据保全。",
       "jurisdiction": "Guangzhou",
       "issue_tags": [
         "economic_layoff",
@@ -264,7 +264,7 @@
         "LDA-2007",
         "PIPL-2021"
       ],
-      "applicability_notes": "Use for Guangzhou routing and evidence preparation; verify current local filing practice and authority instructions before final advice."
+      "applicability_notes": "用于广州地区的路径判断和证据准备；形成最终意见前，应核验现行本地受理实务和主管部门要求。"
     }
   ]
 }

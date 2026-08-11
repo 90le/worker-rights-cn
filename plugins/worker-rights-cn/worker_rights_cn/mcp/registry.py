@@ -41,8 +41,8 @@ _AUDIT = {
 _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     (
         "worker_rights.validate_intake",
-        "Validate Labor Dispute Intake",
-        "Validate a worker-side labor dispute intake, return missing facts, follow-up questions, inferred routing, and warnings.",
+        "校验劳动争议陈述",
+        "校验劳动者一方的劳动争议陈述，并返回待补事实、追问问题、推断出的处理路由和风险提示。",
         _object({
             "session": {"type": "object"}, "intake": {"type": "object"},
             "case": {"type": "object"}, "answers": {"type": "object"},
@@ -51,8 +51,8 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.calculate_compensation",
-        "Calculate Labor Compensation",
-        "Run the deterministic China labor compensation estimator and return formulas, claim paths, source anchors, and warnings.",
+        "估算劳动补偿",
+        "按固定规则运行中国劳动补偿估算器，并返回计算公式、可能的主张路径、法源锚点和风险提示。",
         _object({"input": _object({
             "start_date": {"type": "string"}, "end_date": {"type": "string"},
             "average_monthly_wage": {"type": "number"},
@@ -62,8 +62,8 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.assemble_case_package",
-        "Assemble Case Package",
-        "Assemble a pre-signing, arbitration-ready, or full case package from user intake.",
+        "组装案件材料包",
+        "根据用户陈述组装签署前、仲裁准备或完整案件材料包。",
         _object({
             "intake": {"type": "object"}, "case": {"type": "object"},
             "export_profile": {"type": "string", "enum": ["pre_signing_72h", "arbitration_ready", "full_case_package"]},
@@ -71,8 +71,8 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.render_documents",
-        "Render Session Documents",
-        "Render workbench preview, case package review, redacted share packet, and manifest from a session state or intake.",
+        "生成会话文档",
+        "根据会话状态或用户陈述生成工作台预览稿、案件材料包审阅稿、脱敏分享包和清单。",
         _object({
             "state": {"type": "object"}, "session": {"type": "object"},
             "intake": {"type": "object"}, "case": {"type": "object"},
@@ -81,8 +81,8 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.export_bundle",
-        "Export Session Bundle",
-        "Build a privacy-gated session export bundle, optionally write bundle files, and optionally persist artifact records to SQLite.",
+        "导出会话材料包",
+        "通过隐私门禁后生成会话导出包；可选择写入材料包文件，并可将产物记录持久化到 SQLite。",
         _object({
             "state": {"type": "object"}, "session": {"type": "object"},
             "intake": {"type": "object"}, "case": {"type": "object"},
@@ -95,14 +95,14 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.audit_status",
-        "Audit Session Status",
-        "Read a local session store audit chain and return event types, latest hash, and hash-chain validity.",
+        "查看会话审计状态",
+        "读取本地会话存储的审计链，并返回事件类型、最新哈希和哈希链有效性。",
         _object({"session_id": {"type": "string"}, "store_dir": {"type": "string"}}, ["session_id"]),
     ),
     (
         "worker_rights.search_sources",
-        "Search Source Cards",
-        "Search the local SQLite/FTS source database and return source cards, legal anchors, city rules, public case prototypes, retrieval dates, jurisdictions, and verification status.",
+        "检索法源卡片",
+        "检索本地 SQLite/FTS 法源数据库，并返回法源卡片、法律锚点、城市规则、公开案例原型、检索日期、适用地域和核验状态。",
         _object({
             "query": {"type": "string"}, "db_path": {"type": "string"},
             "limit": {"type": "integer", "minimum": 1, "maximum": 50}, "include": _INCLUDE,
@@ -111,8 +111,8 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.plan_ai_recall",
-        "Plan AI Source Recall",
-        "Build a provider-neutral AI recall request for host/user gateway execution. The plugin does not call external models; output must return to source records and deterministic tools.",
+        "规划 AI 法源召回",
+        "生成与服务商无关的 AI 法源召回请求，交由宿主或用户网关执行。插件不调用外部模型；结果必须回到法源记录，并通过确定性工具核验。",
         _object({
             "query": {"type": "string"}, "db_path": {"type": "string"},
             "limit": {"type": "integer", "minimum": 1, "maximum": 50},
@@ -134,8 +134,8 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.validate_ai_recall_response",
-        "Validate AI Recall Response",
-        "Validate a host/user gateway model response for AI source recall. Accepts only known candidate source ids, expanded queries, missing-source queries, risk flags, and notes; rejects invented source ids, legal conclusions, final compensation claims, and raw secrets.",
+        "校验 AI 法源召回响应",
+        "校验宿主或用户网关模型返回的 AI 法源召回响应。仅接受已知候选法源 ID、扩展检索词、缺失法源检索词、风险标记和备注；拒绝虚构法源 ID、确定性法律结论、最终补偿主张和原始密钥。",
         _object({
             "candidate_source_ids": {"type": "array", "items": {"type": "string"}},
             "plan": {"type": "object"}, "model_response": {"type": "object"},
@@ -144,8 +144,8 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.prepare_embedding_index",
-        "Prepare Embedding Index",
-        "Prepare provider-neutral embedding document and chunk metadata in SQLite without binding business logic to a vector database.",
+        "准备嵌入索引",
+        "在 SQLite 中准备与服务商无关的嵌入文档和分块元数据，不将业务逻辑绑定到向量数据库。",
         _object({
             "db_path": {"type": "string"},
             "source_tables": {"type": "array", "items": {"type": "string", "enum": ["source_cards", "legal_anchors", "city_rules", "case_prototypes"]}},
@@ -156,8 +156,8 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.map_termination",
-        "Map Termination Type",
-        "Classify a labor termination scenario into layoff-defense termination maps with source anchors, claim paths, evidence points, and risk prompts.",
+        "映射解除类型",
+        "将劳动关系解除情形归入裁员应对的解除类型映射，并返回法源锚点、可能的主张路径、证据要点和风险提示。",
         _object({
             "case": {"type": "object"}, "intake": {"type": "object"},
             "session": {"type": "object"}, "text": {"type": "string"},
@@ -167,8 +167,8 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.build_evidence_plan",
-        "Build Evidence Plan",
-        "Expand termination maps into a prioritized, lawful evidence plan with common bundles, gaps, employer-controlled items, source anchors, and safety rules.",
+        "生成证据计划",
+        "将解除类型映射展开为分优先级且合规的证据计划，包括常用证据组合、缺口、用人单位掌握的材料、法源锚点和安全规则。",
         _object({
             "case": {"type": "object"}, "intake": {"type": "object"},
             "session": {"type": "object"}, "text": {"type": "string"},
@@ -180,8 +180,8 @@ _TOOL_SPECS: tuple[tuple[str, str, str, dict[str, object]], ...] = (
     ),
     (
         "worker_rights.review_consultation_output",
-        "Review Consultation Output",
-        "Deterministically review an AI-generated labor-rights consultation answer before sending it to the user. Flags missing source anchors, outcome guarantees, local-rule overclaiming, privacy leakage, unsafe evidence/threat language, and missing lawyer-review checkpoints.",
+        "审查咨询输出",
+        "在向用户发送前，按固定规则审查 AI 生成的劳动权益咨询答复；标记法源锚点缺失、结果保证、对本地规则作过度断言、隐私泄露、不当取证或威胁性措辞，以及缺少律师复核节点。",
         _object({
             "output": {"type": "string"}, "text": {"type": "string"},
             "answer": {"type": "string"}, "context": {"type": "object"},

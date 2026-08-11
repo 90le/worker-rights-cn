@@ -22,7 +22,7 @@
       ],
       "decision": "block",
       "severity": "critical",
-      "message": "Do not help create, alter, crop, delete, hide, or backdate evidence for labor dispute use.",
+      "message": "不得协助制作、篡改、裁剪、删除、隐匿或倒签用于劳动争议的证据。",
       "match": {
         "any_text_regex": [
           "(伪造|假的|假)(工资条|银行流水|证据|合同|考勤|截图|录音|离职证明)",
@@ -55,7 +55,7 @@
       ],
       "decision": "block",
       "severity": "critical",
-      "message": "Do not help threaten HR, managers, coworkers, or the company through exposure, harassment, disruption, or payment-for-silence pressure.",
+      "message": "不得协助以曝光、骚扰、扰乱秩序或索取“封口费”等方式威胁人力资源人员、管理人员、同事或用人单位。",
       "match": {
         "any_text_regex": [
           "(不给|不赔|不付).*(曝光|上热搜|发网上|公开|人肉|骚扰|闹到)",
@@ -90,7 +90,7 @@
       ],
       "decision": "block",
       "severity": "critical",
-      "message": "Do not help copy, export, or use unrelated company data, credentials, customer lists, source code, pricing files, logs, or trade secrets as leverage.",
+      "message": "不得协助复制、导出或以无关公司数据、账号凭证、客户名单、源代码、报价文件、日志或商业秘密作为施压筹码。",
       "match": {
         "any_text_regex": [
           "(客户名单|客户资料|报价表|价格表|源代码|源码|数据库|账号密码|凭证|日志|商业秘密).*(拷|复制|导出|下载|带走|拿来谈|施压|要挟)",
@@ -124,7 +124,7 @@
       ],
       "decision": "block",
       "severity": "critical",
-      "message": "Do not help employers, HR, managers, or company counsel evade layoff procedures, reduce statutory compensation, induce personal-reason resignation, or bypass protected-status limits.",
+      "message": "不得协助用人单位、人力资源人员、管理人员或公司法律顾问规避裁员程序、压低法定补偿、诱导劳动者以个人原因辞职或绕开特殊保护限制。",
       "match": {
         "any_text_regex": [
           "(公司|HR|人事|老板|法务|我们单位).{0,24}(少赔|不赔|压低|降低|规避|绕开).{0,24}(N\\+1|N\\+1|2N|赔偿金|经济补偿|代通知金|裁员程序)",
@@ -167,7 +167,7 @@
       ],
       "decision": "warn",
       "severity": "high",
-      "message": "Minimize and redact third-party or sensitive personal information before sharing, exporting, compacting, or storing case materials.",
+      "message": "分享、导出、压缩上下文或保存案件材料前，应最小化并遮盖第三方信息或敏感个人信息。",
       "match": {
         "any_text_regex": [
           "(身份证|身份证号|手机号|电话|住址|家庭住址|银行卡|病历|诊断|产检|怀孕|孕期|工伤|职业病|家属)",
@@ -203,7 +203,7 @@
       ],
       "decision": "warn",
       "severity": "high",
-      "message": "Recordings, screenshots, photos, and videos should be limited to lawful evidence preservation, original context, necessary participants, and formal dispute channels.",
+      "message": "录音、截图、照片和视频应限于合法证据保全，保留完整原始语境，仅涉及必要人员，并通过正式争议处理渠道使用。",
       "match": {
         "any_text_regex": [
           "(偷录|偷偷录|录音|录像|偷拍|截图|录屏).*(HR|老板|主管|会议|谈话|沟通|办公室|工位)",
@@ -239,7 +239,7 @@
       ],
       "decision": "warn",
       "severity": "high",
-      "message": "Work-injury, occupational-disease, pregnancy, diagnosis, treatment, and family medical materials are sensitive personal information; minimize, redact, and use formal channels.",
+      "message": "工伤、职业病、孕产、诊断、治疗及家庭医疗材料属于敏感个人信息；应遵循最小必要原则、遮盖无关内容并通过正式渠道使用。",
       "match": {
         "any_text_regex": [
           "(工伤|职业病|病历|诊断证明|出院小结|伤残|劳动能力鉴定|医院|处方|检查报告|产检|孕期).*(上传|发送|整理|分享|公开|仲裁|投诉|证据)",
@@ -274,7 +274,7 @@
       ],
       "decision": "warn",
       "severity": "high",
-      "message": "Public posts and group labor-rights communication must stay factual, non-harassing, non-doxxing, privacy-minimized, and routed toward lawful complaint, mediation, arbitration, or evidence preservation.",
+      "message": "公开发帖或群体劳动权益沟通应基于可核实事实，避免骚扰和人肉搜索，尽量减少个人信息，并引导至投诉、调解、仲裁或证据保全等正式路径。",
       "match": {
         "any_text_regex": [
           "(微博|小红书|抖音|快手|公众号|朋友圈|知乎|社交媒体|网上发帖|公开发文).*(维权|裁员|欠薪|工伤|仲裁|公司|HR)",
@@ -312,7 +312,7 @@
       ],
       "decision": "warn",
       "severity": "medium",
-      "message": "Avoid guaranteed legal outcomes; state assumptions, evidence gaps, local-rule uncertainty, and lawyer-check items.",
+      "message": "避免保证法律结果；应说明所依赖的假设、证据缺口、地方口径不确定性和需要律师复核的事项。",
       "match": {
         "any_text_regex": [
           "(一定赢|稳赢|肯定赢|必胜|一定支持|肯定支持|肯定赔|保证赔|包赢|包赔)",
@@ -342,7 +342,7 @@
       ],
       "decision": "block",
       "severity": "critical",
-      "message": "Block host tool access to secrets, credentials, SSH keys, environment files, raw private evidence stores, or unrelated confidential business files unless a future adapter supplies an explicit allowlist.",
+      "message": "在缺少明确允许清单时，应阻止宿主工具访问密钥、账号凭证、SSH 密钥、环境配置文件、原始私人证据库或无关商业机密文件。",
       "match": {
         "any_text_regex": [
           "(^|[/\\\\])\\.env($|[./\\\\])",
@@ -375,7 +375,7 @@
       ],
       "decision": "block",
       "severity": "critical",
-      "message": "Block destructive commands and pipe-to-shell installers in the plugin workflow.",
+      "message": "在插件工作流中应阻止破坏性命令和将下载内容直接传入 Shell 执行的安装方式。",
       "match": {
         "any_text_regex": [
           "(^|\\s)rm\\s+-[A-Za-z]*r[A-Za-z]*f[A-Za-z]*(\\s+--no-preserve-root)?\\s+(/|~|\\.|\\*)",
@@ -405,7 +405,7 @@
       ],
       "decision": "warn",
       "severity": "medium",
-      "message": "Local or candidate sources must not be presented as final wage-cap, compensation, or filing-practice rules without current local verification.",
+      "message": "地方来源或候选来源未经当前地方口径核验，不得作为工资封顶额、补偿标准或受理实务的最终依据。",
       "match": {
         "any_text_regex": [
           "(local_verify|candidate_verify|verified_candidate|verified_reference_only|verified_guardrail)",

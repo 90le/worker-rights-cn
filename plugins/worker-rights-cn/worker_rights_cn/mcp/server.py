@@ -46,43 +46,43 @@ RESOURCE_DEFINITIONS = [
     {
         "uri": "worker-rights://schemas/case-package",
         "name": "case-package-schema",
-        "title": "Case Package Schema",
-        "description": "JSON schema for worker-rights-cn case package exports.",
+        "title": "案件材料包架构",
+        "description": "worker-rights-cn 案件材料包导出文件的 JSON 架构。",
         "mimeType": "application/json",
     },
     {
         "uri": "worker-rights://schemas/ai-recall-gateway",
         "name": "ai-recall-gateway-schema",
-        "title": "AI Recall Gateway Schema",
-        "description": "Provider-neutral user/host gateway configuration contract for optional AI-assisted source recall.",
+        "title": "AI 辅助召回网关架构",
+        "description": "可选 AI 辅助法源召回所使用的、与服务商无关的用户/宿主网关配置约定。",
         "mimeType": "application/json",
     },
     {
         "uri": "worker-rights://sources/source-currency",
         "name": "source-currency",
-        "title": "Source Currency Audit",
-        "description": "2026 source-card currency audit and official-host policy.",
+        "title": "法源现行状态审查",
+        "description": "2026 年法源卡片现行状态审查及官方网站域名规则。",
         "mimeType": "application/json",
     },
     {
         "uri": "worker-rights://sources/national",
         "name": "national-sources",
-        "title": "National Source Cards",
-        "description": "National laws, regulations, judicial interpretations, and official sources.",
+        "title": "全国法源卡片",
+        "description": "全国性法律、行政法规、司法解释及其官方来源。",
         "mimeType": "application/json",
     },
     {
         "uri": "worker-rights://sources/city-rules",
         "name": "city-rules",
-        "title": "City Rules",
-        "description": "Local city rule routing matrix and verification status.",
+        "title": "城市规则",
+        "description": "本地城市规则路由矩阵及核验状态。",
         "mimeType": "application/json",
     },
     {
         "uri": "worker-rights://cases/case-prototypes",
         "name": "case-prototypes",
-        "title": "Public Case Prototypes",
-        "description": "Generalized official-public-case-inspired prototypes used by local source search.",
+        "title": "公开案例原型",
+        "description": "供本地法源检索使用、根据官方公开案例概括并脱敏的案例原型。",
         "mimeType": "application/json",
     },
 ]
@@ -242,7 +242,7 @@ def handle_tool_call(params: dict[str, Any]) -> dict[str, Any]:
         except Exception:  # noqa: BLE001
             payload["audit_error"] = {
                 "type": "InternalError",
-                "message": "tool-call audit could not be recorded",
+                "message": "工具调用审计记录失败",
             }
         return tool_call_result(payload, is_error=True)
     except Exception as error:  # noqa: BLE001
@@ -260,7 +260,7 @@ def handle_tool_call(params: dict[str, Any]) -> dict[str, Any]:
         except Exception:  # noqa: BLE001
             payload["audit_error"] = {
                 "type": "InternalError",
-                "message": "tool-call audit could not be recorded",
+                "message": "工具调用审计记录失败",
             }
         return tool_call_result(payload, is_error=True)
 
@@ -286,9 +286,9 @@ def _initialize_result() -> dict[str, object]:
         },
         "serverInfo": {"name": "worker-rights-cn", "version": SERVER_VERSION},
         "instructions": (
-            "Use worker_rights tools for China labor dispute intake, source search, "
-            "compensation calculation, case-package assembly, document rendering, "
-            "and local audit-chain checks. This server does not provide licensed legal advice."
+            "使用 worker_rights 工具整理中国劳动争议信息、检索法源、估算补偿、"
+            "组装案件材料包、生成文档和核验本地审计链。本服务用于信息整理和材料辅助，"
+            "不替代律师的个案法律意见。"
         ),
     }
 

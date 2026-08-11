@@ -63,6 +63,21 @@ def run(cases_path: Path) -> int:
             attendance=parse_attendance_csv(case["attendance_csv"]) if "attendance_csv" in case else None,
         )
         case_failures = []
+        user_texts = [
+            *(str(item) for item in result.get("warnings", [])),
+            *(
+                str(item.get(field, ""))
+                for item in result.get("evidence_directory", [])
+                for field in ("proof_purpose", "lawful_source")
+            ),
+        ]
+        non_chinese = [
+            text
+            for text in user_texts
+            if not any("\u3400" <= char <= "\u9fff" for char in text)
+        ]
+        if non_chinese:
+            case_failures.append({"non_chinese_user_text": non_chinese})
         for dotted_path, expected in case["expected"].items():
             actual = value_at(result, dotted_path)
             if not equivalent(actual, expected):
@@ -78,8 +93,23 @@ def run(cases_path: Path) -> int:
             missing = [value for value in case["expected_report_contains"] if value not in report]
             if missing:
                 case_failures.append({"report_missing": missing})
+            english_ui = [
+                marker
+                for marker in (
+                    "Worker-side calculation report",
+                    "This static HTML excludes",
+                    ">workday<",
+                    ">source_digest_available<",
+                    ">national<",
+                    ">current_effective<",
+                    ">current<",
+                )
+                if marker in report
+            ]
+            if '<html lang="zh-CN">' not in report or english_ui:
+                case_failures.append({"report_localization": english_ui})
             stale_report = render_html_report(result, date(2028, 8, 12))
-            if "Source review required / 来源需复核" not in stale_report or "review_due" not in stale_report:
+            if "来源需复核。" not in stale_report or "到期复核" not in stale_report:
                 case_failures.append({"report_degradation": "stale source warning or status missing"})
             with tempfile.TemporaryDirectory(prefix="worker-rights-report-") as directory:
                 report_path = Path(directory) / "report.html"
