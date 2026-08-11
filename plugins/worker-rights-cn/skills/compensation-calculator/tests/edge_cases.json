@@ -217,6 +217,42 @@
         "average_monthly_wage": 10000
       },
       "expected_error_contains": "end_date must be YYYY-MM-DD"
+    },
+    {
+      "id": "attendance-invalid-columns",
+      "attendance_csv": "date,start,end\n2026-01-01,09:00,18:00\n",
+      "input": {
+        "start_date": "2026-01-01",
+        "end_date": "2026-01-31",
+        "average_monthly_wage": 10000,
+        "work_schedule_type": "standard",
+        "overtime_monthly_wage_base": 8700
+      },
+      "expected_error_contains": "attendance CSV columns must be exactly"
+    },
+    {
+      "id": "attendance-special-schedule-requires-local-analysis",
+      "attendance_csv": "work_date,started_at,ended_at,break_minutes,day_type,compensatory_leave_minutes\n2026-01-05,2026-01-05T09:00,2026-01-05T19:00,60,workday,0\n",
+      "input": {
+        "start_date": "2026-01-01",
+        "end_date": "2026-01-31",
+        "average_monthly_wage": 10000,
+        "work_schedule_type": "comprehensive",
+        "overtime_monthly_wage_base": 8700
+      },
+      "expected_error_contains": "work_schedule_type must be standard"
+    },
+    {
+      "id": "attendance-overlapping-rows",
+      "attendance_csv": "work_date,started_at,ended_at,break_minutes,day_type,compensatory_leave_minutes\n2026-01-05,2026-01-05T09:00,2026-01-05T12:00,0,workday,0\n2026-01-05,2026-01-05T11:00,2026-01-05T14:00,0,workday,0\n",
+      "input": {
+        "start_date": "2026-01-01",
+        "end_date": "2026-01-31",
+        "average_monthly_wage": 10000,
+        "work_schedule_type": "standard",
+        "overtime_monthly_wage_base": 8700
+      },
+      "expected_error_contains": "overlaps the previous row"
     }
   ]
 }

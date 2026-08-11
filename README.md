@@ -24,6 +24,8 @@ It can organize timelines, evidence, calculations, agreement risks, negotiation 
 
 The compensation calculator can derive the average wage from a UTF-8 CSV containing up to 12 `month,gross_wage` rows. It returns normalized rows, the source SHA-256, missing months, total, average, and N/N+1/2N estimate paths without saving the source file. Missing periods and the legally applicable wage base still require verification.
 
+It can also import timestamped attendance CSV rows for a standard-hours overtime estimate. The deterministic output preserves the source SHA-256, rejects overlapping shifts, itemizes workday/rest-day/statutory-holiday hours and formulas, and requires an explicit overtime wage base. Original records, employer arrangement, day classification, special-hours approvals, and local rules still require verification.
+
 ## Privacy
 
 Chats and case materials are not automatically saved, uploaded, or sent. Any persistence must disclose the absolute path and scope and require explicit consent. Review identifiers before export. See [PRIVACY.md](PRIVACY.md).
