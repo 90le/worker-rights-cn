@@ -127,7 +127,7 @@ def main() -> int:
             base = Path(temporary) / f"release-{runner.VERSION}"
             expected = Path(f"{base}.json")
             expected.write_text("{}\n", encoding="utf-8")
-            assert expected.name == "release-0.3.0.json"
+            assert expected.name == "release-0.4.0.json"
     except Exception as error:
         failures.append({"case": "release_acceptance_contract", "error": f"{type(error).__name__}: {error}"})
     result = {

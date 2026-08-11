@@ -336,7 +336,7 @@ def assert_extracted_mcp_contract(extracted: Path, db_path: Path) -> None:
         except Exception as error:
             problems.append({"source_search_error": f"{type(error).__name__}: {error}"})
 
-        if initialized.get("serverInfo", {}).get("version") != "0.3.0":
+        if initialized.get("serverInfo", {}).get("version") != "0.4.0":
             problems.append({"server_info": initialized.get("serverInfo")})
         banned_resources = {
             "worker-rights://cases/e2e-fixtures",
