@@ -338,5 +338,151 @@
       "ask_for_supported_city_or_local_source"
     ],
     "expected_source_ids": []
+  },
+  {
+    "id": "beijing-current-minimum-wage-route",
+    "city_input": "北京",
+    "check": "minimum_wage_or_wage_payment",
+    "assessment_date": "2026-08-11",
+    "expected_city": "beijing",
+    "expected_status": "verified_final",
+    "expected_flags": [
+      "current_minimum_wage_available",
+      "verify_employment_type_and_normal_labor",
+      "verify_local_wage_components",
+      "separate_unpaid_wage_from_minimum_wage_gap"
+    ],
+    "expected_source_ids": [
+      "BJ-RSJ-MIN-WAGE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "BJ-RSJ-MIN-WAGE-2025"
+    ],
+    "expected_values": {
+      "monthly_minimum_wage_full_time": 2540,
+      "hourly_minimum_wage_part_time": 27.7,
+      "hourly_minimum_wage_part_time_legal_holiday": 65.1
+    },
+    "expected_source_health": {
+      "BJ-RSJ-MIN-WAGE-2025": "current"
+    },
+    "expected_degraded_source_ids": []
+  },
+  {
+    "id": "shanghai-current-minimum-wage-route",
+    "city_input": "沪",
+    "check": "minimum_wage_or_wage_payment",
+    "assessment_date": "2026-08-11",
+    "expected_city": "shanghai",
+    "expected_status": "verified_final",
+    "expected_flags": [
+      "current_minimum_wage_available",
+      "verify_employment_type_and_normal_labor",
+      "verify_local_wage_components",
+      "separate_unpaid_wage_from_minimum_wage_gap"
+    ],
+    "expected_source_ids": [
+      "SH-RSJ-MIN-WAGE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "SH-RSJ-MIN-WAGE-2025"
+    ],
+    "expected_values": {
+      "monthly_minimum_wage_full_time": 2740,
+      "hourly_minimum_wage_part_time": 25
+    },
+    "expected_source_health": {
+      "SH-RSJ-MIN-WAGE-2025": "current"
+    },
+    "expected_degraded_source_ids": []
+  },
+  {
+    "id": "shenzhen-current-minimum-wage-route",
+    "city_input": "深圳市",
+    "check": "minimum_wage_or_wage_payment",
+    "assessment_date": "2026-08-11",
+    "expected_city": "shenzhen",
+    "expected_status": "verified_final",
+    "expected_flags": [
+      "current_minimum_wage_available",
+      "verify_employment_type_and_normal_labor",
+      "verify_local_wage_components",
+      "separate_unpaid_wage_from_minimum_wage_gap"
+    ],
+    "expected_source_ids": [
+      "SZ-HRSS-MIN-WAGE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "SZ-HRSS-MIN-WAGE-2025"
+    ],
+    "expected_values": {
+      "monthly_minimum_wage_full_time": 2520,
+      "hourly_minimum_wage_part_time": 23.7
+    },
+    "expected_source_health": {
+      "SZ-HRSS-MIN-WAGE-2025": "current"
+    },
+    "expected_degraded_source_ids": []
+  },
+  {
+    "id": "guangzhou-current-minimum-wage-route",
+    "city_input": "gz",
+    "check": "minimum_wage_or_wage_payment",
+    "assessment_date": "2026-08-11",
+    "expected_city": "guangzhou",
+    "expected_status": "verified_final",
+    "expected_flags": [
+      "current_minimum_wage_available",
+      "verify_employment_type_and_normal_labor",
+      "verify_local_wage_components",
+      "separate_unpaid_wage_from_minimum_wage_gap"
+    ],
+    "expected_source_ids": [
+      "GZ-RSJ-MIN-WAGE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "GZ-RSJ-MIN-WAGE-2025"
+    ],
+    "expected_values": {
+      "monthly_minimum_wage_full_time": 2500,
+      "hourly_minimum_wage_part_time": 23.7
+    },
+    "expected_source_health": {
+      "GZ-RSJ-MIN-WAGE-2025": "current"
+    },
+    "expected_degraded_source_ids": []
+  },
+  {
+    "id": "beijing-stale-minimum-wage-degrades",
+    "city_input": "bj",
+    "check": "minimum_wage_or_wage_payment",
+    "assessment_date": "2027-08-13",
+    "expected_city": "beijing",
+    "expected_status": "local_verify",
+    "expected_flags": [
+      "current_minimum_wage_available",
+      "verify_employment_type_and_normal_labor",
+      "verify_local_wage_components",
+      "separate_unpaid_wage_from_minimum_wage_gap",
+      "source_review_required",
+      "do_not_use_degraded_source_values"
+    ],
+    "expected_source_ids": [
+      "BJ-RSJ-MIN-WAGE-2025"
+    ],
+    "expected_do_not_use_source_ids_as_final_cap": [
+      "BJ-RSJ-MIN-WAGE-2025"
+    ],
+    "expected_values": {
+      "monthly_minimum_wage_full_time": null,
+      "hourly_minimum_wage_part_time": null,
+      "hourly_minimum_wage_part_time_legal_holiday": null
+    },
+    "expected_source_health": {
+      "BJ-RSJ-MIN-WAGE-2025": "review_due"
+    },
+    "expected_degraded_source_ids": [
+      "BJ-RSJ-MIN-WAGE-2025"
+    ]
   }
 ]

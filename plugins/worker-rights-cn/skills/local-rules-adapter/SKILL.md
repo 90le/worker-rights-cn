@@ -13,18 +13,19 @@ Identify which local rules and official sources must be verified before a worker
 
 1. Normalize the city from user facts using `references/city-rules.json`.
 2. If the city is missing or unsupported, return `needs_city` and ask for workplace city, employer registered city, labor contract performance place, and termination date.
-3. For high-wage economic-compensation caps, read the city's `economic_compensation_high_wage_cap` object.
-4. Use national anchors from `national_source_anchors`, usually `LCL-2012#art47` and `LCL-REG-2008#art27`, with local source IDs from the city entry.
-5. Separate these statuses:
+3. For `工资低于最低工资` or `欠薪`, read `minimum_wage_or_wage_payment`. Collect workplace city, pay period, full-time or part-time status, whether normal labor was provided, and itemized wage components. Keep unpaid wages separate from the minimum-wage gap and use a numerical standard only while its source health is current.
+4. For high-wage economic-compensation caps, read the city's `economic_compensation_high_wage_cap` object.
+5. Use national anchors from `national_source_anchors`, usually `LCL-2012#art47` and `LCL-REG-2008#art27`, with local source IDs from the city entry.
+6. Separate these statuses:
    - `verified_final`: source can be used directly for the stated local use.
    - `verified_candidate`: official data exists, but the output must still say local HRSS/arbitration practice should confirm the exact use.
    - `verified_reference_only`: useful for social insurance or statistics, not final wage-cap calculation.
    - `local_verify`: official local amount or form has not been verified.
-6. Compare each used card's `effective_date`, `expiry_date`, and `current_as_of` against the response date. If it is not yet effective, expired, or more than 366 days past review, treat it as `local_verify`, name the source ID, and do not reuse its numerical value.
-7. Add `local_verify` flags whenever city data, arbitration commission forms, statute limitation details, medical period, wage-payment period, housing fund, tax, or social-insurance details affect the answer.
-8. For Guangzhou economic layoffs, route both `economic_layoff_local_procedure` and `guangzhou_economic_layoff_report_package` so the answer checks the plan, worker-opinion process, written HRSS report package, HRSS feedback response, final publication, and wage/social-insurance clearance.
-9. If the case needs calculations, pass verified facts to `compensation-calculator`; pass local source status and caveats alongside the amount.
-10. If the case needs filing, pass jurisdiction and form caveats to `arbitration-drafter`.
+7. Compare each used card's `effective_date`, `expiry_date`, and `current_as_of` against the response date. If it is not yet effective, expired, or more than 366 days past review, treat it as `local_verify`, name the source ID, and do not reuse its numerical value.
+8. Add `local_verify` flags whenever city data, arbitration commission forms, statute limitation details, medical period, wage-payment period, housing fund, tax, or social-insurance details affect the answer.
+9. For Guangzhou economic layoffs, route both `economic_layoff_local_procedure` and `guangzhou_economic_layoff_report_package` so the answer checks the plan, worker-opinion process, written HRSS report package, HRSS feedback response, final publication, and wage/social-insurance clearance.
+10. If the case needs calculations, pass verified facts to `compensation-calculator`; pass local source status and caveats alongside the amount.
+11. If the case needs filing, pass jurisdiction and form caveats to `arbitration-drafter`.
 
 ## Output Rules
 

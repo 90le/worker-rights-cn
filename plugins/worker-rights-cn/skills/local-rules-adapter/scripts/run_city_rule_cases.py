@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
+from datetime import date
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -18,6 +20,8 @@ DEFAULT_CASES = SKILL_ROOT / "tests" / "city_rule_cases.json"
 DEFAULT_LEGAL_MAP = (
     PLUGIN_ROOT / "skills" / "layoff-defense" / "references" / "legal-map.md"
 )
+sys.path.insert(0, str(PLUGIN_ROOT))
+from worker_rights_cn.source_health import classify_source_health  # noqa: E402
 
 
 def collect_legal_anchors(legal_map_path: Path) -> set[str]:
@@ -58,7 +62,10 @@ def source_values(rules: dict[str, Any], source_ids: list[str]) -> dict[str, Any
     return values
 
 
-def evaluate_case(rules: dict[str, Any], case: dict[str, Any]) -> dict[str, Any]:
+def evaluate_case(
+    rules: dict[str, Any], case: dict[str, Any], default_as_of: date
+) -> dict[str, Any]:
+    as_of = date.fromisoformat(case.get("assessment_date", default_as_of.isoformat()))
     city_id = resolve_city(rules, case["city_input"])
     if not city_id:
         return {
@@ -71,6 +78,9 @@ def evaluate_case(rules: dict[str, Any], case: dict[str, Any]) -> dict[str, Any]
             ],
             "do_not_use_source_ids_as_final_cap": [],
             "values": {},
+            "assessment_date": as_of.isoformat(),
+            "source_health": {},
+            "degraded_source_ids": [],
         }
 
     check = rules["cities"][city_id]["rule_checks"].get(case["check"])
@@ -82,18 +92,39 @@ def evaluate_case(rules: dict[str, Any], case: dict[str, Any]) -> dict[str, Any]
             "output_flags": ["unsupported_local_check", "local_source_needed"],
             "do_not_use_source_ids_as_final_cap": [],
             "values": {},
+            "assessment_date": as_of.isoformat(),
+            "source_health": {},
+            "degraded_source_ids": [],
         }
 
     source_ids = check.get("source_ids", [])
+    source_health = {
+        source_id: classify_source_health(rules["source_cards"].get(source_id, {}), as_of)
+        for source_id in source_ids
+    }
+    degraded_source_ids = sorted(
+        source_id
+        for source_id, health in source_health.items()
+        if health["status"] != "current"
+    )
+    usable_source_ids = [
+        source_id for source_id in source_ids if source_id not in degraded_source_ids
+    ]
+    output_flags = list(check.get("output_flags", []))
+    if degraded_source_ids:
+        output_flags.extend(["source_review_required", "do_not_use_degraded_source_values"])
     return {
         "resolved_city": city_id,
-        "status": check["status"],
+        "status": "local_verify" if degraded_source_ids else check["status"],
         "source_ids": source_ids,
-        "output_flags": check.get("output_flags", []),
+        "output_flags": output_flags,
         "do_not_use_source_ids_as_final_cap": check.get(
             "do_not_use_source_ids_as_final_cap", []
         ),
-        "values": source_values(rules, source_ids),
+        "values": source_values(rules, usable_source_ids),
+        "assessment_date": as_of.isoformat(),
+        "source_health": source_health,
+        "degraded_source_ids": degraded_source_ids,
     }
 
 
@@ -234,8 +265,10 @@ def validate_city_rules(rules: dict[str, Any], legal_anchors: set[str]) -> list[
     return failures
 
 
-def validate_case(rules: dict[str, Any], case: dict[str, Any]) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    actual = evaluate_case(rules, case)
+def validate_case(
+    rules: dict[str, Any], case: dict[str, Any], default_as_of: date
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    actual = evaluate_case(rules, case, default_as_of)
     failures: list[dict[str, Any]] = []
 
     expected_city = case["expected_city"]
@@ -281,6 +314,31 @@ def validate_case(rules: dict[str, Any], case: dict[str, Any]) -> tuple[list[dic
                 }
             )
 
+    for source_id, expected_status in case.get("expected_source_health", {}).items():
+        actual_status = actual["source_health"].get(source_id, {}).get("status")
+        if actual_status != expected_status:
+            failures.append(
+                {
+                    "source_health_mismatch": {
+                        "source_id": source_id,
+                        "expected": expected_status,
+                        "actual": actual_status,
+                    }
+                }
+            )
+
+    if "expected_degraded_source_ids" in case:
+        expected_degraded = sorted(case["expected_degraded_source_ids"])
+        if actual["degraded_source_ids"] != expected_degraded:
+            failures.append(
+                {
+                    "degraded_source_ids_mismatch": {
+                        "expected": expected_degraded,
+                        "actual": actual["degraded_source_ids"],
+                    }
+                }
+            )
+
     summary = {
         "id": case["id"],
         "resolved_city": actual["resolved_city"],
@@ -288,11 +346,15 @@ def validate_case(rules: dict[str, Any], case: dict[str, Any]) -> tuple[list[dic
         "status": "pass" if not failures else "fail",
         "local_rule_status": actual["status"],
         "source_ids": actual["source_ids"],
+        "assessment_date": actual["assessment_date"],
+        "degraded_source_ids": actual["degraded_source_ids"],
     }
     return failures, summary
 
 
-def validate(rules_path: Path, cases_path: Path, legal_map_path: Path) -> dict[str, Any]:
+def validate(
+    rules_path: Path, cases_path: Path, legal_map_path: Path, as_of: date
+) -> dict[str, Any]:
     rules = json.loads(rules_path.read_text(encoding="utf-8"))
     cases = json.loads(cases_path.read_text(encoding="utf-8"))
     legal_anchors = collect_legal_anchors(legal_map_path)
@@ -303,7 +365,7 @@ def validate(rules_path: Path, cases_path: Path, legal_map_path: Path) -> dict[s
 
     results: list[dict[str, Any]] = []
     for case in cases:
-        case_failures, summary = validate_case(rules, case)
+        case_failures, summary = validate_case(rules, case, as_of)
         if case_failures:
             failures.append({"case": case["id"], "failures": case_failures})
         results.append(summary)
@@ -327,12 +389,14 @@ def main() -> int:
     parser.add_argument("--rules", type=Path, default=DEFAULT_RULES)
     parser.add_argument("--cases", type=Path, default=DEFAULT_CASES)
     parser.add_argument("--legal-map", type=Path, default=DEFAULT_LEGAL_MAP)
+    parser.add_argument("--as-of", type=date.fromisoformat, default=date.today())
     args = parser.parse_args()
 
     result = validate(
         args.rules.resolve(),
         args.cases.resolve(),
         args.legal_map.resolve(),
+        args.as_of,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if result["ok"] else 1

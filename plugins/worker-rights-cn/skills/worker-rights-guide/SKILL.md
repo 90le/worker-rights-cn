@@ -1,6 +1,6 @@
 ---
 name: worker-rights-guide
-description: Use when an ordinary worker describes a China-mainland employment problem in plain Chinese, including 裁员、辞退、离职、补偿、证据、协议、仲裁、欠薪、调岗, urgent signing, jurisdiction questions, employer-side misuse, or unsafe evidence requests.
+description: Use when an ordinary worker describes a China-mainland employment problem in plain Chinese, including 裁员、辞退、离职、补偿、证据、协议、仲裁、欠薪、最低工资、调岗, urgent signing, jurisdiction questions, employer-side misuse, or unsafe evidence requests.
 ---
 
 # Worker Rights Guide

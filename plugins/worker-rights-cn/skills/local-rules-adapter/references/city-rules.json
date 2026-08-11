@@ -18,6 +18,7 @@
     "rsj.beijing.gov.cn",
     "tjj.beijing.gov.cn",
     "rsj.sh.gov.cn",
+    "hrss.sz.gov.cn",
     "tjj.sz.gov.cn",
     "www.sz.gov.cn",
     "rsj.gz.gov.cn",
@@ -401,6 +402,116 @@
       "effective_date": null,
       "expiry_date": null,
       "current_as_of": "2026-06-24"
+    },
+    "BJ-RSJ-MIN-WAGE-2025": {
+      "title": "解读 问答《关于调整北京市2025年最低工资标准的通知》",
+      "authority": "北京市人力资源和社会保障局",
+      "url": "https://rsj.beijing.gov.cn/xxgk/2024zcjd/202508/t20250801_4164868.html",
+      "official_host": "rsj.beijing.gov.cn",
+      "publication_date": "2025-08-01",
+      "effective_from": "2025-09-01",
+      "retrieved_at": "2026-08-11",
+      "source_status": "verified_final",
+      "allowed_uses": [
+        "minimum_wage_full_time_monthly",
+        "minimum_wage_part_time_hourly",
+        "minimum_wage_part_time_legal_holiday_hourly",
+        "wage_payment_gap_screen"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final"
+      ],
+      "values": {
+        "monthly_minimum_wage_full_time": 2540,
+        "hourly_minimum_wage_part_time": 27.7,
+        "hourly_minimum_wage_part_time_legal_holiday": 65.1
+      },
+      "notes": "Official Beijing HRSS Q&A states the current full-time monthly and part-time hourly standards, their scope, and excluded wage components. Use only after confirming normal labor, employment type, pay period, and wage components.",
+      "jurisdiction": "Beijing",
+      "effective_date": "2025-09-01",
+      "expiry_date": null,
+      "current_as_of": "2026-08-11"
+    },
+    "SH-RSJ-MIN-WAGE-2025": {
+      "title": "2025年本市最低工资标准调整政策问答",
+      "authority": "上海市人力资源和社会保障局",
+      "url": "https://rsj.sh.gov.cn/tzcjd_17352_17352/20250714/t0035_1434105.html",
+      "official_host": "rsj.sh.gov.cn",
+      "publication_date": "2025-07-14",
+      "effective_from": "2025-07-01",
+      "retrieved_at": "2026-08-11",
+      "source_status": "verified_final",
+      "allowed_uses": [
+        "minimum_wage_full_time_monthly",
+        "minimum_wage_part_time_hourly",
+        "wage_payment_gap_screen"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final"
+      ],
+      "values": {
+        "monthly_minimum_wage_full_time": 2740,
+        "hourly_minimum_wage_part_time": 25
+      },
+      "notes": "Official Shanghai HRSS Q&A states the current full-time monthly and part-time hourly standards, employment-type scope, and excluded wage components. Use only after confirming normal labor, pay period, and wage components.",
+      "jurisdiction": "Shanghai",
+      "effective_date": "2025-07-01",
+      "expiry_date": null,
+      "current_as_of": "2026-08-11"
+    },
+    "SZ-HRSS-MIN-WAGE-2025": {
+      "title": "深圳市人力资源和社会保障局关于调整我市最低工资标准的通知",
+      "authority": "深圳市人力资源和社会保障局",
+      "url": "https://hrss.sz.gov.cn/attachment/1/1550/1550693/12014791.pdf",
+      "official_host": "hrss.sz.gov.cn",
+      "publication_date": "2025-02-23",
+      "effective_from": "2025-03-01",
+      "retrieved_at": "2026-08-11",
+      "source_status": "verified_final",
+      "allowed_uses": [
+        "minimum_wage_full_time_monthly",
+        "minimum_wage_part_time_hourly",
+        "wage_payment_gap_screen"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final"
+      ],
+      "values": {
+        "monthly_minimum_wage_full_time": 2520,
+        "hourly_minimum_wage_part_time": 23.7
+      },
+      "notes": "Official Shenzhen HRSS notice states the current full-time monthly and part-time hourly standards and exclusions for overtime, special-environment allowances, and statutory welfare. Use only after confirming normal labor, pay period, employment type, and wage components.",
+      "jurisdiction": "Shenzhen",
+      "effective_date": "2025-03-01",
+      "expiry_date": null,
+      "current_as_of": "2026-08-11"
+    },
+    "GZ-RSJ-MIN-WAGE-2025": {
+      "title": "工资支付投诉问题政策解答",
+      "authority": "广州市人力资源和社会保障局",
+      "url": "https://rsj.gz.gov.cn/zzzq/tzgg/content/post_10632184.html",
+      "official_host": "rsj.gz.gov.cn",
+      "publication_date": "2026-01-07",
+      "effective_from": "2025-03-01",
+      "retrieved_at": "2026-08-11",
+      "source_status": "verified_final",
+      "allowed_uses": [
+        "minimum_wage_full_time_monthly",
+        "minimum_wage_part_time_hourly",
+        "wage_payment_gap_screen"
+      ],
+      "not_allowed_uses": [
+        "economic_compensation_high_wage_cap_final"
+      ],
+      "values": {
+        "monthly_minimum_wage_full_time": 2500,
+        "hourly_minimum_wage_part_time": 23.7
+      },
+      "notes": "Official Guangzhou HRSS wage-payment Q&A confirms the current monthly and part-time hourly standards. Verify normal labor, employment type, pay period, and locally included or excluded wage components before calculating a gap.",
+      "jurisdiction": "Guangzhou",
+      "effective_date": "2025-03-01",
+      "expiry_date": null,
+      "current_as_of": "2026-08-11"
     }
   },
   "cities": {
@@ -456,6 +567,29 @@
           "do_not_use_source_ids_as_final_cap": [
             "BJ-RSJ-SOCIAL-BASE-2025"
           ]
+        },
+        "minimum_wage_or_wage_payment": {
+          "status": "verified_final",
+          "required_facts": [
+            "workplace_city",
+            "pay_period",
+            "employment_type",
+            "normal_labor_provided",
+            "actual_wage_components",
+            "overtime_allowances_and_other_excluded_items"
+          ],
+          "output_flags": [
+            "current_minimum_wage_available",
+            "verify_employment_type_and_normal_labor",
+            "verify_local_wage_components",
+            "separate_unpaid_wage_from_minimum_wage_gap"
+          ],
+          "source_ids": [
+            "BJ-RSJ-MIN-WAGE-2025"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "BJ-RSJ-MIN-WAGE-2025"
+          ]
         }
       }
     },
@@ -510,6 +644,29 @@
           ],
           "do_not_use_source_ids_as_final_cap": [
             "SH-RSJ-SOCIAL-BASE-2025"
+          ]
+        },
+        "minimum_wage_or_wage_payment": {
+          "status": "verified_final",
+          "required_facts": [
+            "workplace_city",
+            "pay_period",
+            "employment_type",
+            "normal_labor_provided",
+            "actual_wage_components",
+            "overtime_allowances_and_other_excluded_items"
+          ],
+          "output_flags": [
+            "current_minimum_wage_available",
+            "verify_employment_type_and_normal_labor",
+            "verify_local_wage_components",
+            "separate_unpaid_wage_from_minimum_wage_gap"
+          ],
+          "source_ids": [
+            "SH-RSJ-MIN-WAGE-2025"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "SH-RSJ-MIN-WAGE-2025"
           ]
         }
       }
@@ -567,6 +724,29 @@
           ],
           "do_not_use_source_ids_as_final_cap": [
             "SZ-TJJ-WAGE-2024"
+          ]
+        },
+        "minimum_wage_or_wage_payment": {
+          "status": "verified_final",
+          "required_facts": [
+            "workplace_city",
+            "pay_period",
+            "employment_type",
+            "normal_labor_provided",
+            "actual_wage_components",
+            "overtime_allowances_and_other_excluded_items"
+          ],
+          "output_flags": [
+            "current_minimum_wage_available",
+            "verify_employment_type_and_normal_labor",
+            "verify_local_wage_components",
+            "separate_unpaid_wage_from_minimum_wage_gap"
+          ],
+          "source_ids": [
+            "SZ-HRSS-MIN-WAGE-2025"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "SZ-HRSS-MIN-WAGE-2025"
           ]
         }
       }
@@ -704,6 +884,29 @@
           ],
           "do_not_use_source_ids_as_final_cap": [
             "GZ-GJJ-HOUSING-FUND-BASE-2025"
+          ]
+        },
+        "minimum_wage_or_wage_payment": {
+          "status": "verified_final",
+          "required_facts": [
+            "workplace_city",
+            "pay_period",
+            "employment_type",
+            "normal_labor_provided",
+            "actual_wage_components",
+            "overtime_allowances_and_other_excluded_items"
+          ],
+          "output_flags": [
+            "current_minimum_wage_available",
+            "verify_employment_type_and_normal_labor",
+            "verify_local_wage_components",
+            "separate_unpaid_wage_from_minimum_wage_gap"
+          ],
+          "source_ids": [
+            "GZ-RSJ-MIN-WAGE-2025"
+          ],
+          "do_not_use_source_ids_as_final_cap": [
+            "GZ-RSJ-MIN-WAGE-2025"
           ]
         }
       }
