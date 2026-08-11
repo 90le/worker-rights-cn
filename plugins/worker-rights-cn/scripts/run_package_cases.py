@@ -412,9 +412,10 @@ def assert_manifest_contract() -> None:
         "NOTICE": "NOTICE", "PRIVACY.md": "PRIVACY.md", "TERMS.md": "TERMS.md",
         "SECURITY.md": "SECURITY.md", "CONTRIBUTING.md": "CONTRIBUTING.md",
         "CODE_OF_CONDUCT.md": "CODE_OF_CONDUCT.md",
+        "site/assets/official-account-qr.jpg": "site/assets/official-account-qr.jpg",
         "plugins/worker-rights-cn/adapters/README.md": "plugins/worker-rights-cn/adapters/README.md",
         **{f"docs/{name}.md": f"docs/{name}.md" for name in (
-            "裁员前后72小时", "常见问题", "快速开始", "如何估算补偿", "如何审查协议", "如何整理证据", "如何准备劳动仲裁", "隐私与本地存储")},
+            "裁员前后72小时", "项目定位", "常见问题", "快速开始", "如何估算补偿", "如何审查协议", "如何整理证据", "如何准备劳动仲裁", "隐私与本地存储")},
     }
     assert manifest.get("repository_files") == expected_repository_files
 
