@@ -16,7 +16,7 @@ import unicodedata
 
 
 ROOT_FILES = {
-    "README.md", "README.en.md", "LICENSE", "NOTICE", "CHANGELOG.md",
+    "README.md", "README.en.md", "README.zh-CN.md", "LICENSE", "NOTICE", "CHANGELOG.md",
     "PRIVACY.md", "TERMS.md", "SECURITY.md", "CONTRIBUTING.md",
     "CODE_OF_CONDUCT.md", "SUPPORT.md",
 }

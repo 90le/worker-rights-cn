@@ -19,6 +19,7 @@ SELF = Path(__file__).resolve()
 REQUIRED_DOCUMENTS = (
     "README.md",
     "README.en.md",
+    "README.zh-CN.md",
     "docs/快速开始.md",
     "docs/裁员前后72小时.md",
     "docs/如何整理证据.md",
@@ -34,7 +35,7 @@ REQUIRED_DOCUMENTS = (
     "docs/maintainers/ADAPTERS.md",
     "docs/maintainers/RELEASING.md",
 )
-USER_DOCUMENTS = ("README.md",) + REQUIRED_DOCUMENTS[2:10]
+USER_DOCUMENTS = ("README.zh-CN.md",) + REQUIRED_DOCUMENTS[3:11]
 REQUIRED_USER_LANGUAGE = (
     "现在先不要做什么",
     "今天应当保存什么",
@@ -93,17 +94,16 @@ def check_required_language(documents: dict[str, str]) -> list[dict[str, str]]:
         if status not in combined_users:
             findings.append(finding("docs", "missing_legal_status", status))
     required_phrases = {
-        "README.md": (
-            "紧急与安全边界", "30 秒 Codex 开始", "第一条提示词", "能做什么",
-            "不能做什么", "四步流程", "五个常见场景", "隐私", "兼容性矩阵",
-            "更新", "卸载", "彻底清除", "丘彬彬", "binstudy", "Apache-2.0",
+        "README.zh-CN.md": (
+            "中国劳动权益 AI Agent", "适用场景", "能做什么", "30 秒开始使用",
+            "AI Agent 架构", "安全边界", "Roadmap", "文档", "贡献", "Apache-2.0",
             "codex plugin marketplace add 90le/worker-rights-cn --ref main",
-            "codex plugin marketplace upgrade worker-rights-cn",
         ),
-        "README.en.md": (
+        "README.md": (
             "Safety boundary", "30-second Codex start", "Privacy", "Compatibility",
             "Update", "Uninstall", "purge", "Apache-2.0",
         ),
+        "README.en.md": ("English", "简体中文", "Safety boundary", "Apache-2.0"),
         "docs/隐私与本地存储.md": ("绝对路径", "保存范围", "脱敏", "删除证明"),
         "docs/maintainers/ARCHITECTURE.md": ("模块 owner", "稳定接口"),
         "docs/maintainers/LEGAL_SOURCES.md": ("source schema", "城市更新"),

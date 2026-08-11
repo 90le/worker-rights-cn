@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from calculate_compensation import calculate
+from calculate_compensation import calculate, calculate_from_payroll, parse_payroll_csv
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,7 +36,11 @@ def run(cases_path: Path) -> int:
     results: list[dict[str, Any]] = []
 
     for case in cases:
-        result = calculate(case["input"])
+        result = (
+            calculate_from_payroll(case["input"], parse_payroll_csv(case["payroll_csv"]))
+            if "payroll_csv" in case
+            else calculate(case["input"])
+        )
         case_failures = []
         for dotted_path, expected in case["expected"].items():
             actual = value_at(result, dotted_path)

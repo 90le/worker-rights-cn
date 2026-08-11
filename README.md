@@ -1,155 +1,49 @@
 # Worker Rights CN
 
-[简体中文](README.md) | [English](README.en.md) | [项目网站](https://90le.github.io/worker-rights-cn/)
+[English](README.md) | [简体中文](README.zh-CN.md) | [Website](https://90le.github.io/worker-rights-cn/)
 
-# 中国劳动权益 AI Agent
+An open-source assistant that helps workers in mainland China organize facts, preserve evidence, estimate amounts, and prepare drafts. Codex is the canonical interface; other hosts are thin adapters.
 
-面向中国大陆劳动者的开源劳动权益 AI 助手。
+## Safety boundary
 
-帮助劳动者用自然语言整理劳动事实、证据、补偿估算和仲裁材料。
+This project is not a lawyer, law firm, government service, or case representative, and it does not guarantee outcomes. For imminent signing deadlines, workplace injury, expiring limitation periods, or threats to personal safety, preserve originals and seek timely help from the relevant local authority, union, or licensed counsel.
 
-项目专注中国劳动法律场景，不提供海外劳动法通用服务。
+## 30-second Codex start
 
-支持 AI 工作流：
+1. Run `codex plugin marketplace add 90le/worker-rights-cn --ref main`. This adds a marketplace source; it does not install the plugin directly.
+2. Run `codex plugin add worker-rights-cn@worker-rights-cn` to install it.
+3. Or restart/refresh the Codex/ChatGPT desktop app and install it from the **Worker Rights CN** marketplace in **Plugins**.
 
-- OpenAI Codex
-- Claude Code
-- OpenCode
-- OpenClaw
-- MCP 工具链
+First prompt: “Help me separate confirmed facts from missing information, identify what I should not do yet and what evidence to preserve today, then outline possible rights and next steps. Do not save or upload my materials.”
 
-> 目标：让每个劳动者都拥有一个自己的劳动权益分析助手。
+## Capabilities and limits
 
----
+It can organize timelines, evidence, calculations, agreement risks, negotiation drafts, and arbitration drafts with source labels. It cannot sign, submit, upload, contact third parties, provide legal representation, or turn an estimate into an official decision.
 
-## 适用场景
+## Deterministic payroll input
 
-- 突然被辞退，不知道是否存在解除风险
-- 公司要求立即签署解除协议
-- 欠薪、加班、社保问题需要整理
-- 不清楚应该保存哪些维权证据
-- 需要准备劳动仲裁材料
+The compensation calculator can derive the average wage from a UTF-8 CSV containing up to 12 `month,gross_wage` rows. It returns normalized rows, the source SHA-256, missing months, total, average, and N/N+1/2N estimate paths without saving the source file. Missing periods and the legally applicable wage base still require verification.
 
----
+## Privacy
 
-## 能做什么
+Chats and case materials are not automatically saved, uploaded, or sent. Any persistence must disclose the absolute path and scope and require explicit consent. Review identifiers before export. See [PRIVACY.md](PRIVACY.md).
 
-### 事实整理
+## Compatibility
 
-帮助拆解：
+Codex is primary. Claude Code, OpenCode, and OpenClaw reuse the same domain rules through thin adapters, but host capabilities such as hooks and MCP startup differ and are not claimed to be identical.
 
-- 发生了什么
-- 哪些事实已确认
-- 哪些信息需要补充
+## Update, Uninstall, and purge
 
-### 证据整理
+- Update the source with `codex plugin marketplace upgrade worker-rights-cn`, refresh the app, and update or reinstall through Plugins as offered.
+- Uninstall through Plugins. Uninstalling the plugin does not automatically erase user data that you explicitly chose to save.
+- For an explicit purge, first export anything needed, then delete the host-disclosed `worker-rights-cn` data directory and verify related indexes/audit records. Purge is irreversible and requires confirmation.
 
-帮助建立：
+## Official WeChat account
 
-- 合同
-- 工资记录
-- 考勤
-- 沟通记录
-- 工作成果
+Follow the official account for project updates, usage guides, and publicly shared worker-rights content. It is for general information only: do not send real case evidence, and it does not provide private legal advice or representation.
 
-### 权益分析
+![Worker Rights CN official WeChat account QR code](site/assets/official-account-qr.jpg)
 
-辅助理解：
+## Project
 
-- 解除风险
-- 补偿计算逻辑
-- 劳动争议重点
-
-### 材料准备
-
-辅助生成：
-
-- 沟通方案
-- 事实说明
-- 仲裁材料草稿
-
----
-
-## 30 秒开始使用
-
-安装 Codex 插件：
-
-```bash
-codex plugin marketplace add 90le/worker-rights-cn --ref main
-codex plugin add worker-rights-cn@worker-rights-cn
-```
-
-然后直接描述情况。
-
----
-
-## AI Agent 架构
-
-```text
-用户问题
-   |
-事实整理 Agent
-   |
- +-- 证据分析
- +-- 法规参考
- +-- 金额估算
- +-- 文书生成
-   |
-行动建议
-```
-
----
-
-## 安全边界
-
-本项目：
-
-- 不是律师
-- 不是政府服务
-- 不提供个案代理
-- 不保证仲裁或诉讼结果
-
-请结合最新法规、当地规则和专业意见判断。
-
-不要上传未脱敏身份证、银行卡、合同等敏感材料。
-
----
-
-## Roadmap
-
-- [x] 劳动权益基础 Agent
-- [x] 证据整理流程
-- [x] 补偿估算辅助
-- [x] 仲裁材料辅助
-
-未来：
-
-- [ ] 中国劳动法规知识库
-- [ ] 劳动争议案例库
-- [ ] MCP Server
-- [ ] Web AI 助手
-- [ ] 更多劳动场景 Agent
-
----
-
-## 文档
-
-- [项目定位](docs/项目定位.md)
-- [快速开始](docs/%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B.md)
-- [裁员前后 72 小时](docs/%E8%A3%81%E5%91%98%E5%89%8D%E5%90%8E72%E5%B0%8F%E6%97%B6.md)
-- [如何整理证据](docs/%E5%A6%82%E4%BD%95%E6%95%B4%E7%90%86%E8%AF%81%E6%8D%AE.md)
-- [如何估算补偿](docs/%E5%A6%82%E4%BD%95%E4%BC%B0%E7%AE%97%E8%A1%A5%E5%81%BF.md)
-
----
-
-## 贡献
-
-欢迎贡献：
-
-- 中国劳动法规整理
-- 劳动争议案例
-- Agent 技能优化
-- MCP 工具开发
-- 文档改进
-
-本项目采用 Apache-2.0 License。
+Author: 丘彬彬, Guangzhou, Guangdong. WeChat `binstudy` is for project and community collaboration only, not private case advice or representation. Contributions follow [CONTRIBUTING.md](CONTRIBUTING.md); security reports follow [SECURITY.md](SECURITY.md). Licensed under [Apache-2.0](LICENSE).

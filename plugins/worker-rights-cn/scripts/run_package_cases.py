@@ -32,6 +32,7 @@ FIXED_ZIP_TIMESTAMP = (2026, 1, 1, 0, 0, 0)
 REQUIRED_FILES = {
     "README.md",
     "README.en.md",
+    "README.zh-CN.md",
     "LICENSE",
     "NOTICE",
     "PRIVACY.md",
@@ -242,7 +243,7 @@ def assert_archive_contract(archive: Path, checksum: Path) -> list[str]:
                 assert resolved in archive_names, f"broken Markdown link: {markdown_name} -> {target} ({resolved})"
 
         for name in names:
-            if name in {"README.md", "README.en.md", "PRIVACY.md", "TERMS.md", "SECURITY.md", "project-metadata.json"}:
+            if name in {"README.md", "README.en.md", "README.zh-CN.md", "PRIVACY.md", "TERMS.md", "SECURITY.md", "project-metadata.json"}:
                 text = bundle.read(name).decode("utf-8")
                 assert "../" not in text and "..\\" not in text, f"package path escape in {name}"
             if not name.endswith(".json"):
@@ -408,7 +409,7 @@ def assert_manifest_contract() -> None:
     assert "worker_rights_cn/*.py" in manifest["allow"]
     assert "worker_rights_cn/**/*.py" in manifest["allow"]
     expected_repository_files = {
-        "README.md": "README.md", "README.en.md": "README.en.md", "LICENSE": "LICENSE",
+        "README.md": "README.md", "README.en.md": "README.en.md", "README.zh-CN.md": "README.zh-CN.md", "LICENSE": "LICENSE",
         "NOTICE": "NOTICE", "PRIVACY.md": "PRIVACY.md", "TERMS.md": "TERMS.md",
         "SECURITY.md": "SECURITY.md", "CONTRIBUTING.md": "CONTRIBUTING.md",
         "CODE_OF_CONDUCT.md": "CODE_OF_CONDUCT.md",

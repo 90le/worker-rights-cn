@@ -1,6 +1,6 @@
 # Worker Rights CN
 
-[简体中文](README.md) | [Website](https://90le.github.io/worker-rights-cn/)
+[English](README.md) | [简体中文](README.zh-CN.md) | [Website](https://90le.github.io/worker-rights-cn/)
 
 An open-source assistant that helps workers in mainland China organize facts, preserve evidence, estimate amounts, and prepare drafts. Codex is the canonical interface; other hosts are thin adapters.
 
@@ -19,6 +19,10 @@ First prompt: “Help me separate confirmed facts from missing information, iden
 ## Capabilities and limits
 
 It can organize timelines, evidence, calculations, agreement risks, negotiation drafts, and arbitration drafts with source labels. It cannot sign, submit, upload, contact third parties, provide legal representation, or turn an estimate into an official decision.
+
+## Deterministic payroll input
+
+The compensation calculator can derive the average wage from a UTF-8 CSV containing up to 12 `month,gross_wage` rows. It returns normalized rows, the source SHA-256, missing months, total, average, and N/N+1/2N estimate paths without saving the source file. Missing periods and the legally applicable wage base still require verification.
 
 ## Privacy
 
