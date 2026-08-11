@@ -9,14 +9,16 @@
 - 稳定 `source_id`
 - `title`、`authority`、`jurisdiction`、`source_type`
 - `source_of_truth_url` 和必要的 `verification_urls`
-- `publish_date`、`effective_date`
+- `publish_date`、`effective_date`、`expiry_date`（没有已记录的固定失效日时为 `null`）
 - `retrieved_at`、`current_as_of`
 - `currency_status`
 - `notes`
 
 条文锚点采用 `SOURCE-ID#artN`。锚点摘要不能扩大条文含义。
 
-城市数据位于 `skills/local-rules-adapter/references/city-rules.json`。来源卡还要维护 `official_host`、`source_status`、`allowed_uses`、`not_allowed_uses` 和 `values`。城市规则维护 aliases、rule_checks、required_facts、source_ids、output_flags 以及禁止作为最终数值的来源。
+城市数据位于 `skills/local-rules-adapter/references/city-rules.json`。来源卡还要维护 `jurisdiction`、`effective_date`、`expiry_date`、`current_as_of`、`official_host`、`source_status`、`allowed_uses`、`not_allowed_uses` 和 `values`。城市规则维护 aliases、rule_checks、required_facts、source_ids、output_flags 以及禁止作为最终数值的来源。
+
+默认复核期限为 366 天。`expiry_date: null` 只表示没有记录固定失效日，不代表永久有效；来源超过复核期限、尚未生效或已经失效时，校验器失败关闭，HTML 报告降级提示并列出 source ID。
 
 只有 `verified_final` 可以用于其明确授权用途的当地最终数值。`verified_candidate`、`verified_reference_only`、`verified_guardrail` 和 `local_verify` 不能被自动当成经济补偿最终上限。
 
@@ -42,10 +44,10 @@
 
 ```powershell
 python plugins/worker-rights-cn/scripts/validate_source_currency.py --help
+python plugins/worker-rights-cn/scripts/validate_source_currency.py --as-of 2026-08-11
 python plugins/worker-rights-cn/scripts/validate_legal_map.py --help
 ```
 
 ## 评审要求
 
 来源 PR 应列出：受影响 source_id、官方链接、检索日期、状态变化、允许用途、禁止用途、受影响城市和测试结果。真实案件事实不得进入公共来源数据。
-

@@ -6,12 +6,14 @@ from __future__ import annotations
 import json
 import sys
 import tempfile
+from datetime import date
 from pathlib import Path
 from typing import Any
 
 from calculate_compensation import (
     InputError,
     calculate_with_imports,
+    classify_source_health,
     parse_attendance_csv,
     parse_payroll_csv,
     render_html_report,
@@ -21,6 +23,7 @@ from calculate_compensation import (
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CASES = ROOT / "tests" / "golden_cases.json"
+REPORT_AS_OF = date(2026, 8, 11)
 
 
 def value_at(data: dict[str, Any], dotted_path: str) -> Any:
@@ -42,6 +45,16 @@ def run(cases_path: Path) -> int:
     cases = json.loads(cases_path.read_text(encoding="utf-8"))
     failures: list[dict[str, Any]] = []
     results: list[dict[str, Any]] = []
+    expired = classify_source_health(
+        {
+            "retrieved_at": "2026-01-01",
+            "current_as_of": "2026-01-01",
+            "effective_date": "2025-01-01",
+            "expiry_date": "2026-06-30",
+        },
+        date(2026, 7, 1),
+    )
+    assert expired["status"] == "expired", expired
 
     for case in cases:
         result = calculate_with_imports(
@@ -61,17 +74,22 @@ def run(cases_path: Path) -> int:
                     }
                 )
         if case.get("expected_report_contains"):
-            report = render_html_report(result)
+            report = render_html_report(result, REPORT_AS_OF)
             missing = [value for value in case["expected_report_contains"] if value not in report]
             if missing:
                 case_failures.append({"report_missing": missing})
+            stale_report = render_html_report(result, date(2028, 8, 12))
+            if "Source review required / 来源需复核" not in stale_report or "review_due" not in stale_report:
+                case_failures.append({"report_degradation": "stale source warning or status missing"})
             with tempfile.TemporaryDirectory(prefix="worker-rights-report-") as directory:
                 report_path = Path(directory) / "report.html"
-                metadata = write_html_report(result, report_path)
+                metadata = write_html_report(result, report_path, REPORT_AS_OF)
                 if not report_path.is_file() or metadata["bytes"] != len(report_path.read_bytes()):
                     case_failures.append({"report_file": "write or byte-count mismatch"})
+                if metadata["source_status"] != "current" or metadata["source_as_of"] != REPORT_AS_OF.isoformat():
+                    case_failures.append({"report_source_health": metadata})
                 try:
-                    write_html_report(result, report_path)
+                    write_html_report(result, report_path, REPORT_AS_OF)
                 except InputError as exc:
                     if "already exists" not in str(exc):
                         case_failures.append({"report_overwrite_error": str(exc)})

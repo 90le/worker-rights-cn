@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "retrieved_at": "2026-06-16",
   "source_note": "City-level routing data for worker-rights-cn. Use it to decide which local checks and official sources are needed. Do not plug a city wage or social-insurance value into an economic-compensation cap unless the source and city rule are marked verified_final for that use.",
   "status_values": [
@@ -47,7 +47,11 @@
         "monthly_social_insurance_base_upper": 35811,
         "monthly_social_insurance_base_lower": 7162
       },
-      "notes": "Official Beijing social-insurance base limits. Keep separate from the final LCL art.47 economic-compensation wage cap unless a current local source confirms the exact compensation standard."
+      "notes": "Official Beijing social-insurance base limits. Keep separate from the final LCL art.47 economic-compensation wage cap unless a current local source confirms the exact compensation standard.",
+      "jurisdiction": "Beijing",
+      "effective_date": "2025-07-01",
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "BJ-TJJ-RSJ-PUBLISH-PLAN-2026": {
       "title": "北京市人力资源和社会保障局2026年统计资料发布计划",
@@ -68,7 +72,11 @@
       "values": {
         "planned_item": "2025 年北京市全口径城镇单位就业人员平均工资"
       },
-      "notes": "Shows the planned release item for Beijing average-wage data; it is not itself an amount."
+      "notes": "Shows the planned release item for Beijing average-wage data; it is not itself an amount.",
+      "jurisdiction": "Beijing",
+      "effective_date": null,
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "SH-RSJ-ECON-COMP-CAP-QA-2023": {
       "title": "经济补偿金有上限吗？",
@@ -85,7 +93,11 @@
         "economic_compensation_high_wage_cap_final_amount"
       ],
       "values": {},
-      "notes": "Explains LCL art.47 high-wage cap and 12-year limit in Shanghai HRSS public Q&A, but does not publish the current numerical cap."
+      "notes": "Explains LCL art.47 high-wage cap and 12-year limit in Shanghai HRSS public Q&A, but does not publish the current numerical cap.",
+      "jurisdiction": "Shanghai",
+      "effective_date": null,
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "SH-RSJ-SOCIAL-BASE-2025": {
       "title": "本市调整2025年度社保缴费基数上下限",
@@ -108,7 +120,11 @@
         "monthly_social_insurance_base_upper": 37302,
         "monthly_social_insurance_base_lower": 7460
       },
-      "notes": "Official social-insurance base and full-caliber wage data; keep as a candidate/reference for compensation cap until local HRSS or filing practice confirms the exact use."
+      "notes": "Official social-insurance base and full-caliber wage data; keep as a candidate/reference for compensation cap until local HRSS or filing practice confirms the exact use.",
+      "jurisdiction": "Shanghai",
+      "effective_date": "2025-07-01",
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "SZ-TJJ-WAGE-2024": {
       "title": "2024年深圳市城镇单位就业人员年平均工资情况",
@@ -126,7 +142,11 @@
         "economic_compensation_high_wage_cap_final"
       ],
       "values": {},
-      "notes": "Official Shenzhen statistical wage page is recorded, but the local toolchain could not reliably fetch the page body because of TLS compatibility. Shenzhen Statistics Bureau later replied that which wage standard to use for economic compensation should be confirmed with HRSS."
+      "notes": "Official Shenzhen statistical wage page is recorded, but the local toolchain could not reliably fetch the page body because of TLS compatibility. Shenzhen Statistics Bureau later replied that which wage standard to use for economic compensation should be confirmed with HRSS.",
+      "jurisdiction": "Shenzhen",
+      "effective_date": null,
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "SZ-GOV-ECON-COMP-CAP-QA-2025": {
       "title": "咨询深圳地区上年度职工月平均工资是多少？",
@@ -144,7 +164,11 @@
         "economic_compensation_high_wage_cap_final_amount"
       ],
       "values": {},
-      "notes": "Official reply says the Statistics Bureau publishes wage data, but the specific economic-compensation standard and which wage口径 to use should be consulted with HRSS."
+      "notes": "Official reply says the Statistics Bureau publishes wage data, but the specific economic-compensation standard and which wage口径 to use should be consulted with HRSS.",
+      "jurisdiction": "Shenzhen",
+      "effective_date": null,
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "GZ-RSJ-LAYOFF-NORM-2021": {
       "title": "广州市人力资源和社会保障局等4个部门关于规范用人单位裁员有关问题的意见",
@@ -198,7 +222,11 @@
           "publish_confirmed_plan_to_all_staff"
         ]
       },
-      "notes": "Official Guangzhou HRSS layoff guidance explains economic layoff procedure, reporting, economic compensation standard, average-wage base, high-wage cap and legal-liability route, but does not publish the current numerical cap."
+      "notes": "Official Guangzhou HRSS layoff guidance explains economic layoff procedure, reporting, economic compensation standard, average-wage base, high-wage cap and legal-liability route, but does not publish the current numerical cap.",
+      "jurisdiction": "Guangzhou",
+      "effective_date": null,
+      "expiry_date": null,
+      "current_as_of": "2026-06-17"
     },
     "GZ-GOV-WAGE-2024": {
       "title": "2024年广州市城镇单位就业人员平均工资情况",
@@ -221,7 +249,11 @@
         "annual_urban_non_private_on_post_employee_average_wage_2024": 164443,
         "annual_urban_private_employment_average_wage_2024": 82907
       },
-      "notes": "Official Guangzhou government page publishing Guangzhou Statistics Bureau wage data. Use as a candidate/reference, not as a final LCL art.47 cap without local HRSS/arbitration confirmation."
+      "notes": "Official Guangzhou government page publishing Guangzhou Statistics Bureau wage data. Use as a candidate/reference, not as a final LCL art.47 cap without local HRSS/arbitration confirmation.",
+      "jurisdiction": "Guangzhou",
+      "effective_date": null,
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "GZ-GJJ-HOUSING-FUND-BASE-2025": {
       "title": "广州住房公积金管理中心关于2025年度住房公积金缴存调整有关问题的通知",
@@ -244,7 +276,11 @@
         "monthly_housing_fund_base_upper": 39828,
         "monthly_housing_fund_base_lower": 2500
       },
-      "notes": "Official housing-fund adjustment source states the 2025 upper limit is three times Guangzhou's 2024 monthly employee average wage. It is a reference source, not a final economic-compensation cap source."
+      "notes": "Official housing-fund adjustment source states the 2025 upper limit is three times Guangzhou's 2024 monthly employee average wage. It is a reference source, not a final economic-compensation cap source.",
+      "jurisdiction": "Guangzhou",
+      "effective_date": "2025-07-01",
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "GD-HRSS-PENSION-BASE-2025": {
       "title": "关于公布2025年职工基本养老保险缴费基数上下限和基本养老金计发基数等有关问题的通知",
@@ -266,7 +302,11 @@
         "monthly_pension_base_upper": 27549,
         "monthly_pension_base_lower_guangzhou": 5510
       },
-      "notes": "Official government service page for Guangdong enterprise pension base limits. Keep separate from economic-compensation cap calculation."
+      "notes": "Official government service page for Guangdong enterprise pension base limits. Keep separate from economic-compensation cap calculation.",
+      "jurisdiction": "Guangdong",
+      "effective_date": "2025-07-01",
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "ZJ-JOINT-SOCIAL-BASE-2025": {
       "title": "关于公布2025年社会保险有关基数的通知",
@@ -290,7 +330,11 @@
         "monthly_social_insurance_base_upper": 25299,
         "monthly_social_insurance_base_lower": 4986
       },
-      "notes": "Official Zhejiang provincial social-insurance base source. It is a provincial social-insurance reference, not a verified Hangzhou city economic-compensation cap."
+      "notes": "Official Zhejiang provincial social-insurance base source. It is a provincial social-insurance reference, not a verified Hangzhou city economic-compensation cap.",
+      "jurisdiction": "Zhejiang",
+      "effective_date": "2025-01-01",
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "HZ-CITY-CAP-SOURCE-PENDING": {
       "title": "Hangzhou city economic-compensation wage-cap source pending",
@@ -308,7 +352,11 @@
         "social_insurance_base_amount"
       ],
       "values": {},
-      "notes": "No current official Hangzhou city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations."
+      "notes": "No current official Hangzhou city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations.",
+      "jurisdiction": "Hangzhou",
+      "effective_date": null,
+      "expiry_date": null,
+      "current_as_of": "2026-06-16"
     },
     "SZH-CITY-CAP-SOURCE-PENDING": {
       "title": "苏州市经济补偿高工资封顶口径待核验 / Suzhou city economic-compensation wage-cap source pending",
@@ -326,7 +374,11 @@
         "social_insurance_base_amount"
       ],
       "values": {},
-      "notes": "No current official Suzhou city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations."
+      "notes": "No current official Suzhou city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations.",
+      "jurisdiction": "Suzhou",
+      "effective_date": null,
+      "expiry_date": null,
+      "current_as_of": "2026-06-24"
     },
     "CD-CITY-CAP-SOURCE-PENDING": {
       "title": "成都市经济补偿高工资封顶口径待核验 / Chengdu city economic-compensation wage-cap source pending",
@@ -344,7 +396,11 @@
         "social_insurance_base_amount"
       ],
       "values": {},
-      "notes": "No current official Chengdu city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations."
+      "notes": "No current official Chengdu city-level source is stored yet. Ask for local HRSS/statistics/arbitration source before final calculations.",
+      "jurisdiction": "Chengdu",
+      "effective_date": null,
+      "expiry_date": null,
+      "current_as_of": "2026-06-24"
     }
   },
   "cities": {

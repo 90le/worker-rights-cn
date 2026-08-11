@@ -20,10 +20,11 @@ Identify which local rules and official sources must be verified before a worker
    - `verified_candidate`: official data exists, but the output must still say local HRSS/arbitration practice should confirm the exact use.
    - `verified_reference_only`: useful for social insurance or statistics, not final wage-cap calculation.
    - `local_verify`: official local amount or form has not been verified.
-6. Add `local_verify` flags whenever city data, arbitration commission forms, statute limitation details, medical period, wage-payment period, housing fund, tax, or social-insurance details affect the answer.
-7. For Guangzhou economic layoffs, route both `economic_layoff_local_procedure` and `guangzhou_economic_layoff_report_package` so the answer checks the plan, worker-opinion process, written HRSS report package, HRSS feedback response, final publication, and wage/social-insurance clearance.
-8. If the case needs calculations, pass verified facts to `compensation-calculator`; pass local source status and caveats alongside the amount.
-9. If the case needs filing, pass jurisdiction and form caveats to `arbitration-drafter`.
+6. Compare each used card's `effective_date`, `expiry_date`, and `current_as_of` against the response date. If it is not yet effective, expired, or more than 366 days past review, treat it as `local_verify`, name the source ID, and do not reuse its numerical value.
+7. Add `local_verify` flags whenever city data, arbitration commission forms, statute limitation details, medical period, wage-payment period, housing fund, tax, or social-insurance details affect the answer.
+8. For Guangzhou economic layoffs, route both `economic_layoff_local_procedure` and `guangzhou_economic_layoff_report_package` so the answer checks the plan, worker-opinion process, written HRSS report package, HRSS feedback response, final publication, and wage/social-insurance clearance.
+9. If the case needs calculations, pass verified facts to `compensation-calculator`; pass local source status and caveats alongside the amount.
+10. If the case needs filing, pass jurisdiction and form caveats to `arbitration-drafter`.
 
 ## Output Rules
 
@@ -33,6 +34,7 @@ Return:
 - `local_rule_status`: `ready_with_caveat`, `local_verify`, or `needs_city`.
 - `required_local_checks`: concise list of missing local confirmations.
 - `usable_source_ids`: official source IDs that support the current check.
+- `source_health`: assessment date plus `current`, `review_due`, `expired`, or `not_yet_effective` for every used card.
 - `do_not_use_as_final_cap`: source IDs that may not be plugged into an economic-compensation cap.
 - `source_anchors`: national law anchors and local source IDs.
 - `next_skill`: usually `compensation-calculator`, `evidence-builder`, `arbitration-drafter`, or `negotiation-coach`.
