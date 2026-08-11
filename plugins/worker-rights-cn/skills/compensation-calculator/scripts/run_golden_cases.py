@@ -5,10 +5,18 @@ from __future__ import annotations
 
 import json
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
-from calculate_compensation import calculate_with_imports, parse_attendance_csv, parse_payroll_csv
+from calculate_compensation import (
+    InputError,
+    calculate_with_imports,
+    parse_attendance_csv,
+    parse_payroll_csv,
+    render_html_report,
+    write_html_report,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,6 +60,23 @@ def run(cases_path: Path) -> int:
                         "actual": actual,
                     }
                 )
+        if case.get("expected_report_contains"):
+            report = render_html_report(result)
+            missing = [value for value in case["expected_report_contains"] if value not in report]
+            if missing:
+                case_failures.append({"report_missing": missing})
+            with tempfile.TemporaryDirectory(prefix="worker-rights-report-") as directory:
+                report_path = Path(directory) / "report.html"
+                metadata = write_html_report(result, report_path)
+                if not report_path.is_file() or metadata["bytes"] != len(report_path.read_bytes()):
+                    case_failures.append({"report_file": "write or byte-count mismatch"})
+                try:
+                    write_html_report(result, report_path)
+                except InputError as exc:
+                    if "already exists" not in str(exc):
+                        case_failures.append({"report_overwrite_error": str(exc)})
+                else:
+                    case_failures.append({"report_overwrite": "existing report was overwritten"})
         status = "pass" if not case_failures else "fail"
         if case_failures:
             failures.append({"case": case["id"], "failures": case_failures})

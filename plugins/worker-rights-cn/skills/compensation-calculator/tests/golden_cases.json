@@ -286,8 +286,16 @@
       "overtime_basis.total_overtime_hours": 9.5,
       "overtime_basis.hourly_wage_base": 50,
       "overtime_basis.overtime_pay_total": 1112.5,
+      "evidence_summary.source_digest_available": 1,
+      "evidence_summary.to_verify": 3,
       "additional_claims.overtime_claim": 1112.5,
       "claim_paths.economic_compensation_n": 31112.5
-    }
+    },
+    "expected_report_contains": [
+      "E-ATTENDANCE",
+      "LABOR-LAW-2018#art44",
+      "1,112.50",
+      "digest-only evidence links"
+    ]
   }
 ]
